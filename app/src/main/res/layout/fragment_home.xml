@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5.5"
+            app:srcCompat="@drawable/logo_socite" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="0.7"
+            app:cardBackgroundColor="#FDF6DC">
+
+            <com.google.android.material.textview.MaterialTextView
+
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/asap"
+                android:gravity="bottom"
+                android:layout_gravity="start|center"
+                android:layout_marginStart="12dp"
+                android:layout_marginBottom="6dp"
+                android:text="Tap koursili to order anything from anywhere"
+                android:textColor="@android:color/black" />
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
+        <TextView
+            android:id="@+id/what_would_you_like"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginStart="12dp"
+            android:fontFamily="@font/asap"
+            android:layout_weight="0.5"
+            android:gravity="start|bottom"
+            android:text="@string/what_would_you_like_today"
+            android:textColor="@android:color/black" />
+
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/materialCardView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="5"
+            android:layout_gravity="bottom">
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:columnCount="3"
+                android:orientation="horizontal"
+                android:padding="4dp"
+                android:useDefaultMargins="true">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:id="@+id/supermarkets"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/supermarkets_logo"
+                        app:srcCompat="@drawable/ic_groceries" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/intro_secondary_textview_style"
+                        android:layout_width="match_parent"
+                        android:id="@+id/supermarkets_text"
+                        android:layout_height="0dp"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/supermarkets_logo"
+                        android:text="@string/supermakets"
+                        android:textColor="@android:color/black" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:id="@+id/restaurants"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/restaurants_logo"
+                        app:srcCompat="@drawable/ic_burger" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/intro_secondary_textview_style"
+                        android:layout_width="match_parent"
+                        android:id="@+id/restaurants_text"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/restaurants_logo"
+                        android:text="@string/restaurants"
+                        android:textColor="@android:color/black" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:id="@+id/laitiers"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/laitieres_logo"
+                        app:srcCompat="@drawable/ic_milkshake" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/intro_secondary_textview_style"
+                        android:layout_width="match_parent"
+                        android:id="@+id/laitiers_text"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/laitieres_logo"
+                        android:text="@string/laiteries"
+                        android:textColor="@android:color/black" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:id="@+id/bakeries"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/bakeries_logo"
+                        app:srcCompat="@drawable/ic_croissant" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/intro_secondary_textview_style"
+                        android:layout_width="match_parent"
+                        android:id="@+id/bakeries_text"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bakeries_logo"
+                        android:text="@string/bakeries"
+                        android:textColor="@android:color/black" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_rowWeight="1"
+                    android:id="@+id/pharmacies"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/pharmacies_logo"
+                        app:srcCompat="@drawable/ic_pharmacy" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/intro_secondary_textview_style"
+                        android:layout_width="match_parent"
+                        android:id="@+id/pharmacies_text"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/pharmacies_logo"
+                        android:text="@string/pharmacies"
+                        android:textColor="@android:color/black" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:id="@+id/boutiques"
+                    android:layout_rowWeight="1"
+                    android:layout_columnWeight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageButton
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:id="@+id/boutiques_logo"
+                        app:srcCompat="@drawable/ic_shops" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/intro_secondary_textview_style"
+                        android:layout_width="match_parent"
+                        android:id="@+id/boutiques_text"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/boutiques_logo"
+                        android:text="@string/boutiques"
+                        android:textColor="@android:color/black" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </GridLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+
+    </LinearLayout>
+
+</layout>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        app:cardCornerRadius="7dp"
+        android:layout_marginBottom="5dp"
+        android:id="@+id/shop_container"
+        app:cardElevation="5dp"
+        android:layout_height="120dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/materialCardView3"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                app:cardCornerRadius="7dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:id="@+id/shop_image"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:layout_weight="3"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/shop_name"
+                    tools:text="shop name"
+                    android:fontFamily="@font/asap"
+                    android:textSize="18sp"
+                    android:textColor="@android:color/black"
+                    android:gravity="start|center"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    app:layout_constraintBottom_toTopOf="@+id/hr"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+                <TableRow
+                    android:id="@+id/hr"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#A7A2A2"
+                    app:layout_constraintBottom_toTopOf="@+id/rating_minute_container"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/shop_name"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp" />
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/rating_minute_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/hr">
+
+                    <ImageButton
+                        android:id="@+id/star"
+                        android:background="@android:color/transparent"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:clickable="false"
+                        app:layout_constraintEnd_toStartOf="@+id/rating"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintHorizontal_weight=".5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:srcCompat="@drawable/ic_star_grey_24dp" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/rating"
+                        android:layout_width="0dp"
+                        android:fontFamily="@font/asap"
+                        android:textColor="@android:color/black"
+                        app:layout_constraintHorizontal_weight="1"
+                        android:layout_height="match_parent"
+                        android:gravity="start|center"
+                        app:layout_constraintEnd_toStartOf="@+id/distance"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/star"
+                        tools:text="4.5" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/distance"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/asap"
+                        android:textColor="@android:color/black"
+                        android:gravity="start|center"
+                        app:layout_constraintHorizontal_weight="2"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toEndOf="@+id/rating"
+                        tools:text="3 km" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

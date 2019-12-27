@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.moondevs.moon.home_screens.home.HomeFragment"
+        android:label="@string/title_kourse"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_shopsListFragment"
+            app:destination="@id/shopsListFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.moondevs.moon.home_screens.search.SearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/fragment_search" />
+
+    <fragment
+        android:id="@+id/navigation_cart"
+        android:name="com.moondevs.moon.home_screens.cart.CartFragment"
+        android:label="@string/cart"
+        tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/navigation_account"
+        android:name="com.moondevs.moon.home_screens.account.AccountFragment"
+        android:label="@string/account"
+        tools:layout="@layout/fragment_account" />
+    <fragment
+        android:id="@+id/shopsListFragment"
+        android:name="com.moondevs.moon.home_screens.shops_list_screen.ShopsListFragment"
+        android:label="fragment_shops_list"
+        tools:layout="@layout/fragment_shops_list" >
+        <argument
+            android:name="shop_type"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_shopsListFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/shopFragment"
+        tools:layout="@layout/fragment_shop"
+        android:name="com.moondevs.moon.home_screens.shops_screens.ShopFragment"
+        android:label="ShopFragment" >
+        <argument
+            android:name="ref"
+            app:argType="string" />
+        <argument
+            android:name="shopName"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_shopFragment_to_navigation_cart"
+            app:destination="@id/navigation_cart" />
+    </fragment>
+</navigation>

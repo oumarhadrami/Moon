@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".home_screens.shops_list_screen.ShopsListFragment">
+    <!--<ProgressBar
+        android:id="@+id/progressBarShops"
+        android:layout_width="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/otp_view"
+        app:layout_constraintVertical_bias="0.0" />
+        -->
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/shops_list"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+</FrameLayout>
+</layout>

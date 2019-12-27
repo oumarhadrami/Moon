@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "204891875927",
+    "firebase_url": "https://moon-c2119.firebaseio.com",
+    "project_id": "moon-c2119",
+    "storage_bucket": "moon-c2119.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204891875927:android:193c47eef2a2484df9d112",
+        "android_client_info": {
+          "package_name": "com.moondevs.moon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "204891875927-3skut071815vmtavlblh26oupd6c5cse.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moondevs.moon",
+            "certificate_hash": "7b41ca511eed6d7b1437f7926b77e230b38a8888"
+          }
+        },
+        {
+          "client_id": "204891875927-7nuobrm48bpmkckhhn1hh1g1lochvugu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYrnNvEGjNHwCuLDvTckcelDh342XCgiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "204891875927-7nuobrm48bpmkckhhn1hh1g1lochvugu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

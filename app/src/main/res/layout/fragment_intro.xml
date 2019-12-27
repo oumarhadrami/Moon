@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".introduction_screen.IntroFragment">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/intro_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="7"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_weight="0.5"
+            app:tabBackground="@drawable/selector_tab_indicator_dot"
+            app:tabGravity="center"
+            app:tabIndicator="@null"
+            app:tabPaddingEnd="6dp"
+            app:tabPaddingStart="6dp">
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.google.android.material.tabs.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.tabs.TabLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textView"
+            style="@style/intro_secondary_textview_style"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_weight="0.5"
+            android:text="@string/ready_to_order_from_top_supermarkets" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/login_button"
+            style="@style/main_button_style"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_margin="16dp"
+            android:background="@drawable/btn_rounded"
+            android:layout_gravity="center"
+            android:layout_weight="0.8"
+            android:text="Log in with phone number" />
+
+        <!--<Button
+            android:id="@+id/login_button"
+            style="@style/intro_secondary_textview_style"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_weight="0.8"
+            android:background="?android:attr/selectableItemBackground"
+            android:gravity="center"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="@string/have_an_account_login"
+           android:textAllCaps="false" />-->
+
+    </LinearLayout>
+</layout>

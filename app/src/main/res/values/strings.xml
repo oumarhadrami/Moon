@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Moon</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ready_to_order_from_top_supermarkets">Ready to order from top supermarkets?</string>
+    <string name="set_delivery_location">SET DELIVERY LOCATION</string>
+    <string name="have_an_account_login">Have an account? Login</string>
+    <string name="title_activity_account">AccountActivity</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="login">LogIn</string>
+    <string name="phone_number">Phone number</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="name">Name</string>
+    <string name="create_an_account">Create an account</string>
+    <string name="email">Email</string>
+    <string name="we_ll_send_you_an_sms_to_verify_your_number">We\'ll send you an sms to verify your number</string>
+    <string name="delivered_quickly_to_your_doorstep">Delivered quickly to your doorstep</string>
+    <string name="order_from_a_variety_of_stores">Order from a variety of stores</string>
+    <string name="verification_code">Verification Code</string>
+    <string name="please_enter_the_verification_code_sent_to">Please enter the verification code sent to:</string>
+    <string name="resend">Resend OTP</string>
+    <string name="validate">Validate</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="sign_in">Sign In</string>
+    <string name="title_kourse">Kourse</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="did_not_receive_the_code_resend_otp">Did not receive the code? Resend OTP</string>
+    <string name="search">Search</string>
+    <string name="cart">Cart</string>
+    <string name="account">Account</string>
+    <string name="restaurants">Restaurants</string>
+    <string name="see_your_order_coming_your_lightning_fast">See your order coming your lightning fast!</string>
+    <string name="supermakets">Supermakets</string>
+    <string name="pharmacies">pharmacies</string>
+    <string name="bakeries">Bakeries</string>
+    <string name="boutiques">Boutiques</string>
+    <string name="others">Others..</string>
+    <string name="laiteries">Laiteries</string>
+    <string name="what_would_you_like_today">What would you like today?</string>
+    <string name="medicine">Medicine</string>
+    <string name="koursili">Koursili</string>
+    <string name="_0">0</string>
+    <string name="view_cart">VIEW CART</string>
+    <string name="total_items">%d items</string>
+</resources>

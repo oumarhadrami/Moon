@@ -1,0 +1,100 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="HomeTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/primaryTextColor</item>
+        <item name="colorPrimaryDark">@color/primaryTextColor</item>
+        <item name="colorPrimaryVariant">@color/primaryLightColor</item>
+        <item name="colorOnPrimary">@color/primaryTextColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
+        <item name="colorOnSecondary">@color/secondaryTextColor</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+    </style>
+
+
+    <style name="Fullscreen" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
+    <style name="TransparentStatus" parent="AppTheme.NoActionBar">
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="otpViewStyle">@style/OtpWidget.OtpView</item>
+    </style>
+
+    <style name="intro_main_text_style">
+        <item name="android:fontFamily">@font/asap</item>
+        <item name="android:textColor">#000000</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="intro_secondary_textview_style">
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">#686b78</item>
+        <item name="android:fontFamily">@font/asap</item>
+    </style>
+
+    <style name="edittext_style">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:drawablePadding">20dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingBottom">16dp</item>
+    </style>
+
+    <style name="main_button_style">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:background">@color/primaryColor</item>
+        <item name="android:fontFamily">@font/asap</item>
+        <item name="android:paddingStart">50dp</item>
+        <item name="android:paddingEnd">50dp</item>
+        <item name="android:textColor">@color/primaryTextColor</item>
+    </style>
+
+
+    <style name="unclickable_main_button_style">
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:fontFamily">@font/asap</item>
+        <item name="android:paddingStart">50dp</item>
+        <item name="android:paddingEnd">50dp</item>
+    </style>
+
+    <style name="card_style">
+        <item name="android:layout_margin">16dp</item>
+        <item name="android:elevation">4dp</item>
+    </style>
+
+
+    <style name="outlineColorTextfield" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/secondaryColor</item>
+
+    </style>
+</resources>
