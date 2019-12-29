@@ -95,6 +95,10 @@
 
     <style name="outlineColorTextfield" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxStrokeColor">@color/secondaryColor</item>
+    </style>
 
+    <style name="AlerDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="fontFamily">@font/asap</item>
+        <item name="android:textAllCaps">false</item>
     </style>
 </resources>

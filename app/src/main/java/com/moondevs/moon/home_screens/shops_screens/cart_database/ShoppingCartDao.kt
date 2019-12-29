@@ -2,7 +2,6 @@ package com.moondevs.moon.home_screens.shops_screens.cart_database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.moondevs.moon.home_screens.shops_screens.cart_database.CartItem
 
 @Dao
 interface ShoppingCartDao {
@@ -30,4 +29,6 @@ interface ShoppingCartDao {
     @Query("select * from ShoppingCart where shopItemId = :shopItemId")
     suspend fun getRecord(shopItemId: String) : CartItem
 
+    @Query("select * from ShoppingCart limit 1")
+    suspend fun getShopNameFromDB(): CartItem
 }

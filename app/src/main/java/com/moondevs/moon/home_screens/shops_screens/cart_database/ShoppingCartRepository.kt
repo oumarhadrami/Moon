@@ -46,4 +46,9 @@ class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
         return shoppingCartDao.getAll()
     }
 
+    @WorkerThread
+    suspend fun getShopNameFromDB() : String{
+        val cartItem =  shoppingCartDao.getShopNameFromDB()
+        return cartItem.shopName
+    }
 }

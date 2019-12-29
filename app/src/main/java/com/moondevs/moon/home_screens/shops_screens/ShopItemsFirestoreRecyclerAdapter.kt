@@ -1,9 +1,12 @@
 package com.moondevs.moon.home_screens.shops_screens
 
+import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
@@ -11,21 +14,29 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentShopBinding
 import com.moondevs.moon.databinding.ShopitemItemBinding
 import com.moondevs.moon.home_screens.shops_screens.cart_database.CartItem
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
 class ShopItemsFirestoreRecyclerAdapter(
     options: FirestoreRecyclerOptions<ShopItem>,
     activity: FragmentActivity?,
-    shopFragmentBinding: FragmentShopBinding
+    shopFragmentBinding: FragmentShopBinding,
+    shopName: String,
+    context: Context?
 ) : FirestoreRecyclerAdapter<ShopItem, ShopItemsFirestoreRecyclerAdapter.ViewHolder>(options) {
 
     //initilize viewmodel
+    var cartsize = 0
+    var areShopsSame = true
     val shopFragmentBinding = shopFragmentBinding
+    val shopName = shopName
+    val context = context
     val shopFragmentActivity : FragmentActivity? = activity
     val application = requireNotNull(shopFragmentActivity).application
     val viewModelFactory = ShoppingCartViewModelFactory(application)
@@ -46,19 +57,18 @@ class ShopItemsFirestoreRecyclerAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ShopItem) {
             viewModel.viewModelScope.launch {
-                if (viewModel.recordExists(item.shopItemId)) {
-                    val cartItem = viewModel.getRecord(item.shopItemId)
-                    binding.itemCount.text = cartItem.shopItemQuantity.toString()
-                    binding.shopItemName.text = cartItem.shopItemName
-                    binding.shopItemPrice.text = cartItem.shopItemPrice
-                    binding.add.visibility = View.GONE
-                    binding.incdecContainer.visibility = View.VISIBLE
-                }
-                else {
-                    binding.itemCount.text = item.shopItemCount.toString()
-                    binding.shopItemName.text = item.shopItemName
-                    binding.shopItemPrice.text = item.shopItemPrice
-                }
+                    if (viewModel.recordExists(item.shopItemId)) {
+                        val cartItem = viewModel.getRecord(item.shopItemId)
+                        binding.itemCount.text = cartItem.shopItemQuantity.toString()
+                        binding.shopItemName.text = cartItem.shopItemName
+                        binding.shopItemPrice.text = cartItem.shopItemPrice
+                        binding.add.visibility = View.GONE
+                        binding.incdecContainer.visibility = View.VISIBLE
+                    } else {
+                        binding.itemCount.text = item.shopItemCount.toString()
+                        binding.shopItemName.text = item.shopItemName
+                        binding.shopItemPrice.text = item.shopItemPrice
+                    }
             }
 
             Glide.with(binding.shopItemImage.context)
@@ -72,8 +82,25 @@ class ShopItemsFirestoreRecyclerAdapter(
 
 
 
+
             //on add button click
             binding.add.setOnClickListener {
+                //check if cart is not empty and that shopname does not match with the one in DB
+                viewModel.allItemsCount.observe(shopFragmentActivity!!,
+                    Observer {
+                        cartsize = it
+                    })
+
+                if (cartsize>0) {
+                    viewModel.viewModelScope.async {
+                        if (shopName != viewModel.getShopNameFromDB())
+                            areShopsSame = false
+                            showDialog()
+                    }
+                    if (!areShopsSame)
+                        return@setOnClickListener
+                }
+
 
                 //Insert cart item if its quantity is 0
                 viewModel.viewModelScope.launch {
@@ -84,7 +111,8 @@ class ShopItemsFirestoreRecyclerAdapter(
                             CartItem(shopItemId = cartItem.shopItemId,
                             shopItemName = cartItem.shopItemName,
                             shopItemPrice = cartItem.shopItemPrice,
-                            shopItemQuantity = cartItem.shopItemQuantity.plus(1))
+                            shopItemQuantity = cartItem.shopItemQuantity.plus(1),
+                            shopName = shopName)
                         )
 
                         item.shopItemCount = item.shopItemCount.plus(1)
@@ -135,13 +163,33 @@ class ShopItemsFirestoreRecyclerAdapter(
 
             binding.executePendingBindings()
         }
+
+        private fun showDialog() {
+            MaterialAlertDialogBuilder(context, R.style.AlerDialogStyle)
+                .setTitle(R.string.notice)
+                .setMessage(R.string.cart_has_items)
+                .setPositiveButton(R.string.empty_cart) { _, _ ->
+                    emptyCart()
+                }
+                .setNegativeButton(R.string.cancel, null)
+                .show()
+        }
+
+
+        private fun emptyCart() {
+            viewModel.viewModelScope.launch {
+                viewModel.emptyCart()
+            }
+        }
+
         // get the the cart item current values
         private fun getCartItem(item: ShopItem): CartItem {
 
             return CartItem(shopItemId = item.shopItemId,
                 shopItemName = item.shopItemName,
                 shopItemPrice = item.shopItemPrice,
-                shopItemQuantity = item.shopItemCount)
+                shopItemQuantity = item.shopItemCount,
+                shopName = shopName)
         }
 
 
@@ -150,6 +198,11 @@ class ShopItemsFirestoreRecyclerAdapter(
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ShopitemItemBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
+    }
+
+
+    enum class IsThisTheSameShop{
+        YES, NO
     }
 }
 

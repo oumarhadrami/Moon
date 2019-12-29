@@ -42,6 +42,10 @@
     <string name="laiteries">Laiteries</string>
     <string name="what_would_you_like_today">What would you like today?</string>
     <string name="medicine">Medicine</string>
+    <string name="notice">Notice</string>
+    <string name="cart_has_items">There are items in the cart from another store</string>
+    <string name="empty_cart">Empty Cart</string>
+    <string name="cancel">cancel</string>
     <string name="_0">0</string>
     <string name="view_cart">VIEW CART</string>
     <string name="total_items">%d items</string>

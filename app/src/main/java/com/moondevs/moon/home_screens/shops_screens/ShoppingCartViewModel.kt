@@ -22,6 +22,7 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         allCartItems =repo.allCartItems
         allItemsCount = repo.alltemsCount
 
+
     }
 
     suspend fun insert(cartItem: CartItem) = viewModelScope.launch {
@@ -32,7 +33,6 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         val itemsWithThisId = viewModelScope.async{
             repo.recordExists(shopItemId)
         }
-        Log.i("kotQ",""+itemsWithThisId.await())
         return itemsWithThisId.await() >= 1
     }
 
@@ -53,6 +53,13 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
 
     suspend fun update(cartItem: CartItem) = viewModelScope.launch {
         repo.update(cartItem)
+    }
+
+    suspend fun getShopNameFromDB() : String {
+        val shopName =viewModelScope.async {
+             repo.getShopNameFromDB()
+        }
+        return shopName.await()
     }
 
 //    suspend fun getAllCartItemsSize() : LiveData<List<CartItem>> {
