@@ -25,7 +25,7 @@
     <string name="validate">Validate</string>
     <string name="title_activity_home">HomeActivity</string>
     <string name="sign_in">Sign In</string>
-    <string name="title_kourse">Kourse</string>
+    <string name="title_moon">Moon</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
     <string name="did_not_receive_the_code_resend_otp">Did not receive the code? Resend OTP</string>
@@ -42,7 +42,6 @@
     <string name="laiteries">Laiteries</string>
     <string name="what_would_you_like_today">What would you like today?</string>
     <string name="medicine">Medicine</string>
-    <string name="koursili">Koursili</string>
     <string name="_0">0</string>
     <string name="view_cart">VIEW CART</string>
     <string name="total_items">%d items</string>

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/navigation_home"
         android:icon="@drawable/ic_icone_svg_01"
-        android:title="@string/title_kourse" />
+        android:title="@string/title_moon" />
 
     <item
         android:id="@+id/navigation_search"

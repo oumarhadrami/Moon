@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="com.moondevs.moon.home_screens.home.HomeFragment"
-        android:label="@string/title_kourse"
+        android:label="@string/title_moon"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_navigation_home_to_shopsListFragment"
