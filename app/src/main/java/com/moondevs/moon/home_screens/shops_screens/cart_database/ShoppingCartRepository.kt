@@ -2,8 +2,6 @@ package com.moondevs.moon.home_screens.shops_screens.cart_database
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
-import com.moondevs.moon.home_screens.shops_screens.cart_database.CartItem
-import com.moondevs.moon.home_screens.shops_screens.cart_database.ShoppingCartDao
 
 class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
 
@@ -36,6 +34,12 @@ class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
     }
 
     @WorkerThread
+    suspend fun dbDoesNotContainThisShopName(shopName: String): Int {
+        val listOfItemWithThisShopName : List<CartItem> = shoppingCartDao.dbDoesNotContainThisShop(shopName)
+        return listOfItemWithThisShopName.size
+    }
+
+    @WorkerThread
     suspend fun getRecord(shopItemId : String) : CartItem {
         val cartItemWithThisId : CartItem = shoppingCartDao.getRecord(shopItemId)
         return cartItemWithThisId
@@ -51,4 +55,6 @@ class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
         val cartItem =  shoppingCartDao.getShopNameFromDB()
         return cartItem.shopName
     }
+
+
 }

@@ -94,6 +94,9 @@ dependencies {
     debugImplementation 'com.amitshekhar.android:debug-db:1.0.6'
     debugImplementation 'com.amitshekhar.android:debug-db-encrypt:1.0.6'
 
+    //timber
+    implementation 'com.jakewharton.timber:timber:4.7.1'
+
 
 }
 

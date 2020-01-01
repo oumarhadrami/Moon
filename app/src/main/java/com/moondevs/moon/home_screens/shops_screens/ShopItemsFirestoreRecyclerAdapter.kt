@@ -1,12 +1,10 @@
 package com.moondevs.moon.home_screens.shops_screens
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
@@ -19,24 +17,20 @@ import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentShopBinding
 import com.moondevs.moon.databinding.ShopitemItemBinding
 import com.moondevs.moon.home_screens.shops_screens.cart_database.CartItem
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 
 class ShopItemsFirestoreRecyclerAdapter(
     options: FirestoreRecyclerOptions<ShopItem>,
     activity: FragmentActivity?,
-    shopFragmentBinding: FragmentShopBinding,
-    shopName: String,
-    context: Context?
+    val shopFragmentBinding: FragmentShopBinding,
+    val shopName: String,
+    val context: Context?
 ) : FirestoreRecyclerAdapter<ShopItem, ShopItemsFirestoreRecyclerAdapter.ViewHolder>(options) {
 
     //initilize viewmodel
     var cartsize = 0
     var areShopsSame = true
-    val shopFragmentBinding = shopFragmentBinding
-    val shopName = shopName
-    val context = context
     val shopFragmentActivity : FragmentActivity? = activity
     val application = requireNotNull(shopFragmentActivity).application
     val viewModelFactory = ShoppingCartViewModelFactory(application)
@@ -85,44 +79,37 @@ class ShopItemsFirestoreRecyclerAdapter(
 
             //on add button click
             binding.add.setOnClickListener {
+
                 //check if cart is not empty and that shopname does not match with the one in DB
-                viewModel.allItemsCount.observe(shopFragmentActivity!!,
-                    Observer {
-                        cartsize = it
-                    })
+                val totalItemsCount = (shopFragmentBinding.totalItems.text.toString()).substring(0,1).toInt()
+                    viewModel.viewModelScope.launch {
+                        if (totalItemsCount > 0 && viewModel.dbDoesNotContainThisShopName(shopName))
+                        showDialog()
+                        else {
+                            //Insert cart item if its quantity is 0
+                            if (!viewModel.recordExists(item.shopItemId)) {
+                                val cartItem = getCartItem(item)
+                                viewModel.insert(cartItem)
+                                viewModel.update(
+                                    CartItem(
+                                        shopItemId = cartItem.shopItemId,
+                                        shopItemName = cartItem.shopItemName,
+                                        shopItemPrice = cartItem.shopItemPrice,
+                                        shopItemQuantity = cartItem.shopItemQuantity.plus(1),
+                                        shopName = shopName
+                                    )
+                                )
 
-                if (cartsize>0) {
-                    viewModel.viewModelScope.async {
-                        if (shopName != viewModel.getShopNameFromDB())
-                            areShopsSame = false
-                            showDialog()
-                    }
-                    if (!areShopsSame)
-                        return@setOnClickListener
-                }
-
-
-                //Insert cart item if its quantity is 0
-                viewModel.viewModelScope.launch {
-                    if (!viewModel.recordExists(item.shopItemId)) {
-                        val cartItem = getCartItem(item)
-                        viewModel.insert(cartItem)
-                        viewModel.update(
-                            CartItem(shopItemId = cartItem.shopItemId,
-                            shopItemName = cartItem.shopItemName,
-                            shopItemPrice = cartItem.shopItemPrice,
-                            shopItemQuantity = cartItem.shopItemQuantity.plus(1),
-                            shopName = shopName)
-                        )
-
-                        item.shopItemCount = item.shopItemCount.plus(1)
-                        binding.itemCount.text = item.shopItemCount.toString()
-                        binding.add.visibility = View.GONE
-                        binding.incdecContainer.visibility = View.VISIBLE
-                        item.shopItemCount = 0
+                                item.shopItemCount = item.shopItemCount.plus(1)
+                                binding.itemCount.text = item.shopItemCount.toString()
+                                binding.add.visibility = View.GONE
+                                binding.incdecContainer.visibility = View.VISIBLE
+                                item.shopItemCount = 0
+                            }
+                        }
                     }
                 }
-            }
+
 
             // on + button click
             binding.addMore.setOnClickListener {

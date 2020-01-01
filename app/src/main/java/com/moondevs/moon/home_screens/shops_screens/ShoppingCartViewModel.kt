@@ -1,7 +1,6 @@
 package com.moondevs.moon.home_screens.shops_screens
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,6 +33,13 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
             repo.recordExists(shopItemId)
         }
         return itemsWithThisId.await() >= 1
+    }
+
+    suspend fun dbDoesNotContainThisShopName(shopName : String) : Boolean{
+        val listOfItemsWithThisShopName = viewModelScope.async {
+            repo.dbDoesNotContainThisShopName(shopName)
+        }
+        return listOfItemsWithThisShopName.await() == 0
     }
 
     suspend fun getRecord(shopItemId: String) : CartItem {

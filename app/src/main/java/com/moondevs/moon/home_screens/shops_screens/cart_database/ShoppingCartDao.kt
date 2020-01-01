@@ -31,4 +31,7 @@ interface ShoppingCartDao {
 
     @Query("select * from ShoppingCart limit 1")
     suspend fun getShopNameFromDB(): CartItem
+
+    @Query("select * from shoppingcart where shopName = :shopName")
+    suspend fun dbDoesNotContainThisShop(shopName: String): List<CartItem>
 }
