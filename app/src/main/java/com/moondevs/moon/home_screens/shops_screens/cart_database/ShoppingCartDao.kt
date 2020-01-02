@@ -34,4 +34,7 @@ interface ShoppingCartDao {
 
     @Query("select * from shoppingcart where shopName = :shopName")
     suspend fun dbDoesNotContainThisShop(shopName: String): List<CartItem>
+
+    @Query("select  IFNULL(SUM(shopItemPriceByQuantity),0)from shoppingcart")
+    fun getTotalAmount() : LiveData<Int>
 }

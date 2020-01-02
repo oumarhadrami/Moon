@@ -94,7 +94,8 @@ class ShopItemsFirestoreRecyclerAdapter(
                                         shopItemName = cartItem.shopItemName,
                                         shopItemPrice = cartItem.shopItemPrice,
                                         shopItemQuantity = cartItem.shopItemQuantity.plus(1),
-                                        shopName = shopName
+                                        shopName = shopName,
+                                        shopItemPriceByQuantity = cartItem.shopItemPriceByQuantity
                                     )
                                 )
 
@@ -115,6 +116,7 @@ class ShopItemsFirestoreRecyclerAdapter(
                     val cartItem = viewModel.getRecord(item.shopItemId)
                     if (cartItem.shopItemQuantity < 10) {
                         cartItem.shopItemQuantity = cartItem.shopItemQuantity.plus(1)
+                        cartItem.shopItemPriceByQuantity = cartItem.shopItemQuantity * cartItem.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt()
                     }
                     binding.itemCount.text = cartItem.shopItemQuantity.toString()
                     //update quantity of the cart item ++
@@ -130,6 +132,7 @@ class ShopItemsFirestoreRecyclerAdapter(
                     if (cartItem.shopItemQuantity >= 1) {
                         binding.add.visibility = View.GONE
                         cartItem.shopItemQuantity = cartItem.shopItemQuantity.minus(1)
+                        cartItem.shopItemPriceByQuantity = cartItem.shopItemQuantity * cartItem.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt()
                         binding.itemCount.text = cartItem.shopItemQuantity.toString()
 
                         //update quantity of the cart item --
@@ -174,7 +177,8 @@ class ShopItemsFirestoreRecyclerAdapter(
                 shopItemName = item.shopItemName,
                 shopItemPrice = item.shopItemPrice,
                 shopItemQuantity = item.shopItemCount,
-                shopName = shopName)
+                shopName = shopName,
+                shopItemPriceByQuantity = item.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt())
         }
 
 

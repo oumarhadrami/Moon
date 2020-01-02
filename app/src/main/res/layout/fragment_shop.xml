@@ -53,7 +53,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:id="@+id/total_items"
-                    tools:text="0"
+                    tools:text="0 items"
                     android:text="@{@string/total_items(viewModel.allItemsCount)}"
                     android:layout_gravity="center"
                     android:gravity="center"
@@ -72,11 +72,11 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    tools:text="800 MRU"
+                    android:text="@{@string/total_amount(viewModel.totalAmount)}"
                     android:id="@+id/total_price"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:layout_marginStart="32dp"
+                    tools:text="0 MRU"
                     android:fontFamily="@font/asap"
                     android:textColor="@color/primaryTextColor"
                     android:layout_height="match_parent"/>

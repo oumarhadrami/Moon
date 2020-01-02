@@ -14,14 +14,14 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
     private val repo : ShoppingCartRepository
     val allCartItems : LiveData<List<CartItem>>
     val allItemsCount : LiveData<Int>
+    val totalAmount : LiveData<Int>
 
     init {
         val dao = ShoppingCartDatabase.getDatabase(application).shoppingCartDao
         repo = ShoppingCartRepository(dao)
         allCartItems =repo.allCartItems
         allItemsCount = repo.alltemsCount
-
-
+        totalAmount = repo.totalAmout
     }
 
     suspend fun insert(cartItem: CartItem) = viewModelScope.launch {
