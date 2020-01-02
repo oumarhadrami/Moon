@@ -9,7 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
@@ -59,6 +61,16 @@ class ShopFragment : Fragment() {
 
 
 
+        binding.cart.setOnClickListener {
+            findNavController().navigate(ShopFragmentDirections.actionShopFragmentToNavigationCart())
+        }
+
+        viewModel.allItemsCount.observe(this, Observer {
+            if (it ==0)
+                binding.cart.visibility = View.GONE
+            else
+                binding.cart.visibility = View.VISIBLE
+        })
 
 
 
