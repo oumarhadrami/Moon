@@ -29,8 +29,6 @@ class ShopItemsFirestoreRecyclerAdapter(
 ) : FirestoreRecyclerAdapter<ShopItem, ShopItemsFirestoreRecyclerAdapter.ViewHolder>(options) {
 
     //initilize viewmodel
-    var cartsize = 0
-    var areShopsSame = true
     val shopFragmentActivity : FragmentActivity? = activity
     val application = requireNotNull(shopFragmentActivity).application
     val viewModelFactory = ShoppingCartViewModelFactory(application)
