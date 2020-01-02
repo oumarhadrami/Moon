@@ -20,7 +20,7 @@ interface ShoppingCartDao {
     @Query("select * from ShoppingCart")
     fun getAll(): LiveData<List<CartItem>>
 
-    @Query("select COUNT(*) from ShoppingCart")
+    @Query("select IFNULL(SUM(shopItemQuantity),0) from ShoppingCart")
     fun getCount(): LiveData<Int>
 
     @Query("select * from ShoppingCart where shopItemId = :shopItemId")
@@ -37,4 +37,5 @@ interface ShoppingCartDao {
 
     @Query("select  IFNULL(SUM(shopItemPriceByQuantity),0)from shoppingcart")
     fun getTotalAmount() : LiveData<Int>
+
 }
