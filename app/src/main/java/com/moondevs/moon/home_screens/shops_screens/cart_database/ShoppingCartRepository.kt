@@ -57,5 +57,11 @@ class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
         return cartItem.shopName
     }
 
+    @WorkerThread
+    suspend fun getShopImageFromDB() : String{
+        val cartItem =  shoppingCartDao.getShopImageFromDB()
+        return cartItem.shopImage
+    }
+
 
 }

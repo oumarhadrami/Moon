@@ -68,6 +68,15 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         return shopName.await()
     }
 
+    suspend fun getShopImageFromDB() : String {
+        val shopImage =viewModelScope.async {
+            repo.getShopImageFromDB()
+        }
+        return shopImage.await()
+    }
+
+
+
 //    suspend fun getAllCartItemsSize() : LiveData<List<CartItem>> {
 //        val allCartItems = viewModelScope.async {
 //             repo.getAllCartItems()

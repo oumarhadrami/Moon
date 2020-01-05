@@ -54,7 +54,7 @@ class ShopFragment : Fragment() {
         shopItemsRef = FirestoreUtil.firestoreInstance.collection(collectionPath)
         val options = FirestoreRecyclerOptions.Builder<ShopItem>().setQuery(shopItemsRef, ShopItem::class.java).build()
         val manager = GridLayoutManager(activity, 2)
-        adapter = ShopItemsFirestoreRecyclerAdapter(options, activity, binding,args.shopName!!,context)
+        adapter = ShopItemsFirestoreRecyclerAdapter(options, activity, binding,args.shopName!!,context, args.shopImage!!)
         binding.itemsList.layoutManager = manager
         binding.itemsList.adapter = adapter
 
@@ -66,7 +66,7 @@ class ShopFragment : Fragment() {
         }
 
         viewModel.allItemsCount.observe(this, Observer {
-            if (it ==0)
+            if (it == 0)
                 binding.cart.visibility = View.GONE
             else
                 binding.cart.visibility = View.VISIBLE
@@ -82,18 +82,18 @@ class ShopFragment : Fragment() {
         adapter.startListening()
 
         //add content for toolbar
-        val shopDetailsLayout = activity!!.findViewById<View>(R.id.shop_details_layout)
-        val shopsNameText = shopDetailsLayout.findViewById<TextView>(R.id.shop_name_toolbar)
+        val shopDetailsInPageLayout = activity!!.findViewById<View>(R.id.shop_page_layout)
+        val shopsNameText = shopDetailsInPageLayout.findViewById<TextView>(R.id.shop_name_toolbar)
         shopsNameText.text = args.shopName
 
 
-        shopDetailsLayout.visibility = View.VISIBLE
+        shopDetailsInPageLayout.visibility = View.VISIBLE
     }
 
     override fun onStop() {
         super.onStop()
         adapter.stopListening()
-        val shopDetailLayout = activity!!.findViewById<View>(R.id.shop_details_layout)
+        val shopDetailLayout = activity!!.findViewById<View>(R.id.shop_page_layout)
         shopDetailLayout.visibility = View.GONE
     }
 

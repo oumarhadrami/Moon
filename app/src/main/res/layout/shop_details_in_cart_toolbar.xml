@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="0dp"
+        android:layout_margin="8dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:scaleType="fitXY"
+        android:layout_height="match_parent"
+        android:id="@+id/shop_image_in_cart"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:layout_width="0dp"
+        android:layout_weight="4"
+        android:textSize="20sp"
+        android:layout_margin="8dp"
+        android:textColor="@color/primaryTextColor"
+        android:fontFamily="@font/asap"
+        android:layout_height="match_parent"
+        android:id="@+id/shop_name_in_cart"/>
+
+</LinearLayout>

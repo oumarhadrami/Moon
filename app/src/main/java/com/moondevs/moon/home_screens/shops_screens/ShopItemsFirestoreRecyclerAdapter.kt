@@ -21,11 +21,12 @@ import kotlinx.coroutines.launch
 
 
 class ShopItemsFirestoreRecyclerAdapter(
-    options: FirestoreRecyclerOptions<ShopItem>,
-    activity: FragmentActivity?,
-    val shopFragmentBinding: FragmentShopBinding,
-    val shopName: String,
-    val context: Context?
+        options: FirestoreRecyclerOptions<ShopItem>,
+        activity: FragmentActivity?,
+        val shopFragmentBinding: FragmentShopBinding,
+        val shopName: String,
+        val context: Context?,
+        val shopImage: String
 ) : FirestoreRecyclerAdapter<ShopItem, ShopItemsFirestoreRecyclerAdapter.ViewHolder>(options) {
 
     //initilize viewmodel
@@ -95,7 +96,8 @@ class ShopItemsFirestoreRecyclerAdapter(
                                         shopItemPrice = cartItem.shopItemPrice,
                                         shopItemQuantity = cartItem.shopItemQuantity.plus(1),
                                         shopName = shopName,
-                                        shopItemPriceByQuantity = cartItem.shopItemPriceByQuantity
+                                        shopItemPriceByQuantity = cartItem.shopItemPriceByQuantity,
+                                        shopImage = shopImage
                                     )
                                 )
 
@@ -178,7 +180,8 @@ class ShopItemsFirestoreRecyclerAdapter(
                 shopItemPrice = item.shopItemPrice,
                 shopItemQuantity = item.shopItemCount,
                 shopName = shopName,
-                shopItemPriceByQuantity = item.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt())
+                shopItemPriceByQuantity = item.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt(),
+                shopImage = shopImage)
         }
 
 

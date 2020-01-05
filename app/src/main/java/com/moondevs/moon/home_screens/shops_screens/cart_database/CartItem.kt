@@ -24,5 +24,8 @@ data class CartItem (
     @ColumnInfo(name = "shopName")
     var shopName : String,
 
+    @ColumnInfo(name = "shopImage")
+    var shopImage : String,
+
     @ColumnInfo(name = "shopItemPriceByQuantity")
     var shopItemPriceByQuantity : Int)
