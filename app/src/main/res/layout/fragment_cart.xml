@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
         <variable
@@ -8,10 +9,76 @@
             type="com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        
+    
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:nestedScrollingEnabled="true"
+            android:id="@+id/cart_items_list"/>
+
+        <TableRow
+            android:id="@+id/hr"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:background="#E2E1E1"/>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+            android:layout_margin="12dp"
+            android:paddingBottom="16dp"
+            app:hintTextColor="#E2E1E1"
+            app:startIconDrawable="@drawable/ic_format_list_bulleted_black_24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Do you have any special instructions?"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TableRow
+            android:id="@+id/hr2"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#E2E1E1"/>
+
+        <include android:id="@+id/bill_details"
+            layout="@layout/bill_details_layout"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"/>
+
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#E2E1E1"/>
+                
+    </LinearLayout>
+        
+   <include
+       android:id="address_container"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_gravity="bottom"
+       layout="@layout/address_layout"/>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

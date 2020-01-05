@@ -50,4 +50,10 @@
     <string name="view_cart">VIEW CART</string>
     <string name="total_items">%d items</string>
     <string name="total_amount">%d MRU</string>
+    <string name="bill_details">Bill Details</string>
+    <string name="delivery_fee">Delivery Fee</string>
+    <string name="items_total">Items Total</string>
+    <string name="to_pay">To Pay</string>
+    <string name="deliver_to">Deliver to:</string>
+    <string name="add_address">Add Address</string>
 </resources>

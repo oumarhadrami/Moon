@@ -101,4 +101,10 @@
         <item name="fontFamily">@font/asap</item>
         <item name="android:textAllCaps">false</item>
     </style>
+
+    <style name="text_on_white_background">
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:fontFamily">@font/asap</item>
+    </style>
+
 </resources>
