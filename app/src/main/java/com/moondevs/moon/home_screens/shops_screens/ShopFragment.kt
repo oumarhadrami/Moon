@@ -36,7 +36,7 @@ class ShopFragment : Fragment() {
 
         val application : Application = requireNotNull(this).activity!!.application
         val viewModelFactory = ShoppingCartViewModelFactory(application)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ShoppingCartViewModel::class.java)
+        viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
@@ -54,7 +54,7 @@ class ShopFragment : Fragment() {
         shopItemsRef = FirestoreUtil.firestoreInstance.collection(collectionPath)
         val options = FirestoreRecyclerOptions.Builder<ShopItem>().setQuery(shopItemsRef, ShopItem::class.java).build()
         val manager = GridLayoutManager(activity, 2)
-        adapter = ShopItemsFirestoreRecyclerAdapter(options, activity, binding,args.shopName!!,context, args.shopImage!!)
+        adapter = ShopItemsFirestoreRecyclerAdapter(options , binding, args.shopName!!,context, args.shopImage!!, viewModel)
         binding.itemsList.layoutManager = manager
         binding.itemsList.adapter = adapter
 

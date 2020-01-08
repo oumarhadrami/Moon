@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 
 class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
 
+    val toPayAmount: LiveData<Int> = shoppingCartDao.getToPayAmount()
     val alltemsCount : LiveData<Int> = shoppingCartDao.getCount()
     val totalAmout : LiveData<Int> = shoppingCartDao.getTotalAmount()
     val allCartItems : LiveData<List<CartItem>> = shoppingCartDao.getAll()

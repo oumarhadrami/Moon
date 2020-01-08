@@ -15,6 +15,8 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
     val allCartItems : LiveData<List<CartItem>>
     val allItemsCount : LiveData<Int>
     val totalAmount : LiveData<Int>
+    val toPayAmount : LiveData<Int>
+
 
     init {
         val dao = ShoppingCartDatabase.getDatabase(application).shoppingCartDao
@@ -22,6 +24,8 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         allCartItems =repo.allCartItems
         allItemsCount = repo.alltemsCount
         totalAmount = repo.totalAmout
+        toPayAmount = repo.toPayAmount
+
     }
 
     suspend fun insert(cartItem: CartItem) = viewModelScope.launch {
@@ -61,9 +65,32 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         repo.update(cartItem)
     }
 
+    fun incrementQuantity(cartItem: CartItem) {
+        if (cartItem.shopItemQuantity < 10) {
+            cartItem.shopItemQuantity = cartItem.shopItemQuantity.plus(1)
+            cartItem.shopItemPriceByQuantity = cartItem.shopItemQuantity * cartItem.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt()
+        }
+        viewModelScope.launch {
+            update(cartItem)
+        }
+    }
+
+    fun decerementQuantity(cartItem: CartItem){
+        viewModelScope.launch {
+            if (cartItem.shopItemQuantity == 1)
+                deleteCartItem(cartItem)
+            else {
+                cartItem.shopItemQuantity = cartItem.shopItemQuantity.minus(1)
+                cartItem.shopItemPriceByQuantity = cartItem.shopItemQuantity * cartItem.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt()
+                update(cartItem)
+            }
+        }
+    }
+
+
     suspend fun getShopNameFromDB() : String {
         val shopName =viewModelScope.async {
-             repo.getShopNameFromDB()
+            repo.getShopNameFromDB()
         }
         return shopName.await()
     }
@@ -75,12 +102,4 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         return shopImage.await()
     }
 
-
-
-//    suspend fun getAllCartItemsSize() : LiveData<List<CartItem>> {
-//        val allCartItems = viewModelScope.async {
-//             repo.getAllCartItems()
-//        }
-//        return allCartItems.await()
-//    }
 }

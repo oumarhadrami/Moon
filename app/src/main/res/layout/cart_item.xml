@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="cart"
+            type="com.moondevs.moon.home_screens.shops_screens.cart_database.CartItem" />
+
+
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            app:itemName="@{cart}"
+            android:layout_margin="12dp"
+            android:id="@+id/cart_item_name"
+            android:gravity="center|start"
+            android:layout_height="match_parent"
+            style="@style/text_on_white_background"
+            tools:text="Coca Cola"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_gravity="start|center"
+            android:layout_weight="2"
+            android:id="@+id/incdec_container"
+            android:background="@drawable/rectangle"
+            android:layout_margin="12dp"
+            android:layout_height="match_parent">
+
+            <ImageButton
+                android:id="@+id/cart_remove_more"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cart_item_quantity"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_remove_black_24dp" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/cart_item_quantity"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textColor="@color/primaryColor"
+                android:gravity="center"
+                android:fontFamily="@font/asap"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cart_remove_more"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/cart_add_more"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/cart_add_more"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:layout_marginStart="8dp"
+                app:srcCompat="@drawable/ic_add_black_24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/cart_item_quantity"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:id="@+id/cart_price_by_quantity"
+            android:layout_weight="1"
+            android:gravity="start|center"
+            android:layout_margin="12dp"
+            style="@style/text_on_white_background"
+            tools:text="100 MRU"/>
+
+
+    </LinearLayout>
+</layout>

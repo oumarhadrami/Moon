@@ -2,6 +2,7 @@ package com.moondevs.moon.home_screens.shops_screens.cart_database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.selects.select
 
 @Dao
 interface ShoppingCartDao {
@@ -38,7 +39,10 @@ interface ShoppingCartDao {
     @Query("select * from shoppingcart where shopName = :shopName")
     suspend fun dbDoesNotContainThisShop(shopName: String): List<CartItem>
 
-    @Query("select  IFNULL(SUM(shopItemPriceByQuantity),0)from shoppingcart")
+    @Query("select  IFNULL(SUM(shopItemPriceByQuantity),0) from shoppingcart")
     fun getTotalAmount() : LiveData<Int>
+
+    @Query("select 1000 + IFNULL(SUM(shopItemPriceByQuantity),0) from shoppingcart")
+    fun getToPayAmount(): LiveData<Int>
 
 }

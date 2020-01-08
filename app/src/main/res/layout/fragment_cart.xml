@@ -9,12 +9,13 @@
             type="com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         
     
-    
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -25,6 +26,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="12dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:nestedScrollingEnabled="true"
             android:id="@+id/cart_items_list"/>
 
@@ -60,25 +62,141 @@
             android:layout_height="20dp"
             android:background="#E2E1E1"/>
 
-        <include android:id="@+id/bill_details"
-            layout="@layout/bill_details_layout"
+        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"/>
+            android:layout_width="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:layout_margin="12dp"
+                android:text="@string/bill_details"
+                style="@style/text_on_white_background" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_margin="12dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/materialTextView"
+                    style="@style/text_on_white_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/items_total"
+                    android:textSize="14sp"
+                    android:gravity="start"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/items_total"
+                    android:text="@{@string/total_amount(viewModel.totalAmount)}"
+                    style="@style/text_on_white_background"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:gravity="end"
+                    tools:text="0 MRU" />
+
+            </FrameLayout>
+
+
+            <TableRow
+                android:id="@+id/hr3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:background="#E2E1E1"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_margin="12dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:gravity="start"
+                    android:text="@string/delivery_fee"
+                    style="@style/text_on_white_background" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:textSize="14sp"
+                    android:gravity="end"
+                    android:id="@+id/delivery_fee"
+                    android:text="1000 MRU"
+                    style="@style/text_on_white_background" />
+
+            </FrameLayout>
+
+
+
+            <TableRow
+                android:id="@+id/hr4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:background="#E2E1E1"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="12dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="12dp"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="start"
+                    android:textStyle="bold"
+                    android:text="@string/to_pay"
+                    style="@style/text_on_white_background" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:gravity="end"
+                    android:textStyle="bold"
+                    android:id="@+id/to_pay"
+                    tools:text="0 MRU"
+                    android:text="@{@string/total_amount(viewModel.toPayAmount)}"
+                    style="@style/text_on_white_background" />
+
+            </FrameLayout>
+
+
+
+        </LinearLayout>
 
 
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="20dp"
             android:background="#E2E1E1"/>
-                
-    </LinearLayout>
-        
-   <include
-       android:id="address_container"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:layout_gravity="bottom"
-       layout="@layout/address_layout"/>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <include
+            android:id="@+id/address_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/address_layout"/>
+    </LinearLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
+        
+
+
 </layout>

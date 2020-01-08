@@ -22,18 +22,12 @@ import kotlinx.coroutines.launch
 
 class ShopItemsFirestoreRecyclerAdapter(
         options: FirestoreRecyclerOptions<ShopItem>,
-        activity: FragmentActivity?,
         val shopFragmentBinding: FragmentShopBinding,
         val shopName: String,
         val context: Context?,
-        val shopImage: String
+        val shopImage: String,
+        val viewModel :  ShoppingCartViewModel
 ) : FirestoreRecyclerAdapter<ShopItem, ShopItemsFirestoreRecyclerAdapter.ViewHolder>(options) {
-
-    //initilize viewmodel
-    val shopFragmentActivity : FragmentActivity? = activity
-    val application = requireNotNull(shopFragmentActivity).application
-    val viewModelFactory = ShoppingCartViewModelFactory(application)
-    val viewModel = ViewModelProviders.of(activity!!,viewModelFactory).get(ShoppingCartViewModel::class.java)
 
 
 
@@ -116,10 +110,7 @@ class ShopItemsFirestoreRecyclerAdapter(
             binding.addMore.setOnClickListener {
                 viewModel.viewModelScope.launch {
                     val cartItem = viewModel.getRecord(item.shopItemId)
-                    if (cartItem.shopItemQuantity < 10) {
-                        cartItem.shopItemQuantity = cartItem.shopItemQuantity.plus(1)
-                        cartItem.shopItemPriceByQuantity = cartItem.shopItemQuantity * cartItem.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt()
-                    }
+                    viewModel.incrementQuantity(cartItem)
                     binding.itemCount.text = cartItem.shopItemQuantity.toString()
                     //update quantity of the cart item ++
                     viewModel.update(cartItem)
@@ -190,11 +181,6 @@ class ShopItemsFirestoreRecyclerAdapter(
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = ShopitemItemBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
-    }
-
-
-    enum class IsThisTheSameShop{
-        YES, NO
     }
 }
 
