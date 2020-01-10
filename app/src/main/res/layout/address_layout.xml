@@ -55,13 +55,11 @@
 
 
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="wrap_content"
                 android:layout_margin="12dp"
                 android:id="@+id/add_address"
-                android:text="@string/add_address"
-                android:backgroundTint="@android:color/white"
-                android:textColor="@color/secondaryColor"
+                android:text="@string/edit_address"
                 android:layout_height="wrap_content"/>
 
         </FrameLayout>

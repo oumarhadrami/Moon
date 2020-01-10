@@ -107,4 +107,7 @@
         <item name="android:fontFamily">@font/asap</item>
     </style>
 
+    <style name="instructionBox" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="boxBackgroundColor">@android:color/white</item>
+    </style>
 </resources>

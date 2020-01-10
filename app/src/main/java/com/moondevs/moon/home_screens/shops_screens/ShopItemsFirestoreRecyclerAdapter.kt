@@ -4,8 +4,6 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -26,7 +24,8 @@ class ShopItemsFirestoreRecyclerAdapter(
         val shopName: String,
         val context: Context?,
         val shopImage: String,
-        val viewModel :  ShoppingCartViewModel
+        val viewModel: ShoppingCartViewModel,
+        val shopRef: String
 ) : FirestoreRecyclerAdapter<ShopItem, ShopItemsFirestoreRecyclerAdapter.ViewHolder>(options) {
 
 
@@ -91,7 +90,8 @@ class ShopItemsFirestoreRecyclerAdapter(
                                         shopItemQuantity = cartItem.shopItemQuantity.plus(1),
                                         shopName = shopName,
                                         shopItemPriceByQuantity = cartItem.shopItemPriceByQuantity,
-                                        shopImage = shopImage
+                                        shopImage = shopImage,
+                                        shopRef = shopRef
                                     )
                                 )
 
@@ -172,7 +172,8 @@ class ShopItemsFirestoreRecyclerAdapter(
                 shopItemQuantity = item.shopItemCount,
                 shopName = shopName,
                 shopItemPriceByQuantity = item.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt(),
-                shopImage = shopImage)
+                shopImage = shopImage,
+                shopRef = shopRef)
         }
 
 

@@ -25,7 +25,11 @@
         android:id="@+id/navigation_cart"
         android:name="com.moondevs.moon.home_screens.cart.CartFragment"
         android:label="@string/cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_navigation_cart_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_account"
         android:name="com.moondevs.moon.home_screens.account.AccountFragment"

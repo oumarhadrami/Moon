@@ -56,10 +56,11 @@
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_margin="16dp"
+            android:fontFamily="@font/asap"
             android:background="@drawable/btn_rounded"
             android:layout_gravity="center"
             android:layout_weight="0.8"
-            android:text="Log in with phone number" />
+            android:text="@string/log_in_with_phone_number" />
 
         <!--<Button
             android:id="@+id/login_button"

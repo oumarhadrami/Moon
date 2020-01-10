@@ -36,13 +36,16 @@ interface ShoppingCartDao {
     @Query("select * from ShoppingCart limit 1")
     suspend fun getShopImageFromDB(): CartItem
 
+    @Query("select * from ShoppingCart limit 1")
+    suspend fun getShopRefFromDB(): CartItem
+
     @Query("select * from shoppingcart where shopName = :shopName")
     suspend fun dbDoesNotContainThisShop(shopName: String): List<CartItem>
 
     @Query("select  IFNULL(SUM(shopItemPriceByQuantity),0) from shoppingcart")
     fun getTotalAmount() : LiveData<Int>
 
-    @Query("select 1000 + IFNULL(SUM(shopItemPriceByQuantity),0) from shoppingcart")
+    @Query("select 100 + IFNULL(SUM(shopItemPriceByQuantity),0) from shoppingcart")
     fun getToPayAmount(): LiveData<Int>
 
 }

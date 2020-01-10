@@ -169,12 +169,12 @@ class VerifyNumberFragment : Fragment() {
                 binding.resend.isEnabled = false
                 binding.progressBar.visibility = View.VISIBLE
                 FirestoreUtil.initCurrentUserIfFirstTime {
-                startActivity(Intent(activity, HomeActivity::class.java))
+                    startActivity(Intent(activity, HomeActivity::class.java))
                 }
             }
             else
                 Toast.makeText(activity, "Phone number not verified!!",Toast.LENGTH_LONG).show()
-            }
+        }
     }
 
 

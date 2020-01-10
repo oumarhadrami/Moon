@@ -56,5 +56,14 @@
     <string name="items_total">Items Total</string>
     <string name="to_pay">To Pay</string>
     <string name="deliver_to">Deliver to:</string>
-    <string name="add_address">Add Address</string>
+    <string name="edit_address">Edit Address</string>
+    <string name="log_in_with_phone_number">Log in with phone number</string>
+    <string name="do_you_have_any_special_instructions">Do you have any special instructions?</string>
+    <string name="permission_denied_explanation">
+        You need to grant location permission in order to live-track this order.
+    </string>
+    <string name="settings">Settings</string>
+    <string name="title_activity_set_delivery_location">SetDeliveryLocationActivity</string>
+    <string name="title_activity_delivery_location">DeliveryLocationActivity</string>
+    <string name="title_activity_location">LocationActivity</string>
 </resources>
