@@ -72,7 +72,7 @@ class CartFragment : Fragment() {
 
         binding.setDeliveryLocation.setOnClickListener {
             if (foregroundAndBackgroundLocationPermissionApproved())
-                //findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliveryLocationActivity())
+                //startActivity(Intent(activity,DeliveryLocationActivity::class.java))
             else
             requestForegroundAndBackgroundLocationPermissions()
         }
