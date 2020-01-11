@@ -5,6 +5,7 @@ import android.annotation.TargetApi
 import android.app.Application
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -25,8 +26,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.snackbar.Snackbar
 import com.moondevs.moon.BuildConfig
+import com.moondevs.moon.MapsActivity
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentCartBinding
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
@@ -71,8 +77,9 @@ class CartFragment : Fragment() {
 
 
         binding.setDeliveryLocation.setOnClickListener {
-            if (foregroundAndBackgroundLocationPermissionApproved())
-                //startActivity(Intent(activity,DeliveryLocationActivity::class.java))
+            if (foregroundAndBackgroundLocationPermissionApproved()) {
+                checkDeviceLocationSettingsAndSetDeliveryLocation()
+            }
             else
             requestForegroundAndBackgroundLocationPermissions()
         }
@@ -86,48 +93,6 @@ class CartFragment : Fragment() {
         return binding.root
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)
-        val shopImageInCart = shopDetailsInCartLayout.findViewById<ImageView>(R.id.shop_image_in_cart)
-        val shopNameInCart = shopDetailsInCartLayout.findViewById<TextView>(R.id.shop_name_in_cart)
-        //add content for toolbar
-
-            viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {totalItemsCount ->
-                viewModel.viewModelScope.launch {
-                    if (totalItemsCount > 0) {
-                        val shopNameInCartString = viewModel.getShopNameFromDB()
-                        val shopImageInCartString = viewModel.getShopImageFromDB()
-                        val shopRefInCart = viewModel.getShopRefFromDB()
-                        shopDetailsInCartLayout.setOnClickListener {
-                            findNavController().navigate(CartFragmentDirections.actionNavigationCartToShopFragment(shopRefInCart,shopNameInCartString,shopImageInCartString))
-                        }
-                        Glide.with(shopDetailsInCartLayout.context)
-                                .load(shopImageInCartString)
-                                .apply(
-                                        RequestOptions()
-                                                .placeholder(R.drawable.loading_animation)
-                                                .error(R.drawable.ic_broken_image)
-                                )
-                                .into(shopImageInCart)
-                        shopNameInCart.text = shopNameInCartString
-                        shopDetailsInCartLayout.visibility = View.VISIBLE
-                    }
-                }
-            })
-
-
-
-
-    }
-
-    override fun onStop() {
-        super.onStop()
-        val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)
-        shopDetailsInCartLayout.visibility = View.GONE
-
-    }
 
 
 
@@ -201,6 +166,94 @@ class CartFragment : Fragment() {
             // permission granted and user can open the map
             //findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliveryLocationActivity())
         }
+    }
+
+
+
+    private fun checkDeviceLocationSettingsAndSetDeliveryLocation(resolve : Boolean = true) {
+        val locationRequest = LocationRequest.create().apply {
+            priority = LocationRequest.PRIORITY_LOW_POWER
+        }
+        val builder = LocationSettingsRequest.Builder().addLocationRequest(locationRequest)
+        val settingsClient = LocationServices.getSettingsClient(activity!!)
+        val locationSettingsResponseTask =
+            settingsClient.checkLocationSettings(builder.build())
+        locationSettingsResponseTask.addOnFailureListener { exception ->
+            if (exception is ResolvableApiException && resolve) {
+                try {
+                    exception.startResolutionForResult(
+                        activity,
+                        REQUEST_TURN_DEVICE_LOCATION_ON
+                    )
+                } catch (sendEx: IntentSender.SendIntentException) {
+                    Timber.d("Error getting location settings resolution: %s", sendEx.message)
+                }
+            }
+            else {
+                Snackbar.make(
+                    binding.root,
+                    R.string.location_required_error, Snackbar.LENGTH_INDEFINITE
+                ).setAction(android.R.string.ok) {
+                    checkDeviceLocationSettingsAndSetDeliveryLocation()
+                }.show()
+            }
+
+        }
+
+        locationSettingsResponseTask.addOnCompleteListener {
+            if ( it.isSuccessful ) {
+                startActivity(Intent(activity, MapsActivity::class.java))
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
+            checkDeviceLocationSettingsAndSetDeliveryLocation(false)
+        }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+
+        val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)
+        val shopImageInCart = shopDetailsInCartLayout.findViewById<ImageView>(R.id.shop_image_in_cart)
+        val shopNameInCart = shopDetailsInCartLayout.findViewById<TextView>(R.id.shop_name_in_cart)
+        //add content for toolbar
+
+        viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {totalItemsCount ->
+            viewModel.viewModelScope.launch {
+                if (totalItemsCount > 0) {
+                    val shopNameInCartString = viewModel.getShopNameFromDB()
+                    val shopImageInCartString = viewModel.getShopImageFromDB()
+                    val shopRefInCart = viewModel.getShopRefFromDB()
+                    shopDetailsInCartLayout.setOnClickListener {
+                        findNavController().navigate(CartFragmentDirections.actionNavigationCartToShopFragment(shopRefInCart,shopNameInCartString,shopImageInCartString))
+                    }
+                    Glide.with(shopDetailsInCartLayout.context)
+                        .load(shopImageInCartString)
+                        .apply(
+                            RequestOptions()
+                                .placeholder(R.drawable.loading_animation)
+                                .error(R.drawable.ic_broken_image)
+                        )
+                        .into(shopImageInCart)
+                    shopNameInCart.text = shopNameInCartString
+                    shopDetailsInCartLayout.visibility = View.VISIBLE
+                }
+            }
+        })
+    }
+
+
+
+    override fun onStop() {
+        super.onStop()
+        val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)
+        shopDetailsInCartLayout.visibility = View.GONE
+
     }
 }
 private const val REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE = 33
