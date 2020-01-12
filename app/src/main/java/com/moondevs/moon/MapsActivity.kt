@@ -1,18 +1,20 @@
 package com.moondevs.moon
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import kotlin.math.roundToInt
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -44,7 +46,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val sydney = LatLng(-34.0, 151.0)
         map.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         map.moveCamera(CameraUpdateFactory.newLatLng(sydney))
-
+        map.setPadding(0,dpToPx(300,this),0,0)
         enableMyLocation()
     }
 
@@ -66,4 +68,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             this,
             Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
     }
+
+    fun dpToPx(dp: Int, context: Context): Int {
+        val displayMetrics: DisplayMetrics = context.resources.displayMetrics
+        return (dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+    }
+
 }

@@ -35,6 +35,7 @@
 
         <activity
             android:name=".MapsActivity"
+            android:theme="@style/TransparentStatus"
             android:label="@string/title_activity_maps"></activity>
         <activity
             android:name=".home_screens.HomeActivity"
