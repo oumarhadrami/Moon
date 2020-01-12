@@ -2,10 +2,17 @@ package com.moondevs.moon
 
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
+import android.os.ResultReceiver
 import android.util.DisplayMetrics
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -17,6 +24,9 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.card.MaterialCardView
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.textview.MaterialTextView
 import kotlin.math.roundToInt
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -24,6 +34,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private val REQUEST_LOCATION_PERMISSION = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var resultReceiver: AddressResultReceiver
+    private lateinit var addressTextView: MaterialTextView
+    private lateinit var progressBarAddress : ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +45,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        resultReceiver = AddressResultReceiver(handler = Handler())
+
+        addressTextView = findViewById(R.id.address_textview)
+        progressBarAddress = findViewById(R.id.progressBarAddress)
+
+
 
 
     }
@@ -92,7 +112,41 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 map.addMarker(MarkerOptions().position(userLatLng).title("Your Location"))
                 val userLocation = CameraUpdateFactory.newLatLngZoom(userLatLng,zoomLevel)
                 map.animateCamera(userLocation)
+                startIntentService(location)
             }
+    }
+
+
+
+
+    private fun startIntentService(location: Location) {
+
+        val intent = Intent(this, FetchAddressIntentService::class.java).apply {
+            putExtra(Constants.RECEIVER, resultReceiver)
+            putExtra(Constants.LOCATION_DATA_EXTRA, location)
+        }
+        startService(intent)
+    }
+
+    internal inner class AddressResultReceiver(handler: Handler) : ResultReceiver(handler) {
+
+        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
+
+            // Display the address string
+            // or an error message sent from the intent service.
+            val addressOutput = resultData?.getString(Constants.RESULT_DATA_KEY) ?: ""
+            val re = Regex("[^A-Za-z0-9 ]")
+            val address = re.replace(addressOutput,"")
+            //Snackbar.make(findViewById<MaterialCardView>(R.id.material_card_address), addressOutput, Snackbar.LENGTH_INDEFINITE ).show()
+            addressTextView.text = address
+            // Show a toast message if an address was found.
+            if (resultCode == Constants.SUCCESS_RESULT) {
+                progressBarAddress.visibility = View.GONE
+                addressTextView.visibility = View.VISIBLE
+                //Toast.makeText(applicationContext,getString(R.string.address_found),Toast.LENGTH_SHORT).show()
+            }
+
+        }
     }
 
 }

@@ -18,6 +18,7 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:id="@+id/material_card_address"
         android:layout_weight="1">
 
         <LinearLayout
@@ -25,17 +26,29 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <com.google.android.material.textview.MaterialTextView
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:text="Tevragh Zeina, Iloc, #337, Nouakchott"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="start|center"
-                android:layout_margin="10dp"
-                android:fontFamily="@font/asap"
-                android:layout_weight="1"/>
+                android:layout_weight="1">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/address_textview"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    android:visibility="gone"
+                    android:textStyle="bold"
+                    android:gravity="start|center"
+                    android:layout_margin="10dp"
+                    android:fontFamily="@font/asap"/>
+
+                <ProgressBar
+                    android:id="@+id/progressBarAddress"
+                    android:layout_width="match_parent"
+                    android:layout_margin="10dp"
+                    android:layout_height="match_parent" />
+            </FrameLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
