@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-            <variable
-                name="viewModel"
-                type="com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel" />
+        <variable
+            name="viewModel"
+            type="com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel" />
     </data>
 
     <LinearLayout

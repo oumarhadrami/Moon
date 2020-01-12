@@ -3,98 +3,98 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+  <androidx.constraintlayout.widget.ConstraintLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      tools:context=".login_screens.LogInFragment">
+
+    <ImageButton
+        android:id="@+id/close_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="3dp"
+        android:background="?android:attr/selectableItemBackground"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="00"
+        app:srcCompat="@drawable/ic_close_grey_32dp" />
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/textView3"
+        style="@style/intro_main_text_style"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/log_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.20" />
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="0dp"
+        android:id="@+id/phone_number_login"
+        style="@style/outlineColorTextfield"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:paddingBottom="16dp"
+        android:layout_marginTop="64dp"
+        android:layout_height="wrap_content"
+        app:prefixText="+222  "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        android:hint="@string/phone_number">
+      <com.google.android.material.textfield.TextInputEditText
+          android:singleLine="true"
+          android:padding="20dp"
+          android:id="@+id/phone_number_login_textfield"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_alignParentStart="true"
+          android:layout_alignParentTop="true"
+          android:ems="10"
+          android:maxLength="8"
+          android:inputType="phone" >
+
+      </com.google.android.material.textfield.TextInputEditText>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/text_login"
+        style="@style/intro_secondary_textview_style"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".login_screens.LogInFragment">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/we_ll_send_you_an_sms_to_verify_your_number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phone_number_login"
+        app:layout_constraintVertical_bias="0.0" />
 
-        <ImageButton
-            android:id="@+id/close_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="36dp"
-            android:layout_marginEnd="36dp"
-            android:layout_marginBottom="3dp"
-            android:background="?android:attr/selectableItemBackground"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="00"
-            app:srcCompat="@drawable/ic_close_grey_32dp" />
-
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/textView3"
-            style="@style/intro_main_text_style"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/log_in"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.20" />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="0dp"
-            android:id="@+id/phone_number_login"
-            style="@style/outlineColorTextfield"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:paddingBottom="16dp"
-            android:layout_marginTop="64dp"
-            android:layout_height="wrap_content"
-            app:prefixText="+222  "
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            android:hint="@string/phone_number">
-            <com.google.android.material.textfield.TextInputEditText
-                android:singleLine="true"
-                android:padding="20dp"
-                android:id="@+id/phone_number_login_textfield"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:ems="10"
-                android:maxLength="8"
-                android:inputType="phone" >
-
-            </com.google.android.material.textfield.TextInputEditText>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/text_login"
-            style="@style/intro_secondary_textview_style"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/we_ll_send_you_an_sms_to_verify_your_number"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number_login"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/login"
-            style="@style/main_button_style"
-            android:background="@drawable/btn_rounded"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:text="@string/log_in"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_login"
-            app:layout_constraintVertical_bias="0.15" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/login"
+        style="@style/main_button_style"
+        android:background="@drawable/btn_rounded"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="false"
+        android:text="@string/log_in"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_login"
+        app:layout_constraintVertical_bias="0.15" />
+  </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
