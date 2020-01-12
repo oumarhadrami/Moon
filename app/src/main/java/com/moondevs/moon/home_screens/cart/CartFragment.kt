@@ -3,13 +3,11 @@ package com.moondevs.moon.home_screens.cart
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Application
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.provider.Settings
 import android.view.View
@@ -22,7 +20,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -48,14 +45,15 @@ class CartFragment : Fragment() {
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        //initializing components
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart,container,false)
-
         val application : Application = requireNotNull(this).activity!!.application
         val viewModelFactory = ShoppingCartViewModelFactory(application)
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = activity
 
+        //linking adapter to the recyclerview
         val adapter = CartAdapter(viewModel,activity)
         binding.cartItemsList.adapter = adapter
         viewModel.allCartItems.observe(viewLifecycleOwner, Observer {
@@ -64,6 +62,7 @@ class CartFragment : Fragment() {
             }
         })
 
+        //setting the visibility of the layouts in toolbar and page depending on cart total items
         viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
             if (it == 0) {
                 activity!!.shop_details_in_cart_layout.visibility = View.GONE
@@ -76,9 +75,10 @@ class CartFragment : Fragment() {
         })
 
 
+        //asking for location permission if not granted and turning on gps buttoon if not enabled
         binding.setDeliveryLocation.setOnClickListener {
             if (foregroundAndBackgroundLocationPermissionApproved()) {
-                checkDeviceLocationSettingsAndSetDeliveryLocation()
+                checkDeviceLocationSettingsAndTurningGpsButtonOn()
             }
             else
             requestForegroundAndBackgroundLocationPermissions()
@@ -170,7 +170,7 @@ class CartFragment : Fragment() {
 
 
 
-    private fun checkDeviceLocationSettingsAndSetDeliveryLocation(resolve : Boolean = true) {
+    private fun checkDeviceLocationSettingsAndTurningGpsButtonOn(resolve : Boolean = true) {
         val locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_LOW_POWER
         }
@@ -194,7 +194,7 @@ class CartFragment : Fragment() {
                     binding.root,
                     R.string.location_required_error, Snackbar.LENGTH_INDEFINITE
                 ).setAction(android.R.string.ok) {
-                    checkDeviceLocationSettingsAndSetDeliveryLocation()
+                    checkDeviceLocationSettingsAndTurningGpsButtonOn()
                 }.show()
             }
 
@@ -210,7 +210,7 @@ class CartFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
-            checkDeviceLocationSettingsAndSetDeliveryLocation(false)
+            checkDeviceLocationSettingsAndTurningGpsButtonOn(false)
         }
     }
 
