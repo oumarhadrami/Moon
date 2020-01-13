@@ -18,8 +18,7 @@ object FirestoreUtil {
         currentUserDocRef.get().addOnSuccessListener { documentSnapshot ->
             if (!documentSnapshot.exists()) {
                 val newUser = User(FirebaseAuth.getInstance().currentUser?.phoneNumber ?: "",
-                    FirebaseAuth.getInstance().uid.toString(),
-                    null, null)
+                    FirebaseAuth.getInstance().uid.toString())
                 currentUserDocRef.set(newUser).addOnSuccessListener {
                     onComplete()
                 }
@@ -33,8 +32,6 @@ object FirestoreUtil {
     fun updateCurrentUser(phoneNumber: String = "", name: String = "", address: String = "") {
         val userFieldMap = mutableMapOf<String, Any>()
         if (phoneNumber.isNotBlank()) userFieldMap["phoneNumber"] = name
-        if (name.isNotBlank()) userFieldMap["name"] = name
-        if (address.isNotBlank()) userFieldMap["address"] = address
         currentUserDocRef.update(userFieldMap)
     }
 

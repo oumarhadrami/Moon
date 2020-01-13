@@ -48,7 +48,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/address_textview"
+                    android:id="@+id/lat_lng_textview"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:visibility="gone"
@@ -58,7 +58,7 @@
                     android:fontFamily="@font/asap"/>
 
                 <ProgressBar
-                    android:id="@+id/progressBarAddress"
+                    android:id="@+id/progressBarInMap"
                     android:layout_width="match_parent"
                     android:layout_margin="10dp"
                     android:layout_height="match_parent" />

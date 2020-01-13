@@ -11,32 +11,29 @@ import android.os.ResultReceiver
 import android.util.DisplayMetrics
 import android.view.View
 import android.widget.ProgressBar
-import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.card.MaterialCardView
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import kotlin.math.roundToInt
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var map: GoogleMap
-    private val REQUEST_LOCATION_PERMISSION = 1
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-    private lateinit var resultReceiver: AddressResultReceiver
-    private lateinit var addressTextView: MaterialTextView
-    private lateinit var progressBarAddress : ProgressBar
+
+
+    private lateinit var confirmLocationButton : MaterialButton
+    private lateinit var latLngTextView: MaterialTextView
+    private lateinit var progressBar : ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,21 +43,19 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        resultReceiver = AddressResultReceiver(handler = Handler())
+        // Initializing UI components
+        latLngTextView = findViewById(R.id.lat_lng_textview)
+        progressBar = findViewById(R.id.progressBarInMap)
+        confirmLocationButton = findViewById(R.id.confirm_location_button)
 
-        addressTextView = findViewById(R.id.address_textview)
-        progressBarAddress = findViewById(R.id.progressBarAddress)
-
-
-
-
+        //initializing fusedLocationClient
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -70,83 +65,42 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Set Padding for the map for myLocation Button and enable maps location and move camera to user location
         map.setPadding(0,dpToPx(30,this),0,0)
-        enableMyLocation()
+        map.isMyLocationEnabled = true
         moveToUserLocation()
 
-
-
-
-    }
-
-    private fun enableMyLocation() {
-        if (isPermissionGranted()) {
-            map.isMyLocationEnabled = true
+        // handle camera in rest mode
+        map.setOnCameraIdleListener {
+            progressBar.visibility = View.GONE
+            latLngTextView.visibility = View.VISIBLE
+            val center = map.cameraPosition.target
+            val newMarker = MarkerOptions().position(center).title("New Position")
+            val newLatLng =  newMarker.position
+            latLngTextView.text = "${newLatLng.latitude} , ${newLatLng.longitude}"
         }
-        else {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
-                REQUEST_LOCATION_PERMISSION
-            )
+
+        map.setOnCameraMoveListener {
+            progressBar.visibility = View.VISIBLE
+            latLngTextView.visibility = View.GONE
         }
-    }
 
-    private fun isPermissionGranted() : Boolean {
-        return ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
-    }
 
+
+    }
+    // convert dp to pixels units
     fun dpToPx(dp: Int, context: Context): Int {
         val displayMetrics: DisplayMetrics = context.resources.displayMetrics
         return (dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
     }
 
+    // animate camera to user's location
     fun moveToUserLocation()  {
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
                 //getting latitude and longitude and animating camera to user's location
                 val userLatLng = LatLng(location!!.latitude, location.longitude)
-                val zoomLevel = 16f
-                map.addMarker(MarkerOptions().position(userLatLng).title("Your Location"))
+                val zoomLevel = 18f
                 val userLocation = CameraUpdateFactory.newLatLngZoom(userLatLng,zoomLevel)
                 map.animateCamera(userLocation)
-                startIntentService(location)
             }
     }
-
-
-
-
-    private fun startIntentService(location: Location) {
-
-        val intent = Intent(this, FetchAddressIntentService::class.java).apply {
-            putExtra(Constants.RECEIVER, resultReceiver)
-            putExtra(Constants.LOCATION_DATA_EXTRA, location)
-        }
-        startService(intent)
-    }
-
-    internal inner class AddressResultReceiver(handler: Handler) : ResultReceiver(handler) {
-
-        override fun onReceiveResult(resultCode: Int, resultData: Bundle?) {
-
-            // Display the address string
-            // or an error message sent from the intent service.
-            val addressOutput = resultData?.getString(Constants.RESULT_DATA_KEY) ?: ""
-            val re = Regex("[^A-Za-z0-9 ]")
-            val address = re.replace(addressOutput,"")
-            //Snackbar.make(findViewById<MaterialCardView>(R.id.material_card_address), addressOutput, Snackbar.LENGTH_INDEFINITE ).show()
-            addressTextView.text = address
-            // Show a toast message if an address was found.
-            if (resultCode == Constants.SUCCESS_RESULT) {
-                progressBarAddress.visibility = View.GONE
-                addressTextView.visibility = View.VISIBLE
-                //Toast.makeText(applicationContext,getString(R.string.address_found),Toast.LENGTH_SHORT).show()
-            }
-
-        }
-    }
-
 }
