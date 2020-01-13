@@ -5,12 +5,10 @@ import android.content.Context
 import android.location.Location
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.view.ContextThemeWrapper
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import androidx.databinding.DataBindingUtil
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -20,8 +18,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
+import com.google.android.material.appbar.AppBarLayout
 import com.moondevs.moon.databinding.FragmentDeliverLocationBinding
 import kotlin.math.roundToInt
 
@@ -30,13 +27,17 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
     private lateinit var binding : FragmentDeliverLocationBinding
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var appBar : AppBarLayout
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        // create ContextThemeWrapper from the original Activity Context with the custom theme
-        val contextThemeWrapper = ContextThemeWrapper(activity, R.style.TransparentStatus)
-        inflater.cloneInContext(contextThemeWrapper)
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_deliver_location,container,false)
+
+
+        //visibility of the appbar
+        appBar = activity!!.findViewById(R.id.appbar)
+        appBar.visibility = View.GONE
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -97,10 +98,14 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
                 val userLocation = CameraUpdateFactory.newLatLngZoom(userLatLng,zoomLevel)
                 map.animateCamera(userLocation)
             }
+
+
     }
 
-
-
+    override fun onDestroyView() {
+        super.onDestroyView()
+        appBar.visibility = View.VISIBLE
+    }
 
 
 }
