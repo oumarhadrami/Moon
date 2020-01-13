@@ -1,20 +1,19 @@
 package com.moondevs.moon
 
-import android.Manifest
+
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
 import android.os.Bundle
-import android.os.Handler
-import android.os.ResultReceiver
 import android.util.DisplayMetrics
+import android.view.ContextThemeWrapper
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
-import com.google.android.gms.location.*
+import androidx.databinding.DataBindingUtil
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,33 +22,29 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
+import com.moondevs.moon.databinding.FragmentDeliverLocationBinding
 import kotlin.math.roundToInt
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
+class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
 
+    private lateinit var binding : FragmentDeliverLocationBinding
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
 
 
-    private lateinit var confirmLocationButton : MaterialButton
-    private lateinit var latLngTextView: MaterialTextView
-    private lateinit var progressBar : ProgressBar
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_maps)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        // create ContextThemeWrapper from the original Activity Context with the custom theme
+        val contextThemeWrapper = ContextThemeWrapper(activity, R.style.TransparentStatus)
+        inflater.cloneInContext(contextThemeWrapper)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_deliver_location,container,false)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        // Initializing UI components
-        latLngTextView = findViewById(R.id.lat_lng_textview)
-        progressBar = findViewById(R.id.progressBarInMap)
-        confirmLocationButton = findViewById(R.id.confirm_location_button)
 
         //initializing fusedLocationClient
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
+        return binding.root
     }
 
     /**
@@ -64,23 +59,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         map = googleMap
 
         // Set Padding for the map for myLocation Button and enable maps location and move camera to user location
-        map.setPadding(0,dpToPx(30,this),0,0)
+        map.setPadding(0,dpToPx(30,activity!!),0,0)
         map.isMyLocationEnabled = true
         moveToUserLocation()
 
         // handle camera in rest mode
         map.setOnCameraIdleListener {
-            progressBar.visibility = View.GONE
-            latLngTextView.visibility = View.VISIBLE
+            binding.progressBarInMap.visibility = View.GONE
+            binding.latLngTextview.visibility = View.VISIBLE
             val center = map.cameraPosition.target
             val newMarker = MarkerOptions().position(center).title("New Position")
             val newLatLng =  newMarker.position
-            latLngTextView.text = "${newLatLng.latitude} , ${newLatLng.longitude}"
+            binding.latLngTextview.text = "${newLatLng.latitude} , ${newLatLng.longitude}"
         }
 
         map.setOnCameraMoveListener {
-            progressBar.visibility = View.VISIBLE
-            latLngTextView.visibility = View.GONE
+            binding.progressBarInMap.visibility = View.VISIBLE
+            binding.latLngTextview.visibility = View.GONE
         }
 
 
@@ -103,4 +98,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 map.animateCamera(userLocation)
             }
     }
+
+
+
+
+
 }

@@ -29,6 +29,9 @@
         <action
             android:id="@+id/action_navigation_cart_to_shopFragment"
             app:destination="@id/shopFragment" />
+        <action
+            android:id="@+id/action_navigation_cart_to_deliverLocationFragment"
+            app:destination="@id/deliverLocationFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_account"
@@ -66,5 +69,19 @@
             android:name="shopImage"
             app:argType="string"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/addressListFragment"
+        android:name="com.moondevs.moon.home_screens.cart.AddressListFragment"
+        android:label="fragment_address_list"
+        tools:layout="@layout/fragment_address_list" />
+    <fragment
+        android:id="@+id/deliverLocationFragment"
+        android:name="com.moondevs.moon.DeliverLocationFragment"
+        tools:layout="@layout/fragment_deliver_location"
+        android:label="DeliverLocationFragment" >
+        <action
+            android:id="@+id/action_deliverLocationFragment_to_addressListFragment"
+            app:destination="@id/addressListFragment" />
     </fragment>
 </navigation>

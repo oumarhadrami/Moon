@@ -29,7 +29,6 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.snackbar.Snackbar
 import com.moondevs.moon.BuildConfig
-import com.moondevs.moon.MapsActivity
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentCartBinding
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
@@ -202,7 +201,7 @@ class CartFragment : Fragment() {
 
         locationSettingsResponseTask.addOnCompleteListener {
             if ( it.isSuccessful ) {
-                startActivity(Intent(activity, MapsActivity::class.java))
+                findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment())
             }
         }
     }
