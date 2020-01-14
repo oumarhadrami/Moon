@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".DeliverLocationFragment">
+        tools:context=".address_screens.DeliverLocationFragment">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                         android:textSize="18sp"
                         android:visibility="gone"
                         android:textStyle="bold"
-                        android:gravity="start|center"
+                        android:gravity="center|bottom"
                         android:layout_margin="10dp"
                         android:fontFamily="@font/asap"/>
 

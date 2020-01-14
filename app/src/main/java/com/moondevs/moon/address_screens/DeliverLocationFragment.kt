@@ -1,4 +1,4 @@
-package com.moondevs.moon
+package com.moondevs.moon.address_screens
 
 
 import android.content.Context
@@ -10,6 +10,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,6 +20,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.AppBarLayout
+import com.moondevs.moon.DeliverLocationFragmentDirections
+import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentDeliverLocationBinding
 import kotlin.math.roundToInt
 
@@ -31,7 +34,8 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_deliver_location,container,false)
+        binding = DataBindingUtil.inflate(inflater,
+            R.layout.fragment_deliver_location,container,false)
 
 
         //visibility of the appbar
@@ -71,7 +75,17 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
             val center = map.cameraPosition.target
             val newMarker = MarkerOptions().position(center).title("New Position")
             val newLatLng =  newMarker.position
+            val latitude = newLatLng.latitude
+            val longitude = newLatLng.longitude
             binding.latLngTextview.text = "${newLatLng.latitude} , ${newLatLng.longitude}"
+            binding.confirmLocationButton.setOnClickListener {
+                findNavController().navigate(
+                    DeliverLocationFragmentDirections.actionDeliverLocationFragmentToAddressFragment(
+                        latitude.toString(),
+                        longitude.toString()
+                    )
+                )
+            }
         }
 
         map.setOnCameraMoveListener {

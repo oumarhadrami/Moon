@@ -64,7 +64,7 @@
           android:layout_alignParentTop="true"
           android:ems="10"
           android:maxLength="8"
-          android:inputType="phone" >
+          android:inputType="phone">
 
       </com.google.android.material.textfield.TextInputEditText>
 
