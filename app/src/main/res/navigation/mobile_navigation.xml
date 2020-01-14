@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_navigation_cart_to_deliverLocationFragment"
             app:destination="@id/deliverLocationFragment" />
+        <action
+            android:id="@+id/action_navigation_cart_to_liveTrackingFragment"
+            app:destination="@id/liveTrackingFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_account"
@@ -84,4 +87,8 @@
             android:id="@+id/action_deliverLocationFragment_to_navigation_cart"
             app:destination="@id/navigation_cart" />
     </fragment>
+    <fragment
+        android:id="@+id/liveTrackingFragment"
+        android:name="com.moondevs.moon.live_tracking_screens.LiveTrackingFragment"
+        android:label="LiveTrackingFragment" />
 </navigation>

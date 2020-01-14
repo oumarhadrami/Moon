@@ -43,8 +43,7 @@ class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
 
     @WorkerThread
     suspend fun getRecord(shopItemId : String) : CartItem {
-        val cartItemWithThisId : CartItem = shoppingCartDao.getRecord(shopItemId)
-        return cartItemWithThisId
+        return shoppingCartDao.getRecord(shopItemId)
     }
 
     @WorkerThread

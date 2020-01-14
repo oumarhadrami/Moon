@@ -23,6 +23,11 @@ class AddressesRepository (private val addressesDao: AddressesDao){
         addressesDao.deleteAddress(address)
     }
 
+    @WorkerThread
+    suspend fun getLastAddedAddress() : Address{
+        return addressesDao.getLastAddedAddress()
+    }
+
 
 
 }

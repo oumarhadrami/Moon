@@ -1,6 +1,7 @@
 package com.moondevs.moon.home_screens.cart
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Application
 import android.content.Intent
@@ -31,6 +32,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.moondevs.moon.BuildConfig
 import com.moondevs.moon.R
 import com.moondevs.moon.address_screens.AddressViewModel
+import com.moondevs.moon.address_screens.addresses_database.Address
 import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentCartBinding
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
@@ -47,6 +49,7 @@ class CartFragment : Fragment() {
     private lateinit var binding : FragmentCartBinding
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //initializing components
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart,container,false)
@@ -112,6 +115,20 @@ class CartFragment : Fragment() {
         //edit address button click
         binding.addressContainer.add_address.setOnClickListener {
             findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment())
+        }
+
+        //put last added address in address container
+        addressViewModel.viewModelScope.launch {
+            val currentAddress: Address = addressViewModel.getLastAddedAddress()
+            binding.addressContainer.current_address.text = currentAddress.Name + "\n" +
+                                                            currentAddress.PhoneNumber + "\n" +
+                                                            currentAddress.Latitude + " , " +
+                                                            currentAddress.Longitude
+        }
+
+        //Handling the place order button behavior
+        binding.placeOrder.setOnClickListener {
+            findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
         }
 
 
