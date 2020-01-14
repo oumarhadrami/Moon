@@ -57,6 +57,7 @@ class LogInFragment : Fragment() {
                 binding.phoneNumberLogin.requestFocus()
                 return@setOnClickListener
             }
+            else binding.phoneNumberLogin.error = null
 
             val phoneNumber = "+222$numberFromEditText"
             it.findNavController().navigate(LogInFragmentDirections.actionLogInFragmentToVerifyNumberFragment(phoneNumber))

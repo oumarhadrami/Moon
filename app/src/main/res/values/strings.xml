@@ -55,7 +55,7 @@
     <string name="items_total">Items Total</string>
     <string name="to_pay">To Pay</string>
     <string name="deliver_to">Deliver to:</string>
-    <string name="edit_address">Edit Address</string>
+    <string name="add_address">Add Address</string>
     <string name="log_in_with_phone_number">Log in with phone number</string>
     <string name="do_you_have_any_special_instructions">Do you have any special instructions?</string>
     <string name="permission_denied_explanation">

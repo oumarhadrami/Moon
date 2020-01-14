@@ -30,27 +30,38 @@ import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.snackbar.Snackbar
 import com.moondevs.moon.BuildConfig
 import com.moondevs.moon.R
+import com.moondevs.moon.address_screens.AddressViewModel
+import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentCartBinding
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.address_layout.view.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class CartFragment : Fragment() {
 
     private lateinit var viewModel: ShoppingCartViewModel
+    private lateinit var addressViewModel: AddressViewModel
     private lateinit var binding : FragmentCartBinding
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         //initializing components
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart,container,false)
+
+        //initialize ShoppingCartViewModel
         val application : Application = requireNotNull(this).activity!!.application
         val viewModelFactory = ShoppingCartViewModelFactory(application)
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = activity
+
+        //Initialize AddressViewModel
+        val addressViewModelFactory = AddressViewModelFactory(application)
+        addressViewModel = ViewModelProviders.of(activity!!, addressViewModelFactory).get(AddressViewModel::class.java)
+
 
         //linking adapter to the recyclerview
         val adapter = CartAdapter(viewModel,activity)
@@ -83,6 +94,25 @@ class CartFragment : Fragment() {
             requestForegroundAndBackgroundLocationPermissions()
         }
 
+        //set the visibility of addressContainer, placeOrder, setDeliveryLocation Views based on number of addresses
+        addressViewModel.allAddressesCount.observe(viewLifecycleOwner, Observer {
+            if (it == 0) {
+                binding.addressContainer.visibility = View.GONE
+                binding.placeOrder.visibility = View.GONE
+                binding.setDeliveryLocation.visibility = View.VISIBLE
+            }
+
+            else{
+                binding.addressContainer.visibility = View.VISIBLE
+                binding.placeOrder.visibility = View.VISIBLE
+                binding.setDeliveryLocation.visibility = View.GONE
+            }
+        })
+
+        //edit address button click
+        binding.addressContainer.add_address.setOnClickListener {
+            findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment())
+        }
 
 
 

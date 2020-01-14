@@ -1,6 +1,7 @@
 package com.moondevs.moon.address_screens
 
 
+import android.app.Application
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
@@ -10,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -21,7 +24,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.moondevs.moon.R
+import com.moondevs.moon.address_screens.addresses_database.Address
+import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentDeliverLocationBinding
+import kotlinx.coroutines.launch
+import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
 class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
@@ -30,11 +37,19 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var appBar : AppBarLayout
+    private lateinit var viewModel: AddressViewModel
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_deliver_location,container,false)
+
+        // initialize viewModel
+        val application : Application = requireNotNull(this).activity!!.application
+        val viewModelFactory = AddressViewModelFactory(application)
+        viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(AddressViewModel::class.java)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
 
 
         //visibility of the appbar
@@ -69,27 +84,51 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
 
         // handle camera in rest mode
         map.setOnCameraIdleListener {
-            binding.progressBarInMap.visibility = View.GONE
+            binding.progressBarInMap.visibility = View.INVISIBLE
             binding.latLngTextview.visibility = View.VISIBLE
             val center = map.cameraPosition.target
             val newMarker = MarkerOptions().position(center).title("New Position")
             val newLatLng =  newMarker.position
             val latitude = newLatLng.latitude
             val longitude = newLatLng.longitude
-            binding.latLngTextview.text = "${newLatLng.latitude} , ${newLatLng.longitude}"
+            binding.latLngTextview.text = "$latitude , $longitude"
             binding.confirmLocationButton.setOnClickListener {
-                findNavController().navigate(
-                    DeliverLocationFragmentDirections.actionDeliverLocationFragmentToAddressFragment(
-                        latitude.toString(),
-                        longitude.toString()
-                    )
+                val phoneNumberString = binding.phoneNumberAddressTextfield.text.toString().trim()
+                val nameString = binding.nameAddressTextfield.text.toString().trim()
+                if (phoneNumberString.isEmpty() || phoneNumberString.length < 8){
+                    binding.phoneNumberAddress.error = "please enter the 8-digit phone number!"
+                    binding.phoneNumberAddress.requestFocus()
+                    return@setOnClickListener
+                }
+                else binding.phoneNumberAddress.error = null
+
+                if (nameString.isEmpty()){
+                    binding.nameAddress.error = "please enter your name!"
+                    binding.nameAddress.requestFocus()
+                    return@setOnClickListener
+                }
+                else binding.phoneNumberAddress.error = null
+
+                val address = Address(
+                    Name = nameString,
+                    PhoneNumber = "+222$phoneNumberString",
+                    Latitude = latitude.toString(),
+                    Longitude = longitude.toString()
                 )
+
+                viewModel.viewModelScope.launch { viewModel.insert(address)}
+                binding.progressBarAddress.visibility = View.VISIBLE
+                thread {
+                    Thread.sleep((0.5 * 1000).toLong())
+                    findNavController().navigate(DeliverLocationFragmentDirections.actionDeliverLocationFragmentToNavigationCart())
+                }.priority = Thread.NORM_PRIORITY
+
             }
         }
 
         map.setOnCameraMoveListener {
             binding.progressBarInMap.visibility = View.VISIBLE
-            binding.latLngTextview.visibility = View.GONE
+            binding.latLngTextview.visibility = View.INVISIBLE
         }
 
 

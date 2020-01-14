@@ -60,7 +60,7 @@
                 android:layout_margin="12dp"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:id="@+id/add_address"
-                android:text="@string/edit_address"
+                android:text="@string/add_address"
                 android:layout_height="wrap_content"/>
 
         </FrameLayout>

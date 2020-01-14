@@ -32,9 +32,6 @@
         <action
             android:id="@+id/action_navigation_cart_to_deliverLocationFragment"
             app:destination="@id/deliverLocationFragment" />
-        <action
-            android:id="@+id/action_navigation_cart_to_addressListFragment"
-            app:destination="@id/addressListFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_account"
@@ -77,33 +74,14 @@
         android:id="@+id/addressListFragment"
         android:name="com.moondevs.moon.home_screens.cart.AddressListFragment"
         android:label="fragment_address_list"
-        tools:layout="@layout/fragment_address_list" >
-        <action
-            android:id="@+id/action_addressListFragment_to_navigation_cart"
-            app:destination="@id/navigation_cart" />
-    </fragment>
+        tools:layout="@layout/fragment_address_list" />
     <fragment
         android:id="@+id/deliverLocationFragment"
         android:name="com.moondevs.moon.address_screens.DeliverLocationFragment"
         tools:layout="@layout/fragment_deliver_location"
         android:label="DeliverLocationFragment" >
         <action
-            android:id="@+id/action_deliverLocationFragment_to_addressFragment"
-            app:destination="@id/addressFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/addressFragment"
-        android:name="com.moondevs.moon.address_screens.AddressFragment"
-        android:label="fragment_address"
-        tools:layout="@layout/fragment_address" >
-        <argument
-            android:name="latitude"
-            app:argType="string" />
-        <argument
-            android:name="longitude"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_addressFragment_to_navigation_cart"
+            android:id="@+id/action_deliverLocationFragment_to_navigation_cart"
             app:destination="@id/navigation_cart" />
     </fragment>
 </navigation>
