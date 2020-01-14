@@ -57,6 +57,7 @@
       <com.google.android.material.textfield.TextInputEditText
           android:singleLine="true"
           android:padding="20dp"
+          android:fontFamily="@font/asap"
           android:id="@+id/phone_number_login_textfield"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"

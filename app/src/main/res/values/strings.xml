@@ -79,4 +79,5 @@
     <string name="enter_address_info">Enter Address Info</string>
     <string name="location">Location</string>
     <string name="submit">Submit</string>
+    <string name="place_order">Place Order</string>
 </resources>

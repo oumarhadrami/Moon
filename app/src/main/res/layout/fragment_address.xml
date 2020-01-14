@@ -4,6 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+            name="viewModel"
+            type="com.moondevs.moon.address_screens.AddressViewModel" />
 
     </data>
 
@@ -39,12 +42,13 @@
             app:prefixText="+222 ">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/phone_number_login_textfield"
+                android:id="@+id/phone_number_address_textfield"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:ems="10"
+                android:fontFamily="@font/asap"
                 android:inputType="phone"
                 android:maxLength="8"
                 android:padding="20dp"
@@ -65,8 +69,7 @@
             android:paddingBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/phone_number_address"
-            app:prefixText="+222 ">
+            app:layout_constraintTop_toBottomOf="@+id/phone_number_address">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/name_address_textfield"
@@ -75,6 +78,7 @@
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
                 android:padding="20dp"
+                android:fontFamily="@font/asap"
                 android:singleLine="true">
 
             </com.google.android.material.textfield.TextInputEditText>
@@ -102,11 +106,23 @@
                 android:layout_alignParentTop="true"
                 android:padding="20dp"
                 android:inputType="none"
+                android:fontFamily="@font/asap"
                 android:singleLine="true">
 
             </com.google.android.material.textfield.TextInputEditText>
         </com.google.android.material.textfield.TextInputLayout>
 
+        <ProgressBar
+            android:id="@+id/progressBarAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/lat_lng_address"
+            app:layout_constraintVertical_bias="0.0" />
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
@@ -114,9 +130,10 @@
             android:layout_marginStart="64dp"
             android:layout_marginEnd="64dp"
             android:layout_marginTop="16dp"
+            android:id="@+id/submit_address"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/lat_lng_address"
+            app:layout_constraintTop_toBottomOf="@+id/progressBarAddress"
             android:text="@string/submit"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

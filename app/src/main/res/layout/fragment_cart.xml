@@ -198,31 +198,24 @@
         </LinearLayout>
 
 
-        <TableRow
-            app:layout_constraintTop_toBottomOf="@id/bill_info"
+        <include
+            android:id="@+id/address_container"
+            android:layout_width="match_parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:id="@+id/hr5"
-            app:layout_constraintBottom_toTopOf="@id/address_info"
-            android:background="#E2E1E1"/>
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@+id/bill_info"
+            android:layout_height="wrap_content"
+            layout="@layout/address_layout"/>
+
 
         <FrameLayout
             android:id="@+id/address_info"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-
-            <include
-                android:id="@+id/address_container"
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_height="wrap_content"
-                layout="@layout/address_layout"/>
-
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
@@ -230,8 +223,19 @@
                 android:text="@string/set_delivery_location"
                 android:layout_margin="16dp"
                 android:fontFamily="@font/asap"
-                android:background="@drawable/btn_rounded"
                 android:layout_gravity="center"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:id="@+id/place_order"
+                android:visibility="gone"
+                android:text="@string/place_order"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/asap"
+                android:layout_gravity="center"/>
+
+
         </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

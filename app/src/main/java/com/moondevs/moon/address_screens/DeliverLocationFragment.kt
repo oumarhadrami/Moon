@@ -20,7 +20,6 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.AppBarLayout
-import com.moondevs.moon.DeliverLocationFragmentDirections
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentDeliverLocationBinding
 import kotlin.math.roundToInt
