@@ -15,7 +15,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -45,7 +44,6 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.address_layout.view.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.concurrent.thread
 
 class CartFragment : Fragment() {
 
@@ -54,12 +52,10 @@ class CartFragment : Fragment() {
     private lateinit var binding : FragmentCartBinding
     private lateinit var orderDoc : DocumentReference
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
-    private var isOrderPlaced : Boolean = false
-    private var areItemsStoredList =  mutableListOf<Boolean>()
-    private var areItemsStored : Boolean = false
-    private var areFieldsStoredList =  mutableListOf<Boolean>()
-    private var areFieldsStored : Boolean = false
-    private var isAddressStoredList =  mutableListOf<Boolean>()
+    @Volatile private var itemsStoredSize : Int = 0
+    @Volatile private var isAddressStored : Boolean = false
+    @Volatile private var areItemsStored : Boolean = false
+    @Volatile private var areFieldsStored : Boolean = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -149,14 +145,6 @@ class CartFragment : Fragment() {
 //                val snapShopt = documentSnapshot!!
 //                Timber.i("${snapShopt["Total Amount"]}")
 //            }
-                if (isOrderPlaced){
-                    binding.progressBarInCart.visibility = View.GONE
-                    navigateToLiveTracking()
-                }
-
-
-
-
         }
 
 
@@ -167,11 +155,10 @@ class CartFragment : Fragment() {
         return binding.root
     }
 
-    private fun navigateToLiveTracking() {
-        findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
-    }
 
-    /**Method handling the placing of the order*/
+
+    /**Method handling the placing of the order
+     * Add Fields to the database*/
     private fun placeOrder() {
         binding.progressBarInCart.visibility = View.VISIBLE
         //Document Reference in the firestore database to the order being placed
@@ -185,23 +172,28 @@ class CartFragment : Fragment() {
 
 
 
+        /**Add the total amount, delivery fee, and overall total amount of the items ordered to the order document reference*/
+        val deliveryFee = binding.deliveryFee.text
+        val deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim().toString())
+        viewModel.totalAmount.observe(viewLifecycleOwner, Observer { totalAmount ->
+            viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
+                var totalItemsCount = it
 
-        /**Add All Items from the cart to the items-collection in the order */
-        viewModel.allCartItems.observe(viewLifecycleOwner, Observer {cartItems ->
-            for (item in cartItems){
-                val cartItem = hashMapOf(
-                    "shopItemId" to item.shopItemId,
-                    "shopItemName" to item.shopItemName,
-                    "shopItemPrice" to item.shopItemPrice,
-                    "shopItemQuantity" to item.shopItemQuantity,
-                    "shopName" to item.shopName,
-                    "shopImage" to item.shopImage,
-                    "shopItemPriceByQuantity" to item.shopItemPriceByQuantity)
-                val orderItemDoc = orderDoc.collection("Items").document()
-                orderItemDoc.set(cartItem).addOnSuccessListener { areItemsStoredList.add(true) }
-                                          .addOnFailureListener { areItemsStoredList.add(false) }
+            orderDoc.set(hashMapOf(
+                "Total Amount" to totalAmount,
+                "Delivery Fee" to deliveryFeeInt,
+                "Amount To Pay" to  totalAmount + deliveryFeeInt,
+                "Total Items Count" to totalItemsCount,
+                "isOrderAccepted" to false,
+                "isOrderAssigned" to false,
+                "isOrderCollected" to false,
+                "isOrderDelivered" to false
+            )).addOnSuccessListener {
+                areFieldsStored = true
+                this.storeAddress(areFieldsStored)
             }
-
+                .addOnFailureListener { areFieldsStored = false }
+        })
         })
 
 
@@ -211,45 +203,10 @@ class CartFragment : Fragment() {
 
 
 
+    }
 
-        /**Add the total amount, delivery fee, and overall total amount of the items ordered to the order document reference*/
-        areItemsStored = areItemsStoredList.all {
-            it
-        }
-        if (areItemsStored) {
-            Timber.i("items stored")
-            val deliveryFee = binding.deliveryFee.text
-            val deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim().toString())
-            viewModel.totalAmount.observe(viewLifecycleOwner, Observer { totalAmount ->
-                viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
-                    var totalItemsCount = it
-
-                orderDoc.set(hashMapOf(
-                    "Total Amount" to totalAmount,
-                    "Delivery Fee" to deliveryFeeInt,
-                    "Amount To Pay" to  totalAmount + deliveryFeeInt,
-                    "Total Items Count" to totalItemsCount,
-                    "isOrderAccepted" to false,
-                    "isOrderAssigned" to false,
-                    "isOrderCollected" to false,
-                    "isOrderDelivered" to false
-                )).addOnSuccessListener {
-                    areFieldsStoredList.add(true)
-                }
-                    .addOnFailureListener { areFieldsStoredList.add(false) }
-            })
-            })
-        }
-
-
-
-
-
-
-        /**Add the address of this order to the order document reference*/
-        areFieldsStored = areItemsStoredList.all {
-            it
-        }
+    /**Add the address of this order to the order document reference*/
+    private fun storeAddress(areFieldsStored: Boolean) {
         if (areFieldsStored) {
             Timber.i("Fields Stored")
             addressViewModel.viewModelScope.launch {
@@ -263,19 +220,43 @@ class CartFragment : Fragment() {
                 )
                 addressDoc.set(addressHashMap).addOnSuccessListener {
 
-                    isAddressStoredList.add(true)
+                    isAddressStored = true
+                    storeItems(isAddressStored)
                 }
-                    .addOnFailureListener { areFieldsStoredList.add(false) }
+                    .addOnFailureListener { isAddressStored = false }
             }
         }
+    }
 
+    /**Add All Items from the cart to the items-collection in the order */
+    private fun storeItems(isAddressStored: Boolean) {
+        if (isAddressStored) {
+            Timber.i("Address Stored")
+            viewModel.allCartItems.observe(viewLifecycleOwner, Observer { cartItems ->
+                for (item in cartItems) {
+                    val cartItem = hashMapOf(
+                        "shopItemId" to item.shopItemId,
+                        "shopItemName" to item.shopItemName,
+                        "shopItemPrice" to item.shopItemPrice,
+                        "shopItemQuantity" to item.shopItemQuantity,
+                        "shopName" to item.shopName,
+                        "shopImage" to item.shopImage,
+                        "shopItemPriceByQuantity" to item.shopItemPriceByQuantity
+                    )
+                    val orderItemDoc = orderDoc.collection("Items").document()
+                    orderItemDoc.set(cartItem).addOnSuccessListener {
+                        binding.progressBarInCart.visibility = View.GONE
+                        navigateToLiveTracking()
+                    }
+                        .addOnFailureListener { }
+                }
 
-        /**updating isOrderPlaced Boolean*/
-        isOrderPlaced = isAddressStoredList.all {
-            it
+            })
         }
-        Timber.i("Address Stored")
+    }
 
+    private fun navigateToLiveTracking() {
+        findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
     }
 
 

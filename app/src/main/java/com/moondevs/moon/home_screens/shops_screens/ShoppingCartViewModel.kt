@@ -14,6 +14,7 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
     private val repo : ShoppingCartRepository
     val allCartItems : LiveData<List<CartItem>>
     val allItemsCount : LiveData<Int>
+    val numberOfUniqueItems : LiveData<Int>
     val totalAmount : LiveData<Int>
     val toPayAmount : LiveData<Int>
 
@@ -25,6 +26,7 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         allItemsCount = repo.alltemsCount
         totalAmount = repo.totalAmout
         toPayAmount = repo.toPayAmount
+        numberOfUniqueItems = repo.numberOfUniqueItems
 
     }
 
@@ -115,6 +117,7 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         }
         return totalSize.await()
     }
+
 
 
 }

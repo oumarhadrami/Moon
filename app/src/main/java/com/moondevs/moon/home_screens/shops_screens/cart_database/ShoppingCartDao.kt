@@ -51,4 +51,9 @@ interface ShoppingCartDao {
     @Query("select COUNT(*) from shoppingcart")
     suspend fun getCarSizeNonLiveData(): Int
 
+    @Query("select COUNT(*) from shoppingcart")
+    fun getCarSizeLiveData(): LiveData<Int>
+
+
+
 }

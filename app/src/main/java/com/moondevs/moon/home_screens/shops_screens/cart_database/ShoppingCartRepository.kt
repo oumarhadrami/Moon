@@ -7,6 +7,7 @@ class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
 
     val toPayAmount: LiveData<Int> = shoppingCartDao.getToPayAmount()
     val alltemsCount : LiveData<Int> = shoppingCartDao.getCount()
+    val numberOfUniqueItems : LiveData<Int> = shoppingCartDao.getCarSizeLiveData()
     val totalAmout : LiveData<Int> = shoppingCartDao.getTotalAmount()
     val allCartItems : LiveData<List<CartItem>> = shoppingCartDao.getAll()
 
@@ -73,6 +74,7 @@ class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
     suspend fun getCarSizeNonLiveData(): Int {
         return shoppingCartDao.getCarSizeNonLiveData()
     }
+
 
 
 }
