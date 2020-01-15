@@ -63,4 +63,19 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+
+    override fun onStart() {
+        super.onStart()
+        //add content for toolbar
+        val locationLayout = activity!!.findViewById<View>(R.id.location_layout)
+        locationLayout.visibility = View.VISIBLE
+    }
+
+    override fun onStop() {
+        super.onStop()
+        val locationLayout = activity!!.findViewById<View>(R.id.location_layout)
+        locationLayout.visibility = View.GONE
+
+    }
+
 }
