@@ -23,4 +23,11 @@ class SearchFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onStart() {
+        super.onStart()
+        //add content for toolbar
+        val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
+        frameLayout.visibility = View.GONE
+    }
 }

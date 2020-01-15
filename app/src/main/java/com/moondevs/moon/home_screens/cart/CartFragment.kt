@@ -265,6 +265,8 @@ class CartFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
+        val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
+        frameLayout.visibility = View.VISIBLE
         val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)
         val shopImageInCart = shopDetailsInCartLayout.findViewById<ImageView>(R.id.shop_image_in_cart)
         val shopNameInCart = shopDetailsInCartLayout.findViewById<TextView>(R.id.shop_name_in_cart)

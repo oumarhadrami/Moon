@@ -11,8 +11,6 @@ import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentHomeBinding
-import timber.log.Timber
-
 
 
 class HomeFragment : Fragment() {
@@ -67,15 +65,9 @@ class HomeFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         //add content for toolbar
-        val locationLayout = activity!!.findViewById<View>(R.id.location_layout)
-        locationLayout.visibility = View.VISIBLE
+        val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
+        frameLayout.visibility = View.GONE
     }
 
-    override fun onStop() {
-        super.onStop()
-        val locationLayout = activity!!.findViewById<View>(R.id.location_layout)
-        locationLayout.visibility = View.GONE
-
-    }
 
 }

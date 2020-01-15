@@ -76,6 +76,8 @@ class ShopFragment : Fragment() {
         adapter.startListening()
 
         //add content for toolbar
+        val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
+        frameLayout.visibility = View.VISIBLE
         val shopDetailsInPageLayout = activity!!.findViewById<View>(R.id.shop_page_layout)
         val shopsNameText = shopDetailsInPageLayout.findViewById<TextView>(R.id.shop_name_toolbar)
         shopsNameText.text = args.shopName

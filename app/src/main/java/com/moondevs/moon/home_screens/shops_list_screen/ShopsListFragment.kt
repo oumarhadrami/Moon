@@ -48,7 +48,10 @@ class ShopsListFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         adapter.startListening()
+
         //add content for toolbar
+        val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
+        frameLayout.visibility = View.VISIBLE
         val shopsCategoryLayout = activity!!.findViewById<View>(R.id.shops_categories_layout)
         val shopsCategoryText = shopsCategoryLayout.findViewById<TextView>(R.id.shop_type_in_toolbar)
         shopsCategoryText.text = args.shopType

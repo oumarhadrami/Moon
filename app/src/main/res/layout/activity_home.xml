@@ -29,11 +29,10 @@
                 app:popupTheme="@style/AppTheme.PopupOverlay">
 
                 <FrameLayout
+                    android:id="@+id/toolbar_framelayout"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="match_parent">
-                <include
-                    android:id="@+id/location_layout"
-                    layout="@layout/location_in_toolbar"/>
 
                 <include
                     android:id="@+id/shops_categories_layout"
