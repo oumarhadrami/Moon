@@ -135,7 +135,7 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
                     val rowId = viewModel.getLastAddedAddressId()
                     FirestoreUtil.insertAddress(address, rowId)
                 }
-                /** Let UI thread sleep for a half a second while showing progressBar */
+                /** Let UI thread sleep for 3 seconds while showing progressBar */
                 thread {
 
                     Thread.sleep((3 * 1000).toLong())
