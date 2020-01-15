@@ -90,5 +90,6 @@
     <fragment
         android:id="@+id/liveTrackingFragment"
         android:name="com.moondevs.moon.live_tracking_screens.LiveTrackingFragment"
+        tools:layout="@layout/fragment_live_tracking"
         android:label="LiveTrackingFragment" />
 </navigation>

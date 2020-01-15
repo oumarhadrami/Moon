@@ -48,4 +48,7 @@ interface ShoppingCartDao {
     @Query("select 100 + IFNULL(SUM(shopItemPriceByQuantity),0) from shoppingcart")
     fun getToPayAmount(): LiveData<Int>
 
+    @Query("select COUNT(*) from shoppingcart")
+    suspend fun getCarSizeNonLiveData(): Int
+
 }

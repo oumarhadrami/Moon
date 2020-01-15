@@ -15,6 +15,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -29,6 +30,8 @@ import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.moondevs.moon.BuildConfig
 import com.moondevs.moon.R
 import com.moondevs.moon.address_screens.AddressViewModel
@@ -37,17 +40,26 @@ import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFact
 import com.moondevs.moon.databinding.FragmentCartBinding
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
+import com.moondevs.moon.util.FirestoreUtil
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.address_layout.view.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.concurrent.thread
 
 class CartFragment : Fragment() {
 
     private lateinit var viewModel: ShoppingCartViewModel
     private lateinit var addressViewModel: AddressViewModel
     private lateinit var binding : FragmentCartBinding
+    private lateinit var orderDoc : DocumentReference
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
+    private var isOrderPlaced : Boolean = false
+    private var areItemsStoredList =  mutableListOf<Boolean>()
+    private var areItemsStored : Boolean = false
+    private var areFieldsStoredList =  mutableListOf<Boolean>()
+    private var areFieldsStored : Boolean = false
+    private var isAddressStoredList =  mutableListOf<Boolean>()
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -127,9 +139,22 @@ class CartFragment : Fragment() {
         }
 
 
-        /**Handling the place order button behavior*/
+        /**Handling the place order button behavior
+         *
+         * Navigate to Live-Tracking only when the items are stored and document is ready to be used*/
         binding.placeOrder.setOnClickListener {
-            findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
+            placeOrder()
+            orderDoc.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+                val isOrderInDataBase = documentSnapshot!!.exists()
+                if (isOrderPlaced && isOrderInDataBase){
+                    binding.progressBarInCart.visibility = View.GONE
+                    navigateToLiveTracking()
+                }
+
+                Timber.i("${documentSnapshot["Total Amount"]}")
+            }
+
+
         }
 
 
@@ -140,6 +165,112 @@ class CartFragment : Fragment() {
         return binding.root
     }
 
+    private fun navigateToLiveTracking() {
+        findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
+    }
+
+    /**Method handling the placing of the order*/
+    private fun placeOrder() {
+        binding.progressBarInCart.visibility = View.VISIBLE
+        //Document Reference in the firestore database to the order being placed
+        orderDoc = FirestoreUtil.firestoreInstance
+                            .collection("Orders")
+                            .document(FirebaseAuth.getInstance().currentUser?.uid!!)
+                            .collection("Orders")
+                            .document()
+
+
+
+
+
+
+        /**Add All Items from the cart to the items-collection in the order */
+        viewModel.allCartItems.observe(viewLifecycleOwner, Observer {cartItems ->
+            for (item in cartItems){
+                val cartItem = hashMapOf(
+                    "shopItemId" to item.shopItemId,
+                    "shopItemName" to item.shopItemName,
+                    "shopItemPrice" to item.shopItemPrice,
+                    "shopItemQuantity" to item.shopItemQuantity,
+                    "shopName" to item.shopName,
+                    "shopImage" to item.shopImage,
+                    "shopItemPriceByQuantity" to item.shopItemPriceByQuantity)
+                val orderItemDoc = orderDoc.collection("Items").document()
+                orderItemDoc.set(cartItem).addOnSuccessListener { areItemsStoredList.add(true) }
+                                          .addOnFailureListener { areItemsStoredList.add(false) }
+            }
+
+        })
+
+
+
+
+
+
+
+
+
+        /**Add the total amount, delivery fee, and overall total amount of the items ordered to the order document reference*/
+        areItemsStored = areItemsStoredList.all {
+            it
+        }
+        if (areItemsStored) {
+            Timber.i("items stored")
+            val deliveryFee = binding.deliveryFee.text
+            val deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim().toString())
+            viewModel.totalAmount.observe(viewLifecycleOwner, Observer { totalAmount ->
+                viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
+                    var totalItemsCount = it
+
+                orderDoc.set(hashMapOf(
+                    "Total Amount" to totalAmount,
+                    "Delivery Fee" to deliveryFeeInt,
+                    "Amount To Pay" to  totalAmount + deliveryFeeInt,
+                    "Total Items Count" to totalItemsCount
+                )).addOnSuccessListener {
+                    areFieldsStoredList.add(true)
+                }
+                    .addOnFailureListener { areFieldsStoredList.add(false) }
+            })
+            })
+        }
+
+
+
+
+
+
+        /**Add the address of this order to the order document reference*/
+        areFieldsStored = areItemsStoredList.all {
+            it
+        }
+        if (areFieldsStored) {
+            Timber.i("Fields Stored")
+            addressViewModel.viewModelScope.launch {
+                val addressDoc = orderDoc.collection("Address").document()
+                val currentAddress: Address = addressViewModel.getLastAddedAddress()
+                val addressHashMap = hashMapOf(
+                    "Name" to currentAddress.Name,
+                    "PhoneNumber" to currentAddress.PhoneNumber,
+                    "Latitude" to currentAddress.Latitude,
+                    "Longitude" to currentAddress.Longitude
+                )
+                addressDoc.set(addressHashMap).addOnSuccessListener {
+
+                    isAddressStoredList.add(true)
+                }
+                    .addOnFailureListener { areFieldsStoredList.add(false) }
+            }
+        }
+
+
+        /**updating isOrderPlaced Boolean*/
+        isOrderPlaced = isAddressStoredList.all {
+            it
+        }
+        Timber.i("Address Stored")
+
+    }
 
 
     /**Handling the approval of foreground and background permissions (background in case of using android Q or later)*/
@@ -264,6 +395,7 @@ class CartFragment : Fragment() {
     /**Adding the image and name of the shop in the toolbar*/
     override fun onStart() {
         super.onStart()
+        Timber.i("OnStart called")
 
         val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
         frameLayout.visibility = View.VISIBLE
@@ -271,26 +403,41 @@ class CartFragment : Fragment() {
         val shopImageInCart = shopDetailsInCartLayout.findViewById<ImageView>(R.id.shop_image_in_cart)
         val shopNameInCart = shopDetailsInCartLayout.findViewById<TextView>(R.id.shop_name_in_cart)
         //add content for toolbar
+        Timber.i("Views Created")
+
 
         viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {totalItemsCount ->
             viewModel.viewModelScope.launch {
-                if (totalItemsCount > 0) {
-                    val shopNameInCartString = viewModel.getShopNameFromDB()
-                    val shopImageInCartString = viewModel.getShopImageFromDB()
-                    val shopRefInCart = viewModel.getShopRefFromDB()
-                    shopDetailsInCartLayout.setOnClickListener {
-                        findNavController().navigate(CartFragmentDirections.actionNavigationCartToShopFragment(shopRefInCart,shopNameInCartString,shopImageInCartString))
+                if (viewModel.getCarSizeNonLiveData() > 0) {
+                    if (totalItemsCount > 0) {
+                        Timber.i("Items more than 0")
+                        val shopNameInCartString = viewModel.getShopNameFromDB()
+                        val shopImageInCartString = viewModel.getShopImageFromDB()
+                        val shopRefInCart = viewModel.getShopRefFromDB()
+                        shopDetailsInCartLayout.setOnClickListener {
+                            findNavController().navigate(
+                                CartFragmentDirections.actionNavigationCartToShopFragment(
+                                    shopRefInCart,
+                                    shopNameInCartString,
+                                    shopImageInCartString
+                                )
+                            )
+                        }
+                        Glide.with(shopDetailsInCartLayout.context)
+                            .load(shopImageInCartString)
+                            .apply(
+                                RequestOptions()
+                                    .placeholder(R.drawable.loading_animation)
+                                    .error(R.drawable.ic_broken_image)
+                            )
+                            .into(shopImageInCart)
+                        shopNameInCart.text = shopNameInCartString
+                        shopDetailsInCartLayout.visibility = View.VISIBLE
                     }
-                    Glide.with(shopDetailsInCartLayout.context)
-                        .load(shopImageInCartString)
-                        .apply(
-                            RequestOptions()
-                                .placeholder(R.drawable.loading_animation)
-                                .error(R.drawable.ic_broken_image)
-                        )
-                        .into(shopImageInCart)
-                    shopNameInCart.text = shopNameInCartString
-                    shopDetailsInCartLayout.visibility = View.VISIBLE
+                }
+                else {
+                    Timber.i("Items less than 0")
+                    frameLayout.visibility = View.GONE
                 }
             }
         })
@@ -302,6 +449,7 @@ class CartFragment : Fragment() {
         super.onStop()
         val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)
         shopDetailsInCartLayout.visibility = View.GONE
+
 
     }
 }

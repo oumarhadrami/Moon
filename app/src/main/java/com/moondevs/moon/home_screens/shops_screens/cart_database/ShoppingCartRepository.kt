@@ -69,5 +69,10 @@ class ShoppingCartRepository(private val shoppingCartDao: ShoppingCartDao) {
         return cartItem.shopRef
     }
 
+    @WorkerThread
+    suspend fun getCarSizeNonLiveData(): Int {
+        return shoppingCartDao.getCarSizeNonLiveData()
+    }
+
 
 }

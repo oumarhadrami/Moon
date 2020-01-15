@@ -109,5 +109,12 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         return shopRef.await()
     }
 
+    suspend fun getCarSizeNonLiveData() : Int{
+        val totalSize = viewModelScope.async {
+            repo.getCarSizeNonLiveData()
+        }
+        return totalSize.await()
+    }
+
 
 }

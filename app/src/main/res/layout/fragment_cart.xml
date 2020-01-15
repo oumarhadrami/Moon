@@ -9,7 +9,11 @@
             type="com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel" />
     </data>
 
-        
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -242,7 +246,15 @@
 
 
     </androidx.core.widget.NestedScrollView>
-        
 
+        <ProgressBar
+            android:id="@+id/progressBarInCart"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:layout_height="wrap_content" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
