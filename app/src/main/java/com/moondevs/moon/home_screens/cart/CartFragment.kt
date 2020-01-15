@@ -144,15 +144,17 @@ class CartFragment : Fragment() {
          * Navigate to Live-Tracking only when the items are stored and document is ready to be used*/
         binding.placeOrder.setOnClickListener {
             placeOrder()
-            orderDoc.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
-                val isOrderInDataBase = documentSnapshot!!.exists()
-                if (isOrderPlaced && isOrderInDataBase){
+//            orderDoc.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+//                //val isOrderInDataBase = documentSnapshot!!.exists()
+//                val snapShopt = documentSnapshot!!
+//                Timber.i("${snapShopt["Total Amount"]}")
+//            }
+                if (isOrderPlaced){
                     binding.progressBarInCart.visibility = View.GONE
                     navigateToLiveTracking()
                 }
 
-                Timber.i("${documentSnapshot["Total Amount"]}")
-            }
+
 
 
         }
@@ -226,7 +228,11 @@ class CartFragment : Fragment() {
                     "Total Amount" to totalAmount,
                     "Delivery Fee" to deliveryFeeInt,
                     "Amount To Pay" to  totalAmount + deliveryFeeInt,
-                    "Total Items Count" to totalItemsCount
+                    "Total Items Count" to totalItemsCount,
+                    "isOrderAccepted" to false,
+                    "isOrderAssigned" to false,
+                    "isOrderCollected" to false,
+                    "isOrderDelivered" to false
                 )).addOnSuccessListener {
                     areFieldsStoredList.add(true)
                 }
