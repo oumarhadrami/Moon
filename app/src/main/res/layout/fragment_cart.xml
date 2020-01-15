@@ -254,6 +254,27 @@
             android:layout_margin="10dp"
             android:visibility="gone"
             android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/empty_cart_imageview"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:srcCompat="@drawable/ic_shopping_cart_empty"/>
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:fontFamily="@font/asap"
+            android:textColor="#8a8a8a"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:text="Place an order, Your cart looks empty."
+            android:layout_height="wrap_content"/>
+        </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

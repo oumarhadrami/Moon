@@ -433,11 +433,13 @@ class CartFragment : Fragment() {
                             .into(shopImageInCart)
                         shopNameInCart.text = shopNameInCartString
                         shopDetailsInCartLayout.visibility = View.VISIBLE
+                        binding.emptyCartImageview.visibility = View.GONE
                     }
                 }
                 else {
                     Timber.i("Items less than 0")
                     frameLayout.visibility = View.GONE
+                    binding.emptyCartImageview.visibility = View.VISIBLE
                 }
             }
         })
