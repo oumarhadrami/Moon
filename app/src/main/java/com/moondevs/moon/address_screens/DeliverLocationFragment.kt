@@ -24,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.moondevs.moon.R
 import com.moondevs.moon.address_screens.addresses_database.Address
 import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
@@ -39,6 +40,7 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
     private lateinit var map: GoogleMap
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var appBar : AppBarLayout
+    private lateinit var bottomNav : BottomNavigationView
     private lateinit var viewModel: AddressViewModel
 
 
@@ -54,9 +56,11 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
         binding.lifecycleOwner = this
 
 
-        //visibility of the appbar
+        //visibility of the AppBar and BottomNavView
         appBar = activity!!.findViewById(R.id.appbar)
+        bottomNav = activity!!.findViewById(R.id.nav_view)
         appBar.visibility = View.GONE
+        bottomNav.visibility = View.GONE
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -133,6 +137,7 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
                 }
                 /** Let UI thread sleep for a half a second while showing progressBar */
                 thread {
+
                     Thread.sleep((3 * 1000).toLong())
                     findNavController().navigate(DeliverLocationFragmentDirections.actionDeliverLocationFragmentToNavigationCart())
                 }.priority = Thread.NORM_PRIORITY
@@ -171,7 +176,10 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
     override fun onDestroyView() {
         super.onDestroyView()
         appBar.visibility = View.VISIBLE
+        bottomNav.visibility = View.VISIBLE
     }
+
+
 
 
 }
