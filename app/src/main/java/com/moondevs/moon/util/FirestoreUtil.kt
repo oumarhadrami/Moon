@@ -1,16 +1,20 @@
 package com.moondevs.moon.util
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.moondevs.moon.address_screens.addresses_database.Address
 import com.moondevs.moon.login_screens.User
+import timber.log.Timber
+import java.sql.RowId
 
 object FirestoreUtil {
     val firestoreInstance: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }
 
     private val currentUserDocRef: DocumentReference
         get() = firestoreInstance.document(
-            "users/${FirebaseAuth.getInstance().currentUser?.uid
+            "Users/${FirebaseAuth.getInstance().currentUser?.uid
                 ?: throw NullPointerException("UID is null.")}"
         )
 
@@ -42,5 +46,28 @@ object FirestoreUtil {
                 onComplete(it.toObject(User::class.java)!!)
             }
     }
+
+
+    fun insertAddress(address: Address, rowId: Long){
+        val currentUserAddressDoc= firestoreInstance.collection("Users")
+                                                        .document(FirebaseAuth.getInstance().currentUser!!.uid)
+                                                        .collection("Addresses")
+                                                        .document("Address $rowId")
+        val addressHashMap = hashMapOf(
+            "addressId" to rowId,
+            "name" to address.Name,
+            "phoneNumber" to address.PhoneNumber,
+            "latitude" to address.Latitude,
+            "longitude" to address.Longitude
+        )
+
+
+        currentUserAddressDoc.set(addressHashMap).addOnSuccessListener { Timber.d("DocumentSnapshot successfully written!") }
+           .addOnFailureListener { e -> Timber.d("Error writing document" + e) }
+
+    }
+
+
+
 
 }

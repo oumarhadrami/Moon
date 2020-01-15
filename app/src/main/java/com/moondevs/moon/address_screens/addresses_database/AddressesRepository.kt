@@ -28,6 +28,12 @@ class AddressesRepository (private val addressesDao: AddressesDao){
         return addressesDao.getLastAddedAddress()
     }
 
+    @WorkerThread
+    suspend fun getLastAddedAddressId() : Long{
+        val address = addressesDao.getLastAddedAddress()
+        return address.addressId
+    }
+
 
 
 }

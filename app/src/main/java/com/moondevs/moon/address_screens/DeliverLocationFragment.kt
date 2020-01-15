@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
@@ -27,6 +28,7 @@ import com.moondevs.moon.R
 import com.moondevs.moon.address_screens.addresses_database.Address
 import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentDeliverLocationBinding
+import com.moondevs.moon.util.FirestoreUtil
 import kotlinx.coroutines.launch
 import kotlin.concurrent.thread
 import kotlin.math.roundToInt
@@ -92,7 +94,11 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
             val latitude = newLatLng.latitude
             val longitude = newLatLng.longitude
             binding.latLngTextview.text = "$latitude , $longitude"
+
+
+            /** Handle confirm button click*/
             binding.confirmLocationButton.setOnClickListener {
+                /**  add conditions for UI*/
                 val phoneNumberString = binding.phoneNumberAddressTextfield.text.toString().trim()
                 val nameString = binding.nameAddressTextfield.text.toString().trim()
                 if (phoneNumberString.isEmpty() || phoneNumberString.length < 8){
@@ -109,6 +115,8 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
                 }
                 else binding.phoneNumberAddress.error = null
 
+
+                /** Get Address entered from UI*/
                 val address = Address(
                     Name = nameString,
                     PhoneNumber = "+222$phoneNumberString",
@@ -116,10 +124,16 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
                     Longitude = longitude.toString()
                 )
 
-                viewModel.viewModelScope.launch { viewModel.insert(address)}
-                binding.progressBarAddress.visibility = View.VISIBLE
+                /** Insert the address in database and firestore*/
+                viewModel.viewModelScope.launch {
+                    viewModel.insert(address)
+                    binding.progressBarAddress.visibility = View.VISIBLE
+                    val rowId = viewModel.getLastAddedAddressId()
+                    FirestoreUtil.insertAddress(address, rowId)
+                }
+                /** Let UI thread sleep for a half a second while showing progressBar */
                 thread {
-                    Thread.sleep((0.5 * 1000).toLong())
+                    Thread.sleep((3 * 1000).toLong())
                     findNavController().navigate(DeliverLocationFragmentDirections.actionDeliverLocationFragmentToNavigationCart())
                 }.priority = Thread.NORM_PRIORITY
 

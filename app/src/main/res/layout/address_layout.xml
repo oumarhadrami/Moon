@@ -42,6 +42,7 @@
                 android:layout_height="match_parent"
                 android:text="tevragh zeina, Hotel Halima"
                 android:textSize="12sp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp"
                 android:gravity="start"/>

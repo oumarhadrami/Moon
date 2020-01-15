@@ -109,6 +109,15 @@ class CartFragment : Fragment() {
                 binding.addressContainer.visibility = View.VISIBLE
                 binding.placeOrder.visibility = View.VISIBLE
                 binding.setDeliveryLocation.visibility = View.GONE
+
+                //put last added address in address container
+                addressViewModel.viewModelScope.launch {
+                    val currentAddress: Address = addressViewModel.getLastAddedAddress()
+                    binding.addressContainer.current_address.text = currentAddress.Name + "\n" +
+                            currentAddress.PhoneNumber + "\n" +
+                            currentAddress.Latitude + " , " +
+                            currentAddress.Longitude
+                }
             }
         })
 
@@ -117,14 +126,6 @@ class CartFragment : Fragment() {
             findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment())
         }
 
-        //put last added address in address container
-        addressViewModel.viewModelScope.launch {
-            val currentAddress: Address = addressViewModel.getLastAddedAddress()
-            binding.addressContainer.current_address.text = currentAddress.Name + "\n" +
-                                                            currentAddress.PhoneNumber + "\n" +
-                                                            currentAddress.Latitude + " , " +
-                                                            currentAddress.Longitude
-        }
 
         //Handling the place order button behavior
         binding.placeOrder.setOnClickListener {

@@ -42,5 +42,11 @@ class AddressViewModel (application: Application): ViewModel(){
         return currentAddress.await()
     }
 
+    suspend fun getLastAddedAddressId() : Long{
+        val rowId = viewModelScope.async {
+            repo.getLastAddedAddressId()
+        }
+        return rowId.await()
+    }
 
 }
