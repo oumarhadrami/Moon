@@ -18,11 +18,9 @@ class SearchFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_search,container,false)
-
         searchViewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
-        searchViewModel.text.observe(this, Observer {
-            binding.textSearch.text = it
-        })
+
+
         return binding.root
     }
 }

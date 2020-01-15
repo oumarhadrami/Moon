@@ -144,7 +144,7 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
 
             }
         }
-
+        //handling the camera moving mode
         map.setOnCameraMoveListener {
             binding.progressBarInMap.visibility = View.VISIBLE
             binding.latLngTextview.visibility = View.INVISIBLE
@@ -173,6 +173,7 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
 
     }
 
+    //make appBar and BottomNav visible outside this fragment
     override fun onDestroyView() {
         super.onDestroyView()
         appBar.visibility = View.VISIBLE

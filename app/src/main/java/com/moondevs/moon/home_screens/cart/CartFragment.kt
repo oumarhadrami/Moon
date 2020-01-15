@@ -54,19 +54,19 @@ class CartFragment : Fragment() {
         //initializing components
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_cart,container,false)
 
-        //initialize ShoppingCartViewModel
+        /**initialize ShoppingCartViewModel*/
         val application : Application = requireNotNull(this).activity!!.application
         val viewModelFactory = ShoppingCartViewModelFactory(application)
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = activity
 
-        //Initialize AddressViewModel
+        /**Initialize AddressViewModel*/
         val addressViewModelFactory = AddressViewModelFactory(application)
         addressViewModel = ViewModelProviders.of(activity!!, addressViewModelFactory).get(AddressViewModel::class.java)
 
 
-        //linking adapter to the recyclerview
+        /**linking adapter to the recyclerview*/
         val adapter = CartAdapter(viewModel,activity)
         binding.cartItemsList.adapter = adapter
         viewModel.allCartItems.observe(viewLifecycleOwner, Observer {
@@ -75,7 +75,7 @@ class CartFragment : Fragment() {
             }
         })
 
-        //setting the visibility of the layouts in toolbar and page depending on cart total items
+        /**setting the visibility of the layouts in toolbar and page depending on cart total items*/
         viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
             if (it == 0) {
                 activity!!.shop_details_in_cart_layout.visibility = View.GONE
@@ -88,7 +88,7 @@ class CartFragment : Fragment() {
         })
 
 
-        //asking for location permission if not granted and turning on gps buttoon if not enabled
+        /**asking for location permission if not granted and turning on gps buttoon if not enabled*/
         binding.setDeliveryLocation.setOnClickListener {
             if (foregroundAndBackgroundLocationPermissionApproved()) {
                 checkDeviceLocationSettingsAndTurningGpsButtonOn()
@@ -97,7 +97,7 @@ class CartFragment : Fragment() {
             requestForegroundAndBackgroundLocationPermissions()
         }
 
-        //set the visibility of addressContainer, placeOrder, setDeliveryLocation Views based on number of addresses
+        /**set the visibility of addressContainer, placeOrder, setDeliveryLocation Views based on number of addresses*/
         addressViewModel.allAddressesCount.observe(viewLifecycleOwner, Observer {
             if (it == 0) {
                 binding.addressContainer.visibility = View.GONE
@@ -121,13 +121,13 @@ class CartFragment : Fragment() {
             }
         })
 
-        //edit address button click
+        /**edit address button click*/
         binding.addressContainer.add_address.setOnClickListener {
             findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment())
         }
 
 
-        //Handling the place order button behavior
+        /**Handling the place order button behavior*/
         binding.placeOrder.setOnClickListener {
             findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
         }
@@ -142,7 +142,7 @@ class CartFragment : Fragment() {
 
 
 
-
+    /**Handling the approval of foreground and background permissions (background in case of using android Q or later)*/
     @TargetApi(29)
     private fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
         val foregroundLocationApproved = (
@@ -162,6 +162,7 @@ class CartFragment : Fragment() {
     }
 
 
+    /**Requesting foreground and background permissions (background in case of using android Q or later)*/
     @TargetApi(29 )
     private fun requestForegroundAndBackgroundLocationPermissions() {
         if (foregroundAndBackgroundLocationPermissionApproved())
@@ -216,7 +217,7 @@ class CartFragment : Fragment() {
     }
 
 
-
+    /**Turning the gps of the device in case it's off*/
     private fun checkDeviceLocationSettingsAndTurningGpsButtonOn(resolve : Boolean = true) {
         val locationRequest = LocationRequest.create().apply {
             priority = LocationRequest.PRIORITY_LOW_POWER
@@ -253,7 +254,6 @@ class CartFragment : Fragment() {
             }
         }
     }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_TURN_DEVICE_LOCATION_ON) {
@@ -261,7 +261,7 @@ class CartFragment : Fragment() {
         }
     }
 
-
+    /**Adding the image and name of the shop in the toolbar*/
     override fun onStart() {
         super.onStart()
 
@@ -295,7 +295,7 @@ class CartFragment : Fragment() {
     }
 
 
-
+    /**Making the image and name of the shop in toolbar invisible*/
     override fun onStop() {
         super.onStop()
         val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)

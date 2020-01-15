@@ -42,6 +42,9 @@ class ShopItemsFirestoreRecyclerAdapter(
     inner class ViewHolder  constructor(val binding: ShopitemItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: ShopItem) {
+
+            /**If there no items in the database, then we bind the views without change
+             * If there are items, then we bind the views according the cart item details from the cart table*/
             viewModel.viewModelScope.launch {
                     if (viewModel.recordExists(item.shopItemId)) {
                         val cartItem = viewModel.getRecord(item.shopItemId)
@@ -56,7 +59,6 @@ class ShopItemsFirestoreRecyclerAdapter(
                         binding.shopItemPrice.text = item.shopItemPrice
                     }
             }
-
             Glide.with(binding.shopItemImage.context)
                 .load(item.shopItemImage)
                 .apply(
@@ -69,7 +71,7 @@ class ShopItemsFirestoreRecyclerAdapter(
 
 
 
-            //on add button click
+            /**on add button click*/
             binding.add.setOnClickListener {
 
                 //check if cart is not empty and that shopname does not match with the one in DB
@@ -94,7 +96,6 @@ class ShopItemsFirestoreRecyclerAdapter(
                                         shopRef = shopRef
                                     )
                                 )
-
                                 item.shopItemCount = item.shopItemCount.plus(1)
                                 binding.itemCount.text = item.shopItemCount.toString()
                                 binding.add.visibility = View.GONE
@@ -106,7 +107,7 @@ class ShopItemsFirestoreRecyclerAdapter(
                 }
 
 
-            // on + button click
+            /** on + button click*/
             binding.addMore.setOnClickListener {
                 viewModel.viewModelScope.launch {
                     val cartItem = viewModel.getRecord(item.shopItemId)
@@ -118,7 +119,7 @@ class ShopItemsFirestoreRecyclerAdapter(
             }
 
 
-            // on - button click
+            /** on - button click*/
             binding.removeMore.setOnClickListener {
                 viewModel.viewModelScope.launch {
                     val cartItem = viewModel.getRecord(item.shopItemId)
@@ -145,6 +146,7 @@ class ShopItemsFirestoreRecyclerAdapter(
             binding.executePendingBindings()
         }
 
+        /**Method called when there are items from another shop*/
         private fun showDialog() {
             MaterialAlertDialogBuilder(context, R.style.AlerDialogStyle)
                 .setTitle(R.string.notice)
@@ -156,14 +158,14 @@ class ShopItemsFirestoreRecyclerAdapter(
                 .show()
         }
 
-
+        /**Empty the cart method*/
         private fun emptyCart() {
             viewModel.viewModelScope.launch {
                 viewModel.emptyCart()
             }
         }
 
-        // get the the cart item current values
+        /**Method to get the the cart item current values*/
         private fun getCartItem(item: ShopItem): CartItem {
 
             return CartItem(shopItemId = item.shopItemId,

@@ -33,7 +33,7 @@ class ShopFragment : Fragment() {
         //binding shop details to the views
         args = ShopFragmentArgs.fromBundle(arguments!!)
 
-
+        //Initializing viewModel
         val application : Application = requireNotNull(this).activity!!.application
         val viewModelFactory = ShoppingCartViewModelFactory(application)
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
@@ -41,15 +41,7 @@ class ShopFragment : Fragment() {
         binding.lifecycleOwner = this
 
 
-
-        //to get fields value from firebase ref
-        //        FirestoreUtil.firestoreInstance
-//            .document(""+args.ref)
-//            .get()
-//            .addOnSuccessListener {
-//                shopsNameText.text = it["shopName"].toString()}
-
-        // shop items reference and recyclerview adapter init
+        /** shop items reference and recyclerview adapter init*/
         val collectionPath = args.ref + "/Items"
         shopItemsRef = FirestoreUtil.firestoreInstance.collection(collectionPath)
         val options = FirestoreRecyclerOptions.Builder<ShopItem>().setQuery(shopItemsRef, ShopItem::class.java).build()
@@ -60,11 +52,12 @@ class ShopFragment : Fragment() {
 
 
 
-
+        /**Handling view cart click event*/
         binding.cart.setOnClickListener {
             findNavController().navigate(ShopFragmentDirections.actionShopFragmentToNavigationCart())
         }
 
+        /**Making cart view visible depending on total number of items in the cart table*/
         viewModel.allItemsCount.observe(this, Observer {
             if (it == 0)
                 binding.cart.visibility = View.GONE
@@ -77,6 +70,7 @@ class ShopFragment : Fragment() {
         return binding.root
     }
 
+    /**Displaying the shop name in the toolbar*/
     override fun onStart() {
         super.onStart()
         adapter.startListening()
@@ -90,6 +84,8 @@ class ShopFragment : Fragment() {
         shopDetailsInPageLayout.visibility = View.VISIBLE
     }
 
+
+    /**Hiding the shop name in the toolbar*/
     override fun onStop() {
         super.onStop()
         adapter.stopListening()

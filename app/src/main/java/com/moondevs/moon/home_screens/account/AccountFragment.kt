@@ -27,16 +27,15 @@ class AccountFragment : Fragment() {
         accountViewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
         auth = FirebaseAuth.getInstance()
 
+
+        // Log out with firebase
         binding.logout.setOnClickListener {
             auth.signOut()
             startActivity(Intent(activity, MainActivity::class.java))
         }
 
-        accountViewModel.text.observe(this, Observer {
-            binding.textAccount.text = it
-        })
 
-        // Log out with firebase
+
         return binding.root
     }
 

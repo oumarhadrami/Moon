@@ -11,9 +11,10 @@ import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentHomeBinding
+import timber.log.Timber
 
 
-const val MY_PERMISSIONS_REQUEST_LOCATION = 101
+
 class HomeFragment : Fragment() {
     private lateinit var auth :FirebaseAuth
 
@@ -33,8 +34,6 @@ class HomeFragment : Fragment() {
 
          */
 
-
-        //FirestoreUtil.updateCurrentUser(name = "Hadramy")
 
         binding.supermarketsLogo.setOnClickListener {
             it.findNavController().navigate(HomeFragmentDirections.actionNavigationHomeToShopsListFragment("Supermarkets"))
@@ -61,88 +60,7 @@ class HomeFragment : Fragment() {
         }
 
 
-        //request Location Permission
-        //getUserLocation()
         return binding.root
     }
 
-
-    override fun onStart() {
-        super.onStart()
-        //add content for toolbar
-        val locationLayout = activity!!.findViewById<View>(R.id.location_layout)
-        locationLayout.visibility = View.VISIBLE
-    }
-
-    override fun onStop() {
-        super.onStop()
-        val locationLayout = activity!!.findViewById<View>(R.id.location_layout)
-        locationLayout.visibility = View.GONE
-
-    }
-
-
-    /*private fun getUserLocation() {
-        // Here, thisActivity is the current activity
-        if (ContextCompat.checkSelfPermission(binding.root.context,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION)
-            != PackageManager.PERMISSION_GRANTED) {
-
-            // Permission is not granted
-            // Should we show an explanation?
-            if (activity?.let {
-                    ActivityCompat.shouldShowRequestPermissionRationale(
-                        it,
-                        android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                }!!) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(
-                    activity!!,
-                    arrayOf(android.Manifest.permission.ACCESS_COARSE_LOCATION),
-                    MY_PERMISSIONS_REQUEST_LOCATION)
-
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
-            }
-        } else {
-            // Permission has already been granted
-
-        }
-
-    }
-
-
-    override fun onRequestPermissionsResult(requestCode: Int,
-                                            permissions: Array<String>, grantResults: IntArray) {
-        when (requestCode) {
-            MY_PERMISSIONS_REQUEST_LOCATION -> {
-                // If request is cancelled, the result arrays are empty.
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    // permission was granted, yay! Do the
-                    // contacts-related task you need to do.
-                    Snackbar.make(binding.root, "Retrieving your location..", Snackbar.LENGTH_SHORT).show()
-                    //get Longtitude and Latitude
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-
-                    Snackbar.make(binding.root, "Please enable location in settings!", Snackbar.LENGTH_SHORT).show()
-                }
-                return
-            }
-
-            // Add other 'when' lines to check for other
-            // permissions this app might request.
-            else -> {
-                // Ignore all other requests.
-            }
-        }
-    }
-
-     */
 }

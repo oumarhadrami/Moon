@@ -22,13 +22,16 @@ class SplashActivity : AppCompatActivity() {
             R.layout.activity_splash
         )
 
+        /**Adding the video from raw folder and playing it while the thread is sleeping*/
         val uri = Uri.parse("android.resource://" + this.packageName + "/" + R.raw.splashvideo)
         binding.video.setVideoURI(uri)
         binding.video.start()
 
-        // initialize firebase
+        /** initialize firebase auth */
         auth = FirebaseAuth.getInstance()
 
+        /**Thread sleeps for 3 seconds and then naviagte
+         * to proper activity depending on whether the user s logged in or not*/
         thread {
             Thread.sleep((3 * 1000).toLong())
             if (auth.currentUser == null)

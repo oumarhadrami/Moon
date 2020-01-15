@@ -40,31 +40,31 @@ class VerifyNumberFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_verify_number, container, false)
 
-        //move layout up keyboard
+        /**move layout up keyboard*/
         activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
-        //make resend orange
+        /**make resend orange*/
         makeResendOrange()
 
-        //Initialize firebase Auth
+        /**Initialize firebase Auth*/
         auth = FirebaseAuth.getInstance()
         auth.setLanguageCode(Locale.getDefault().language)
 
-        // Get phone number from previous fragment
+        /** Get phone number from previous fragment*/
         val args = VerifyNumberFragmentArgs.fromBundle(arguments!!)
         val phoneNumber = args.phoneNumber
         binding.phoneNumberVerification.text = phoneNumber
 
 
-        //start the phone verification process
+        /**start the phone verification process*/
         verifyPhoneNumber(phoneNumber)
 
-        //validate otp Manually
+        /**validate otp Manually*/
         binding.enterOtpButton.setOnClickListener {
             authenticateManually()
         }
 
-        //resend code
+        /**resend code*/
         binding.resend.isEnabled = false
         binding.resend.setOnClickListener {
             Snackbar.make(it, "verification is being sent. check your sms inbox", Snackbar.LENGTH_LONG).setAction("Action", null).show()

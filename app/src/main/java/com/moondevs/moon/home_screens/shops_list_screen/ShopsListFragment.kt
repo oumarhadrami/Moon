@@ -29,9 +29,9 @@ class ShopsListFragment : Fragment() {
 
 
         //get shopType from home fragment
-        args =
-            ShopsListFragmentArgs.fromBundle(arguments!!)
+        args = ShopsListFragmentArgs.fromBundle(arguments!!)
 
+        /**Initializing the collection for all shops according the shop type and adapter to the recyclerview*/
         shopsRef = FirestoreUtil.firestoreInstance.collection("Shops/"+ args.shopType + "/" + args.shopType)
         val options = FirestoreRecyclerOptions.Builder<Shop>().setQuery(shopsRef, Shop::class.java).build()
         adapter = ShopFirestoreRecyclerAdapter(options)
@@ -44,6 +44,7 @@ class ShopsListFragment : Fragment() {
     }
 
 
+    /**Displaying shops type in the toolbar*/
     override fun onStart() {
         super.onStart()
         adapter.startListening()
@@ -54,6 +55,7 @@ class ShopsListFragment : Fragment() {
         shopsCategoryLayout.visibility = View.VISIBLE
     }
 
+    /**Hiding the shops type in toolbar*/
     override fun onStop() {
         super.onStop()
         adapter.stopListening()

@@ -26,6 +26,7 @@ class ShopFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop>) : Fi
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Shop) {
+            /**Binding name, rating, distance, and image of the shop to the view*/
             binding.shopName.text = item.shopName
             binding.rating.text = item.shopRating
             binding.distance.text = item.shopDistance
@@ -38,6 +39,7 @@ class ShopFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop>) : Fi
                 )
                 .into(binding.shopImage)
 
+            /**handling the click of the shop event*/
             binding.shopContainer.setOnClickListener {
                 it.findNavController().navigate(ShopsListFragmentDirections.actionShopsListFragmentToShopFragment(""+snapshots.getSnapshot(adapterPosition).reference.path, item.shopName, item.shopImage))
             }

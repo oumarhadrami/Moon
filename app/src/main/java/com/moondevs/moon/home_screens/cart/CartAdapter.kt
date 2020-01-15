@@ -34,20 +34,24 @@ class CartAdapter(val viewModel: ShoppingCartViewModel, val activity: FragmentAc
 
         @SuppressLint("SetTextI18n")
         fun bind(item: CartItem) {
+
+            //binding the name of the item to view
             binding.cart = item
+
+            // binding item quantity to the view with MRU at the end
             val currecyText = " MRU"
             binding.cartItemQuantity.text = item.shopItemQuantity.toString()
             binding.cartPriceByQuantity.text = item.shopItemPriceByQuantity.toString() + currecyText
 
 
-
+            //handling the add more button click
             binding.cartAddMore.setOnClickListener {
                 viewModel.incrementQuantity(item)
                 binding.cartItemQuantity.text = item.shopItemQuantity.toString()
                 binding.cartPriceByQuantity.text = item.shopItemPriceByQuantity.toString() + currecyText
             }
 
-
+            //handling the remove more button click
             binding.cartRemoveMore.setOnClickListener {
                 viewModel.decerementQuantity(item)
                 binding.cartItemQuantity.text = item.shopItemQuantity.toString()

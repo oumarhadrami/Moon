@@ -33,7 +33,6 @@
                     android:layout_height="match_parent">
                 <include
                     android:id="@+id/location_layout"
-                    android:visibility="gone"
                     layout="@layout/location_in_toolbar"/>
 
                 <include
