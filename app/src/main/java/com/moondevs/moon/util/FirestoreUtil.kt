@@ -53,7 +53,7 @@ object FirestoreUtil {
         val currentUserAddressDoc= firestoreInstance.collection("Users")
                                                         .document(FirebaseAuth.getInstance().currentUser!!.uid)
                                                         .collection("Addresses")
-                                                        .document("Address $rowId")
+                                                        .document()
         val addressHashMap = hashMapOf(
             "addressId" to rowId,
             "name" to address.Name,
