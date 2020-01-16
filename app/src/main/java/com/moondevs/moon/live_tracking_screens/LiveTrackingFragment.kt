@@ -14,6 +14,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.moondevs.moon.R
@@ -54,6 +55,13 @@ class LiveTrackingFragment : Fragment() {
         /**Get current order once it's placed from cart fragment*/
         shoppingCartViewModel.viewModelScope.launch {
             Timber.i("${shoppingCartViewModel.getLastAddedOrder()}")
+        }
+
+
+
+        /**Navigating back after click the close button*/
+        binding.closeTracking.setOnClickListener {
+            findNavController().navigate(R.id.navigation_account)
         }
 
         return binding.root

@@ -15,21 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <FrameLayout
-            android:id="@+id/toolbar_framelayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <include
-                android:id="@+id/order_placing_screen"
-                android:visibility="gone"
-                layout="@layout/placing_order_layout"/>
-
-            <include
-                android:id="@+id/order_placed_screen"
-                android:visibility="gone"
-                layout="@layout/order_placed_layout"/>
-        </FrameLayout>
 
         <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

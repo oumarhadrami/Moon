@@ -33,8 +33,8 @@
             android:id="@+id/action_navigation_cart_to_deliverLocationFragment"
             app:destination="@id/deliverLocationFragment" />
         <action
-            android:id="@+id/action_navigation_cart_to_liveTrackingFragment"
-            app:destination="@id/liveTrackingFragment" />
+            android:id="@+id/action_navigation_cart_to_placeOrderFragment"
+            app:destination="@id/placeOrderFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_account"
@@ -91,5 +91,24 @@
         android:id="@+id/liveTrackingFragment"
         android:name="com.moondevs.moon.live_tracking_screens.LiveTrackingFragment"
         tools:layout="@layout/fragment_live_tracking"
-        android:label="LiveTrackingFragment" />
+        android:label="LiveTrackingFragment" >
+        <action
+            android:id="@+id/action_liveTrackingFragment_to_navigation_account"
+            app:destination="@id/navigation_account" />
+    </fragment>
+    <fragment
+        android:id="@+id/placeOrderFragment"
+        tools:layout="@layout/fragment_place_order"
+        android:name="com.moondevs.moon.home_screens.cart.PlaceOrderFragment"
+        android:label="PlaceOrderFragment" >
+        <argument
+            android:name="instructions"
+            app:argType="string" />
+        <argument
+            android:name="deliveryFee"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_placeOrderFragment_to_liveTrackingFragment"
+            app:destination="@id/liveTrackingFragment" />
+    </fragment>
 </navigation>
