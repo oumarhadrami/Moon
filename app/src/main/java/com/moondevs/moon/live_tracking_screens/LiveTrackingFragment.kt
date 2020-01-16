@@ -16,6 +16,7 @@ import com.moondevs.moon.databinding.FragmentLiveTrackingBinding
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 
 class LiveTrackingFragment : Fragment() {
@@ -30,6 +31,7 @@ class LiveTrackingFragment : Fragment() {
         shoppingCartViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
         shoppingCartViewModel.viewModelScope.launch {
             shoppingCartViewModel.emptyCart()
+            Timber.i("${shoppingCartViewModel.getLastAddedOrder()}")
         }
         return binding.root
     }

@@ -186,6 +186,7 @@ class CartFragment : Fragment() {
                 "Delivery Fee" to deliveryFeeInt,
                 "Amount To Pay" to  totalAmount + deliveryFeeInt,
                 "Total Items Count" to totalItemsCount,
+                "Instructions" to binding.instructionsTextfield.text?.toString(),
                 "isOrderAccepted" to false,
                 "isOrderAssigned" to false,
                 "isOrderCollected" to false,
@@ -258,18 +259,22 @@ class CartFragment : Fragment() {
         }
     }
 
+    /**Checking if the number of items stores matches the size of the cart rows
+     * Saving the reference to the document of this order in the location database
+     * Navigate to Live-Tracking once the order has been placed successfuly*/
     private fun confirmPlacingOrder(itemsStoredSize: Int) {
-        viewModel.allItemsCount.observe(viewLifecycleOwner, Observer { allItemsCount ->
-            areItemsStored = itemsStoredSize == allItemsCount
+        viewModel.numberOfUniqueItems.observe(viewLifecycleOwner, Observer { numberOfUniqueItems ->
+            areItemsStored = itemsStoredSize == numberOfUniqueItems
             if (areItemsStored){
                 isOrderPlaced = true
                 viewModel.viewModelScope.launch {
                     viewModel.insertCurrentOrder(getCurrentOrder())
-                    Timber.i("${viewModel.getLastAddedOrder()}")
                 }}
 
-            if (isOrderPlaced)
-                navigateToLiveTracking()
+            if (isOrderPlaced){
+                Timber.i("Items Stored")
+                Timber.i("Order Placed")
+                navigateToLiveTracking()}
         })
 
     }
