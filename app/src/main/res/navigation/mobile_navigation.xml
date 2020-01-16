@@ -94,11 +94,14 @@
         android:label="LiveTrackingFragment" >
         <action
             android:id="@+id/action_liveTrackingFragment_to_navigation_account"
-            app:destination="@id/navigation_account" />
+            app:destination="@id/navigation_account"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/navigation_cart" />
     </fragment>
     <fragment
         android:id="@+id/placeOrderFragment"
         tools:layout="@layout/fragment_place_order"
+        app:launchSingleTop="true"
         android:name="com.moondevs.moon.home_screens.cart.PlaceOrderFragment"
         android:label="PlaceOrderFragment" >
         <argument
@@ -109,6 +112,7 @@
             app:argType="string" />
         <action
             android:id="@+id/action_placeOrderFragment_to_liveTrackingFragment"
-            app:destination="@id/liveTrackingFragment" />
+            app:destination="@id/liveTrackingFragment"
+            app:popUpTo="@+id/navigation_cart" />
     </fragment>
 </navigation>

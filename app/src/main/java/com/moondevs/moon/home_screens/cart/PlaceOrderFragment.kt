@@ -202,7 +202,7 @@ class PlaceOrderFragment : Fragment() {
                         viewModel.emptyCart()
                         Timber.i("${viewModel.getLastAddedOrder()}")
                     }
-                    findNavController().navigate(R.id.liveTrackingFragment)
+                    findNavController().navigate(PlaceOrderFragmentDirections.actionPlaceOrderFragmentToLiveTrackingFragment())
                 }, 2000)
             }
         })
