@@ -29,10 +29,7 @@ class LiveTrackingFragment : Fragment() {
         val application : Application = requireNotNull(this).activity!!.application
         val viewModelFactory = ShoppingCartViewModelFactory(application)
         shoppingCartViewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
-        shoppingCartViewModel.viewModelScope.launch {
-            shoppingCartViewModel.emptyCart()
-            Timber.i("${shoppingCartViewModel.getLastAddedOrder()}")
-        }
+
         return binding.root
     }
 

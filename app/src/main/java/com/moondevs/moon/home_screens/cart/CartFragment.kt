@@ -9,6 +9,7 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.provider.Settings
 import android.view.View
@@ -28,6 +29,8 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.material.appbar.AppBarLayout
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
@@ -45,6 +48,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.address_layout.view.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.concurrent.thread
 
 class CartFragment : Fragment() {
 
@@ -58,6 +62,8 @@ class CartFragment : Fragment() {
     @Volatile private var areItemsStored : Boolean = false
     @Volatile private var areFieldsStored : Boolean = false
     @Volatile private var isOrderPlaced : Boolean = false
+    private lateinit var appBar : AppBarLayout
+    private lateinit var bottomNav : BottomNavigationView
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -75,6 +81,9 @@ class CartFragment : Fragment() {
         val addressViewModelFactory = AddressViewModelFactory(application)
         addressViewModel = ViewModelProviders.of(activity!!, addressViewModelFactory).get(AddressViewModel::class.java)
 
+        /**Initialize the AppBar and BottomNavView*/
+        appBar = activity!!.findViewById(R.id.appbar)
+        bottomNav = activity!!.findViewById(R.id.nav_view)
 
         /**linking adapter to the recyclerview*/
         val adapter = CartAdapter(viewModel,activity)
@@ -92,9 +101,9 @@ class CartFragment : Fragment() {
                 binding.cartLayout.visibility = View.GONE
             }
             else{
-            binding.cartLayout.visibility = View.VISIBLE
-            activity!!.shop_details_in_cart_layout.visibility = View.VISIBLE
-        }
+                binding.cartLayout.visibility = View.VISIBLE
+                activity!!.shop_details_in_cart_layout.visibility = View.VISIBLE
+            }
         })
 
 
@@ -104,7 +113,7 @@ class CartFragment : Fragment() {
                 checkDeviceLocationSettingsAndTurningGpsButtonOn()
             }
             else
-            requestForegroundAndBackgroundLocationPermissions()
+                requestForegroundAndBackgroundLocationPermissions()
         }
 
         /**set the visibility of addressContainer, placeOrder, setDeliveryLocation Views based on number of addresses*/
@@ -162,13 +171,16 @@ class CartFragment : Fragment() {
     /**Method handling the placing of the order
      * Add Fields to the database*/
     private fun placeOrder() {
-        binding.progressBarInCart.visibility = View.VISIBLE
+        appBar.visibility = View.GONE
+        bottomNav.visibility = View.GONE
+        binding.cartLayout.visibility = View.GONE
+        binding.orderPlacingScreen.visibility = View.VISIBLE
         //Document Reference in the firestore database to the order being placed
         orderDoc = FirestoreUtil.firestoreInstance
-                            .collection("Orders")
-                            .document(FirebaseAuth.getInstance().currentUser?.uid!!)
-                            .collection("Orders")
-                            .document()
+            .collection("Orders")
+            .document(FirebaseAuth.getInstance().currentUser?.uid!!)
+            .collection("Orders")
+            .document()
 
 
 
@@ -181,22 +193,22 @@ class CartFragment : Fragment() {
             viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
                 var totalItemsCount = it
 
-            orderDoc.set(hashMapOf(
-                "Total Amount" to totalAmount,
-                "Delivery Fee" to deliveryFeeInt,
-                "Amount To Pay" to  totalAmount + deliveryFeeInt,
-                "Total Items Count" to totalItemsCount,
-                "Instructions" to binding.instructionsTextfield.text?.toString(),
-                "isOrderAccepted" to false,
-                "isOrderAssigned" to false,
-                "isOrderCollected" to false,
-                "isOrderDelivered" to false
-            )).addOnSuccessListener {
-                areFieldsStored = true
-                this.storeAddress(areFieldsStored)
-            }
-                .addOnFailureListener { areFieldsStored = false }
-        })
+                orderDoc.set(hashMapOf(
+                    "Total Amount" to totalAmount,
+                    "Delivery Fee" to deliveryFeeInt,
+                    "Amount To Pay" to  totalAmount + deliveryFeeInt,
+                    "Total Items Count" to totalItemsCount,
+                    "Instructions" to binding.instructionsTextfield.text?.toString(),
+                    "isOrderAccepted" to false,
+                    "isOrderAssigned" to false,
+                    "isOrderCollected" to false,
+                    "isOrderDelivered" to false
+                )).addOnSuccessListener {
+                    areFieldsStored = true
+                    this.storeAddress(areFieldsStored)
+                }
+                    .addOnFailureListener { areFieldsStored = false }
+            })
         })
 
 
@@ -248,7 +260,6 @@ class CartFragment : Fragment() {
                     )
                     val orderItemDoc = orderDoc.collection("Items").document()
                     orderItemDoc.set(cartItem).addOnSuccessListener {
-                        binding.progressBarInCart.visibility = View.GONE
                         itemsStoredSize += 1
                         confirmPlacingOrder(itemsStoredSize)
                     }
@@ -272,17 +283,23 @@ class CartFragment : Fragment() {
                 }}
 
             if (isOrderPlaced){
+                binding.orderPlacingScreen.visibility = View.GONE
+                binding.orderPlacedScreen.visibility = View.VISIBLE
                 Timber.i("Items Stored")
                 Timber.i("Order Placed")
-                navigateToLiveTracking()}
+                Handler().postDelayed({
+                    viewModel.viewModelScope.launch {
+                    viewModel.emptyCart()
+                    Timber.i("${viewModel.getLastAddedOrder()}")
+                }
+                    findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
+                }, 2000)
+            }
         })
 
     }
 
     /**Store the orderDoc and Navigate to Live-Tracking*/
-    private fun navigateToLiveTracking() {
-        findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
-    }
 
     private fun getCurrentOrder() : CurrentOrder {
         return CurrentOrder(orderDoc = orderDoc.path)
@@ -295,16 +312,16 @@ class CartFragment : Fragment() {
         val foregroundLocationApproved = (
                 PackageManager.PERMISSION_GRANTED ==
                         ActivityCompat.checkSelfPermission(activity!!,
-                                Manifest.permission.ACCESS_FINE_LOCATION))
+                            Manifest.permission.ACCESS_FINE_LOCATION))
         val backgroundPermissionApproved =
-                if (runningQOrLater) {
-                    PackageManager.PERMISSION_GRANTED ==
-                            ActivityCompat.checkSelfPermission(
-                                    activity!!, Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                            )
-                } else {
-                    true
-                }
+            if (runningQOrLater) {
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(
+                            activity!!, Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                        )
+            } else {
+                true
+            }
         return foregroundLocationApproved && backgroundPermissionApproved
     }
 
@@ -324,39 +341,39 @@ class CartFragment : Fragment() {
         }
         Timber.d("Request foreground only location permission")
         ActivityCompat.requestPermissions(
-                activity!!,
-                permissionsArray,
-                resultCode
+            activity!!,
+            permissionsArray,
+            resultCode
         )
     }
 
 
     override fun onRequestPermissionsResult(
-            requestCode: Int,
-            permissions: Array<String>,
-            grantResults: IntArray
+        requestCode: Int,
+        permissions: Array<String>,
+        grantResults: IntArray
     ) {
         Timber.d("onRequestPermissionResult")
 
         if (
-                grantResults.isEmpty() ||
-                grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
-                (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE &&
-                        grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] ==
-                        PackageManager.PERMISSION_DENIED))
+            grantResults.isEmpty() ||
+            grantResults[LOCATION_PERMISSION_INDEX] == PackageManager.PERMISSION_DENIED ||
+            (requestCode == REQUEST_FOREGROUND_AND_BACKGROUND_PERMISSION_RESULT_CODE &&
+                    grantResults[BACKGROUND_LOCATION_PERMISSION_INDEX] ==
+                    PackageManager.PERMISSION_DENIED))
         {
             Snackbar.make(
-                    binding.root,
-                    R.string.permission_denied_explanation,
-                    Snackbar.LENGTH_INDEFINITE
+                binding.root,
+                R.string.permission_denied_explanation,
+                Snackbar.LENGTH_INDEFINITE
             )
-                    .setAction(R.string.settings) {
-                        startActivity(Intent().apply {
-                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-                            data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        })
-                    }.show()
+                .setAction(R.string.settings) {
+                    startActivity(Intent().apply {
+                        action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                        data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    })
+                }.show()
         } else {
             // permission granted and user can open the map
             //findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliveryLocationActivity())
@@ -462,11 +479,14 @@ class CartFragment : Fragment() {
     }
 
 
-    /**Making the image and name of the shop in toolbar invisible*/
+    /**Making the image and name of the shop in toolbar invisible
+     * visisbility of appbar and bottomnav*/
     override fun onStop() {
         super.onStop()
         val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)
         shopDetailsInCartLayout.visibility = View.GONE
+        appBar.visibility = View.VISIBLE
+        bottomNav.visibility = View.VISIBLE
 
 
     }

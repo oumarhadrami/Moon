@@ -9,13 +9,29 @@
             type="com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel" />
     </data>
 
+
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <FrameLayout
+            android:id="@+id/toolbar_framelayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    
-    <androidx.core.widget.NestedScrollView
+            <include
+                android:id="@+id/order_placing_screen"
+                android:visibility="gone"
+                layout="@layout/placing_order_layout"/>
+
+            <include
+                android:id="@+id/order_placed_screen"
+                android:visibility="gone"
+                layout="@layout/order_placed_layout"/>
+        </FrameLayout>
+
+        <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:id="@+id/cart_layout"
         android:layout_height="match_parent">
@@ -255,6 +271,7 @@
             android:layout_margin="10dp"
             android:visibility="gone"
             android:layout_height="wrap_content" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:id="@+id/empty_cart_imageview"
@@ -277,6 +294,6 @@
             android:layout_height="wrap_content"/>
         </LinearLayout>
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+   </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>
