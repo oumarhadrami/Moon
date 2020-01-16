@@ -485,8 +485,6 @@ class CartFragment : Fragment() {
         super.onStop()
         val shopDetailsInCartLayout = activity!!.findViewById<View>(R.id.shop_details_in_cart_layout)
         shopDetailsInCartLayout.visibility = View.GONE
-        appBar.visibility = View.VISIBLE
-        bottomNav.visibility = View.VISIBLE
 
 
     }
