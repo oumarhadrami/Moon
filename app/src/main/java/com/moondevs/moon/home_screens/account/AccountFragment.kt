@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.auth.FirebaseAuth
 import com.moondevs.moon.introduction_screen.MainActivity
@@ -19,16 +18,18 @@ class AccountFragment : Fragment() {
 
     private lateinit var auth : FirebaseAuth
 
-    private lateinit var accountViewModel: AccountViewModel
+    private lateinit var viewModel: AccountViewModel
     private lateinit var binding : FragmentAccountBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
+        /**Initialize binding, viewmodel, and firebase auth*/
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account,container,false)
-        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
         auth = FirebaseAuth.getInstance()
 
 
-        // Log out with firebase
+        /**Log out with firebase*/
         binding.logout.setOnClickListener {
             auth.signOut()
             startActivity(Intent(activity, MainActivity::class.java))
@@ -41,7 +42,7 @@ class AccountFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        //add content for toolbar
+        //Make the frameLayout View.GONE
         val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
         frameLayout.visibility = View.GONE
     }
