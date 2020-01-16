@@ -2,12 +2,15 @@ package com.moondevs.moon.login_screens
 
 
 import android.app.Activity
+import android.content.res.Resources
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.LinearLayout
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.moondevs.moon.R
@@ -18,6 +21,12 @@ class LogInFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_log_in,container,false)
 
+        /**Making empty textview size of statusBar*/
+        val params = ConstraintLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            getStatusBarHeight()
+        )
+        binding.statusbarTextviewInLogin.layoutParams = params
 
         /**make keyboard appear*/
         binding.phoneNumberLogin.requestFocus()
@@ -48,5 +57,18 @@ class LogInFragment : Fragment() {
         return binding.root
     }
 
+
+    private fun getStatusBarHeight(): Int {
+        val height: Int
+        val myResources: Resources = resources
+        val idStatusBarHeight: Int =
+            myResources.getIdentifier("status_bar_height", "dimen", "android")
+        height = if (idStatusBarHeight > 0) {
+            resources.getDimensionPixelSize(idStatusBarHeight)
+        } else {
+            0
+        }
+        return height
+    }
 
 }

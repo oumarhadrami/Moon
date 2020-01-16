@@ -13,6 +13,10 @@
         android:orientation="vertical"
         tools:context=".live_tracking_screens.LiveTrackingFragment">
 
+        <com.google.android.material.textview.MaterialTextView
+            android:layout_width="match_parent"
+            android:id="@+id/statusbar_textview"
+            android:layout_height="4dp"/>
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize">
