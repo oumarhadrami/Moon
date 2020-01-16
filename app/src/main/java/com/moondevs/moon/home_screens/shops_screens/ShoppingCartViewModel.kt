@@ -4,6 +4,8 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.moondevs.moon.home_screens.cart.order_database.CurrentOrder
+import com.moondevs.moon.home_screens.cart.order_database.CurrentOrderRepository
 import com.moondevs.moon.home_screens.shops_screens.cart_database.CartItem
 import com.moondevs.moon.home_screens.shops_screens.cart_database.ShoppingCartDatabase
 import com.moondevs.moon.home_screens.shops_screens.cart_database.ShoppingCartRepository
@@ -12,11 +14,15 @@ import kotlinx.coroutines.launch
 
 class ShoppingCartViewModel(application: Application): ViewModel()  {
     private val repo : ShoppingCartRepository
+    private val currentOrdersRepo : CurrentOrderRepository
     val allCartItems : LiveData<List<CartItem>>
     val allItemsCount : LiveData<Int>
     val numberOfUniqueItems : LiveData<Int>
     val totalAmount : LiveData<Int>
     val toPayAmount : LiveData<Int>
+
+    /**Init the variables for currentOrder table*/
+    val currentOrders : LiveData<List<CurrentOrder>>
 
 
     init {
@@ -27,6 +33,15 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         totalAmount = repo.totalAmout
         toPayAmount = repo.toPayAmount
         numberOfUniqueItems = repo.numberOfUniqueItems
+
+        /**Init the currentOrder table*/
+        val currentOrdersDao = ShoppingCartDatabase.getDatabase(application).currentOrdersDao
+        currentOrdersRepo = CurrentOrderRepository(currentOrdersDao)
+        currentOrders = currentOrdersRepo.currentOrders
+
+
+
+
 
     }
 
@@ -117,6 +132,29 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         }
         return totalSize.await()
     }
+
+
+    /**Init methods for currentOrder Table*/
+    suspend fun insertCurrentOrder(currentOrder: CurrentOrder) = viewModelScope.launch {
+        currentOrdersRepo.insert(currentOrder)
+    }
+
+    suspend fun updateCurrentOrder(currentOrder: CurrentOrder) = viewModelScope.launch {
+        currentOrdersRepo.update(currentOrder)
+    }
+
+    suspend fun deleteCurrentOrder(currentOrder: CurrentOrder) = viewModelScope.launch {
+        currentOrdersRepo.deleteCurrentOrder(currentOrder)
+    }
+
+    suspend fun getLastAddedOrder() : CurrentOrder{
+        val currentOrder = viewModelScope.async {
+            currentOrdersRepo.getLastAddedOrder()
+        }
+        return currentOrder.await()
+    }
+
+
 
 
 

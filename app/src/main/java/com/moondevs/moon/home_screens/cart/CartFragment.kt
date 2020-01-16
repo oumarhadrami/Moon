@@ -37,6 +37,7 @@ import com.moondevs.moon.address_screens.AddressViewModel
 import com.moondevs.moon.address_screens.addresses_database.Address
 import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentCartBinding
+import com.moondevs.moon.home_screens.cart.order_database.CurrentOrder
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
 import com.moondevs.moon.util.FirestoreUtil
@@ -56,6 +57,7 @@ class CartFragment : Fragment() {
     @Volatile private var isAddressStored : Boolean = false
     @Volatile private var areItemsStored : Boolean = false
     @Volatile private var areFieldsStored : Boolean = false
+    @Volatile private var isOrderPlaced : Boolean = false
 
     @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -246,7 +248,8 @@ class CartFragment : Fragment() {
                     val orderItemDoc = orderDoc.collection("Items").document()
                     orderItemDoc.set(cartItem).addOnSuccessListener {
                         binding.progressBarInCart.visibility = View.GONE
-                        navigateToLiveTracking()
+                        itemsStoredSize += 1
+                        confirmPlacingOrder(itemsStoredSize)
                     }
                         .addOnFailureListener { }
                 }
@@ -255,8 +258,29 @@ class CartFragment : Fragment() {
         }
     }
 
+    private fun confirmPlacingOrder(itemsStoredSize: Int) {
+        viewModel.allItemsCount.observe(viewLifecycleOwner, Observer { allItemsCount ->
+            areItemsStored = itemsStoredSize == allItemsCount
+            if (areItemsStored){
+                isOrderPlaced = true
+                viewModel.viewModelScope.launch {
+                    viewModel.insertCurrentOrder(getCurrentOrder())
+                    Timber.i("${viewModel.getLastAddedOrder()}")
+                }}
+
+            if (isOrderPlaced)
+                navigateToLiveTracking()
+        })
+
+    }
+
+    /**Store the orderDoc and Navigate to Live-Tracking*/
     private fun navigateToLiveTracking() {
         findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
+    }
+
+    private fun getCurrentOrder() : CurrentOrder {
+        return CurrentOrder(orderDoc = orderDoc.path)
     }
 
 

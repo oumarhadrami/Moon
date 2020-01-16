@@ -4,10 +4,13 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.moondevs.moon.home_screens.cart.order_database.CurrentOrder
+import com.moondevs.moon.home_screens.cart.order_database.CurrentOrdersDao
 
-@Database(entities = [CartItem::class], version = 1, exportSchema = false)
+@Database(entities = [CartItem::class, CurrentOrder::class], version = 1, exportSchema = false)
 abstract class ShoppingCartDatabase : RoomDatabase(){
     abstract val shoppingCartDao: ShoppingCartDao
+    abstract val currentOrdersDao : CurrentOrdersDao
 
     companion object{
 
