@@ -289,10 +289,10 @@ class CartFragment : Fragment() {
                 Timber.i("Order Placed")
                 Handler().postDelayed({
                     viewModel.viewModelScope.launch {
-                    viewModel.emptyCart()
-                    Timber.i("${viewModel.getLastAddedOrder()}")
-                }
-                    findNavController().navigate(CartFragmentDirections.actionNavigationCartToLiveTrackingFragment())
+                        viewModel.emptyCart()
+                        Timber.i("${viewModel.getLastAddedOrder()}")
+                    }
+                    findNavController().navigate(R.id.liveTrackingFragment)
                 }, 2000)
             }
         })

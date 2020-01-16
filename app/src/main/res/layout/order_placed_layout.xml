@@ -10,24 +10,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="match_parent"
-        app:srcCompat="@drawable/ic_circle"
-        android:layout_marginBottom="20dp"
-        android:layout_height="wrap_content"/>
+        <ImageView
+            android:layout_width="match_parent"
+            app:srcCompat="@drawable/ic_circle"
+            android:layout_marginBottom="20dp"
+            android:layout_height="wrap_content"/>
 
     </FrameLayout>
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
         style="@style/TextAppearance.Wait"
-        android:text="Yay! Order Placed"
+        android:text="@string/yay_order_placed"
         android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"/>
 
     <com.google.android.material.textview.MaterialTextView
         android:layout_width="match_parent"
-        android:text="@string/we_re_placing_your_order"
+        android:text="@string/your_order_will_be_delivered_shortly"
         android:fontFamily="@font/asap"
         android:gravity="center"
         android:layout_height="wrap_content"/>
