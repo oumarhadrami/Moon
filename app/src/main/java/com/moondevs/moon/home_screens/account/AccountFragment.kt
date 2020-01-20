@@ -17,7 +17,9 @@ import com.moondevs.moon.introduction_screen.MainActivity
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentAccountBinding
 import com.moondevs.moon.home_screens.account.orders_list.Order
+import com.moondevs.moon.home_screens.account.orders_list.OrderNotDeliveredItem
 import com.moondevs.moon.home_screens.account.orders_list.OrdersFirestoreRecyclerAdapter
+import com.moondevs.moon.home_screens.account.orders_list.OrdersNotDeliveredFirestoreRecyclerAdapter
 import com.moondevs.moon.util.FirestoreUtil
 import timber.log.Timber
 
@@ -25,9 +27,11 @@ class AccountFragment : Fragment() {
 
     private lateinit var auth : FirebaseAuth
     private lateinit var adapter : OrdersFirestoreRecyclerAdapter
+    private lateinit var ordersNotDeliveredAdapter : OrdersNotDeliveredFirestoreRecyclerAdapter
     private lateinit var viewModel: AccountViewModel
     private lateinit var binding : FragmentAccountBinding
     private lateinit var ordersRef : Query
+    private lateinit var ordersNotDeliveredRef : Query
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
 
@@ -43,12 +47,17 @@ class AccountFragment : Fragment() {
             startActivity(Intent(activity, MainActivity::class.java))
         }
 
-        /**Initializing the collection for all orders according the user and adapter to the recyclerview*/
-        ordersRef = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid).collection("Orders").orderBy("orderDate",Query.Direction.DESCENDING)
-        Timber.i("$ordersRef")
+
+        /**Initializing the collection for all orders not delivered according the user and adapter to the recyclerview*/
+        ordersNotDeliveredRef = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid).collection("Orders").orderBy("orderDate",Query.Direction.DESCENDING).whereEqualTo("isOrderDelivered",false)
+        val ordersNotDeliveredOptions = FirestoreRecyclerOptions.Builder<OrderNotDeliveredItem>().setQuery(ordersNotDeliveredRef, OrderNotDeliveredItem::class.java).build()
+        ordersNotDeliveredAdapter = OrdersNotDeliveredFirestoreRecyclerAdapter(ordersNotDeliveredOptions)
+        binding.ordersNotDeliveredList.adapter = ordersNotDeliveredAdapter
+
+        /**Initializing the collection for all orders delivered according the user and adapter to the recyclerview*/
+        ordersRef = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid).collection("Orders").orderBy("orderDate",Query.Direction.DESCENDING).whereEqualTo("isOrderDelivered",true)
         val options = FirestoreRecyclerOptions.Builder<Order>().setQuery(ordersRef, Order::class.java).build()
         adapter = OrdersFirestoreRecyclerAdapter(options)
-        Timber.i("adapter assigned")
         binding.ordersList.adapter = adapter
 
 
@@ -61,6 +70,7 @@ class AccountFragment : Fragment() {
 
         /**Adapter will start listening*/
         adapter.startListening()
+        ordersNotDeliveredAdapter.startListening()
         //Make the frameLayout View.GONE
         val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
         frameLayout.visibility = View.GONE
@@ -71,6 +81,7 @@ class AccountFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         adapter.stopListening()
+        ordersNotDeliveredAdapter.stopListening()
     }
 
 

@@ -13,6 +13,15 @@
         <action
             android:id="@+id/action_navigation_home_to_shopsListFragment"
             app:destination="@id/shopsListFragment" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_search"
+            app:destination="@id/navigation_search" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_cart"
+            app:destination="@id/navigation_cart" />
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_account"
+            app:destination="@id/navigation_account" />
     </fragment>
 
     <fragment
@@ -40,7 +49,14 @@
         android:id="@+id/navigation_account"
         android:name="com.moondevs.moon.home_screens.account.AccountFragment"
         android:label="@string/account"
-        tools:layout="@layout/fragment_account" />
+        tools:layout="@layout/fragment_account" >
+        <action
+            android:id="@+id/action_navigation_account_to_liveTrackingFragment"
+            app:destination="@id/liveTrackingFragment" />
+        <action
+            android:id="@+id/action_navigation_account_to_navigation_cart"
+            app:destination="@id/navigation_cart" />
+    </fragment>
     <fragment
         android:id="@+id/shopsListFragment"
         android:name="com.moondevs.moon.home_screens.shops_list_screen.ShopsListFragment"

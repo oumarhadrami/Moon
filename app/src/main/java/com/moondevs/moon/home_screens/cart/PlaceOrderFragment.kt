@@ -111,10 +111,10 @@ class PlaceOrderFragment : Fragment() {
                 var totalItemsCount = it
 
                 orderDoc.set(hashMapOf(
-                    "TotalAmount" to totalAmount,
-                    "DeliveryFee" to deliveryFeeInt,
+                    "totalAmount" to totalAmount,
+                    "deliveryFee" to deliveryFeeInt,
                     "amountToPay" to  totalAmount + deliveryFeeInt,
-                    "TotalItemsCount" to totalItemsCount,
+                    "totalItemsCount" to totalItemsCount,
                     "Instructions" to instructions,
                     "shopName" to shopName,
                     "orderDate" to currentDateandTime,

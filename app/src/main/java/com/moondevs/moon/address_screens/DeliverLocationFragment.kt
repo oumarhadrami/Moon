@@ -136,11 +136,8 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
                     FirestoreUtil.insertAddress(address, rowId)
                 }
                 /** Let UI thread sleep for 3 seconds while showing progressBar */
-                thread {
+                findNavController().navigate(DeliverLocationFragmentDirections.actionDeliverLocationFragmentToNavigationCart())
 
-                    Thread.sleep((3 * 1000).toLong())
-                    findNavController().navigate(DeliverLocationFragmentDirections.actionDeliverLocationFragmentToNavigationCart())
-                }.priority = Thread.NORM_PRIORITY
 
             }
         }

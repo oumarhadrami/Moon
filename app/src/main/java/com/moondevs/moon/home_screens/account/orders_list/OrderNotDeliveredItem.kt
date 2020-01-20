@@ -1,6 +1,6 @@
 package com.moondevs.moon.home_screens.account.orders_list
 
-class Order {
+class OrderNotDeliveredItem {
     var shopName : String? = null
     var orderDate : String? = null
     var amountToPay : Int? = null

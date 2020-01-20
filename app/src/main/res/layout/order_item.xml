@@ -13,7 +13,7 @@
         android:layout_marginBottom="5dp"
         android:id="@+id/order_container"
         app:cardElevation="5dp"
-        android:layout_height="160dp">
+        android:layout_height="wrap_content">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -62,7 +62,40 @@
                 android:textSize="14sp"
                 android:gravity="start|center"
                 android:layout_marginStart="6dp"
-                android:text="MRU"
+                android:text="@string/mru"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:id="@+id/container_order_total_items_count"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/container_order_amount_to_pay"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:id="@+id/order_total_items_conunt"
+                android:fontFamily="@font/asap"
+                android:textSize="14sp"
+                android:gravity="start|center"
+                tools:text="6"
+                android:layout_height="match_parent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="wrap_content"
+                android:fontFamily="@font/asap"
+                android:textSize="14sp"
+                android:gravity="start|center"
+                android:layout_marginStart="6dp"
+                android:text="@string/items"
                 android:layout_height="wrap_content"/>
 
         </LinearLayout>
@@ -75,16 +108,18 @@
             android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/container_order_amount_to_pay"
+            app:layout_constraintTop_toBottomOf="@+id/container_order_total_items_count"
             android:gravity="start|center"
             android:layout_marginStart="12dp"
             android:layout_marginTop="6dp"
             android:layout_height="wrap_content"/>
 
-    <FrameLayout
+        <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
+        android:layout_marginBottom="8dp"
+        android:id="@+id/buttons_container"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/order_date">
@@ -111,32 +146,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"/>
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/track_help_container"
-            android:visibility="gone"
-            android:orientation="horizontal">
 
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:text="@string/track_order"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="6dp"
-                android:layout_height="match_parent"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="0dp"
-                android:text="@string/help"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_weight="1"
-                android:layout_marginStart="6dp"
-                android:layout_marginEnd="12dp"
-                android:layout_height="match_parent"/>
-
-        </LinearLayout>
 
     </FrameLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

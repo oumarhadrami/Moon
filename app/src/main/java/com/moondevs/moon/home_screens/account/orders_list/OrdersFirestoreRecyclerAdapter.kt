@@ -1,6 +1,8 @@
 package com.moondevs.moon.home_screens.account.orders_list
 
+import android.graphics.Color
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
@@ -27,6 +29,8 @@ class OrdersFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Order>) :
             binding.orderAmountToPay.text = item.amountToPay.toString()
             binding.orderDate.text = item.orderDate
             binding.orderShopName.text = item.shopName
+            binding.orderTotalItemsConunt.text = item.totalItemsCount.toString()
+
 
 
             binding.executePendingBindings()

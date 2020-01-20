@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentHomeBinding
 
@@ -67,6 +68,7 @@ class HomeFragment : Fragment() {
         //add content for toolbar
         val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
         frameLayout.visibility = View.GONE
+        FirebaseFirestore.getInstance().clearPersistence()
     }
 
 
