@@ -103,7 +103,7 @@ class PlaceOrderFragment : Fragment() {
 
         /**Add the total amount, delivery fee, and overall total amount of the items ordered to the order document reference*/
 
-        val deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim().toString())
+        val deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim())
         viewModel.totalAmount.observe(viewLifecycleOwner, Observer { totalAmount ->
             viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
                 var totalItemsCount = it
@@ -111,10 +111,10 @@ class PlaceOrderFragment : Fragment() {
                 orderDoc.set(hashMapOf(
                     "TotalAmount" to totalAmount,
                     "DeliveryFee" to deliveryFeeInt,
-                    "AmountToPay" to  totalAmount + deliveryFeeInt,
+                    "amountToPay" to  totalAmount + deliveryFeeInt,
                     "TotalItemsCount" to totalItemsCount,
                     "Instructions" to instructions,
-                    "Date" to currentDateandTime,
+                    "orderDate" to currentDateandTime,
                     "isOrderAccepted" to false,
                     "isOrderAssigned" to false,
                     "isOrderCollected" to false,
