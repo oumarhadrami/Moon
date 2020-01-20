@@ -68,7 +68,6 @@ class HomeFragment : Fragment() {
         //add content for toolbar
         val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
         frameLayout.visibility = View.GONE
-        FirebaseFirestore.getInstance().clearPersistence()
     }
 
 
