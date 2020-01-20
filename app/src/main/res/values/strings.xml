@@ -87,4 +87,5 @@
     <string name="add">add</string>
     <string name="track_order">Track Order</string>
     <string name="help">Help</string>
+    <string name="log_out">Log out</string>
 </resources>
