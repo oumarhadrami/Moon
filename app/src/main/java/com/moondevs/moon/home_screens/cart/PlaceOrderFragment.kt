@@ -48,6 +48,7 @@ class PlaceOrderFragment : Fragment() {
     private lateinit var args : PlaceOrderFragmentArgs
     private lateinit var instructions : String
     private lateinit var deliveryFee : String
+    private lateinit var shopName : String
 
 
     private lateinit var binding : FragmentPlaceOrderBinding
@@ -72,6 +73,7 @@ class PlaceOrderFragment : Fragment() {
         args = PlaceOrderFragmentArgs.fromBundle(arguments!!)
         instructions = args.instructions
         deliveryFee = args.deliveryFee
+        shopName = args.shopName
         placeOrder()
 
 
@@ -114,6 +116,7 @@ class PlaceOrderFragment : Fragment() {
                     "amountToPay" to  totalAmount + deliveryFeeInt,
                     "TotalItemsCount" to totalItemsCount,
                     "Instructions" to instructions,
+                    "shopName" to shopName,
                     "orderDate" to currentDateandTime,
                     "isOrderAccepted" to false,
                     "isOrderAssigned" to false,

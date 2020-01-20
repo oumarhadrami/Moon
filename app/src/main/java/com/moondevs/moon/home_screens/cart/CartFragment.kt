@@ -52,6 +52,7 @@ import kotlin.concurrent.thread
 
 class CartFragment : Fragment() {
 
+    @Volatile private var shopName = ""
     private lateinit var viewModel: ShoppingCartViewModel
     private lateinit var addressViewModel: AddressViewModel
     private lateinit var binding : FragmentCartBinding
@@ -139,7 +140,7 @@ class CartFragment : Fragment() {
          *
          * Navigate to Live-Tracking only when the items are stored and document is ready to be used*/
         binding.placeOrder.setOnClickListener {
-            findNavController().navigate(CartFragmentDirections.actionNavigationCartToPlaceOrderFragment(binding.instructionsTextfield.text.toString(),binding.deliveryFee.text.toString()))
+            findNavController().navigate(CartFragmentDirections.actionNavigationCartToPlaceOrderFragment(binding.instructionsTextfield.text.toString(),binding.deliveryFee.text.toString(),shopName))
 //            orderDoc.addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
 //                //val isOrderInDataBase = documentSnapshot!!.exists()
 //                val snapShopt = documentSnapshot!!
@@ -298,14 +299,14 @@ class CartFragment : Fragment() {
                 if (viewModel.getCarSizeNonLiveData() > 0) {
                     if (totalItemsCount > 0) {
                         Timber.i("Items more than 0")
-                        val shopNameInCartString = viewModel.getShopNameFromDB()
+                        shopName = viewModel.getShopNameFromDB()
                         val shopImageInCartString = viewModel.getShopImageFromDB()
                         val shopRefInCart = viewModel.getShopRefFromDB()
                         shopDetailsInCartLayout.setOnClickListener {
                             findNavController().navigate(
                                 CartFragmentDirections.actionNavigationCartToShopFragment(
                                     shopRefInCart,
-                                    shopNameInCartString,
+                                    shopName,
                                     shopImageInCartString
                                 )
                             )
@@ -318,7 +319,7 @@ class CartFragment : Fragment() {
                                     .error(R.drawable.ic_broken_image)
                             )
                             .into(shopImageInCart)
-                        shopNameInCart.text = shopNameInCartString
+                        shopNameInCart.text = shopName
                         shopDetailsInCartLayout.visibility = View.VISIBLE
                         binding.emptyCartImageview.visibility = View.GONE
                     }

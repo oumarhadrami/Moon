@@ -114,5 +114,8 @@
             android:id="@+id/action_placeOrderFragment_to_liveTrackingFragment"
             app:destination="@id/liveTrackingFragment"
             app:popUpTo="@+id/navigation_cart" />
+        <argument
+            android:name="shopName"
+            app:argType="string" />
     </fragment>
 </navigation>
