@@ -29,6 +29,8 @@ import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
 import com.moondevs.moon.util.FirestoreUtil
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class PlaceOrderFragment : Fragment() {
@@ -85,6 +87,9 @@ class PlaceOrderFragment : Fragment() {
         appBar.visibility = View.GONE
         bottomNav.visibility = View.GONE
         binding.orderPlacingScreen.visibility = View.VISIBLE
+        /**Get time from device*/
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        val currentDateandTime = formatter.format(Date())
         //Document Reference in the firestore database to the order being placed
         orderDoc = FirestoreUtil.firestoreInstance
             .collection("Orders")
@@ -109,6 +114,7 @@ class PlaceOrderFragment : Fragment() {
                     "AmountToPay" to  totalAmount + deliveryFeeInt,
                     "TotalItemsCount" to totalItemsCount,
                     "Instructions" to instructions,
+                    "Date" to currentDateandTime,
                     "isOrderAccepted" to false,
                     "isOrderAssigned" to false,
                     "isOrderCollected" to false,
