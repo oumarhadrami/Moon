@@ -80,7 +80,7 @@
                         android:layout_marginTop="8dp"
                         android:gravity="center"
                         android:layout_height="match_parent"
-                        android:text="add"
+                        android:text="@string/add"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:textAllCaps="false" />
 
