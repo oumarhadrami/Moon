@@ -101,7 +101,8 @@
         android:label="DeliverLocationFragment" >
         <action
             android:id="@+id/action_deliverLocationFragment_to_navigation_cart"
-            app:destination="@id/navigation_cart" />
+            app:destination="@id/navigation_cart"
+            app:popUpTo="@+id/navigation_cart" />
     </fragment>
     <fragment
         android:id="@+id/liveTrackingFragment"

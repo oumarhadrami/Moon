@@ -14,7 +14,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.moondevs.moon.introduction_screen.MainActivity
 import com.moondevs.moon.R
@@ -79,16 +78,13 @@ class AccountFragment : Fragment() {
                     return@addSnapshotListener
                 }
 
-                for (dc in snapshots!!.documents) {
-                    if (dc.getBoolean("isOrderDelivered")!!) {
-                        Timber.i(dc.id)
-                        val oldDoc = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
-                            .collection("CurrentOrders").document(dc.id)
-                        val newDocumentInPastOrdersCollection = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
-                            .collection("PastOrders").document()
-                        moveDocumentToPastOrdersCollection(oldDoc ,newDocumentInPastOrdersCollection )
+                for (document in snapshots!!.documents) {
+                    if (document.getBoolean("isOrderDelivered")!!) {
+                        moveDocumentToPastOrdersCollection(document.id)
+                        break
                     }
                 }
+
             }
 
 
@@ -96,10 +92,11 @@ class AccountFragment : Fragment() {
         return binding.root
     }
 
-    private fun moveDocumentToPastOrdersCollection(
-        oldDoc: DocumentReference,
-        newDoc: DocumentReference
-    ) {
+    private fun moveDocumentToPastOrdersCollection(id: String) {
+        val oldDoc = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
+            .collection("CurrentOrders").document(id)
+        val newDoc = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
+            .collection("PastOrders").document(id)
         oldDoc.get().addOnCompleteListener {task->
             if (task.isSuccessful){
                 val document = task.result
