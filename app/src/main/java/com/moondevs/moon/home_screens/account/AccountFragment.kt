@@ -59,12 +59,12 @@ class AccountFragment : Fragment() {
         adapter = OrdersFirestoreRecyclerAdapter(options)
         binding.ordersList.adapter = adapter
 
-        /**linking adapter to the recyclerview*/
-        val adapter = CurrentOrdersAdapter(shoppingCartViewModel,activity)
-        binding.currentOrdersList.adapter = adapter
+        /**linking current orders adapter to the recyclerview*/
+        val currentOrdersAdapter = CurrentOrdersAdapter(shoppingCartViewModel,activity)
+        binding.currentOrdersList.adapter = currentOrdersAdapter
         shoppingCartViewModel.currentOrders.observe(viewLifecycleOwner, Observer {
             it?.let {
-                adapter.submitList(it)
+                currentOrdersAdapter.submitList(it)
             }
         })
 
