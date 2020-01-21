@@ -43,6 +43,10 @@
                     android:visibility="gone"
                     layout="@layout/shop_in_toolbar"/>
 
+                <include android:id="@+id/search_page_layout"
+                    android:visibility="gone"
+                    layout="@layout/search_in_toolbar"/>
+
                 <include android:id="@+id/shop_details_in_cart_layout"
                     android:visibility="gone"
                     layout="@layout/shop_details_in_cart_toolbar"/>

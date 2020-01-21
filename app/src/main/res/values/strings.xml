@@ -91,4 +91,5 @@
     <string name="mru">MRU</string>
     <string name="items">Items</string>
     <string name="search_shops">Search Shops</string>
+    <string name="search_shops_of_any_category">Search shops of any category…</string>
 </resources>

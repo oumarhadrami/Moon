@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:singleLine="true"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/asap"
+            android:backgroundTint="@android:color/transparent"
+            android:id="@+id/search_shops_textfield"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="@string/search_shops_of_any_category"
+            android:inputType="text">
+
+        </com.google.android.material.textfield.TextInputEditText>
+
+
+</LinearLayout>
