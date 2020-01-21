@@ -195,7 +195,7 @@ class PlaceOrderFragment : Fragment() {
                 viewModel.viewModelScope.launch {
                     viewModel.emptyCart()
                 }
-                findNavController().navigate(PlaceOrderFragmentDirections.actionPlaceOrderFragmentToLiveTrackingFragment())
+                findNavController().navigate(PlaceOrderFragmentDirections.actionPlaceOrderFragmentToLiveTrackingFragment(orderDoc.path))
             }, 2000)
         }
     }

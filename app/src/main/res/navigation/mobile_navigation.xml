@@ -114,6 +114,9 @@
             app:destination="@id/navigation_account"
             app:launchSingleTop="true"
             app:popUpTo="@+id/navigation_cart" />
+        <argument
+            android:name="order_doc"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/placeOrderFragment"

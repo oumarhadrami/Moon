@@ -4,10 +4,12 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.moondevs.moon.databinding.OrderItemBinding
+import com.moondevs.moon.home_screens.account.AccountFragmentDirections
 import com.moondevs.moon.util.FirestoreUtil
 import timber.log.Timber
 
@@ -25,12 +27,15 @@ class OrdersFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Order>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: Order) {
-            /**Binding name, amountTopPay, date, and status of the order to the view*/
+            /**Binding name, amountTopPay, date, and totalItemCount to the view*/
             binding.orderAmountToPay.text = item.amountToPay.toString()
             binding.orderDate.text = item.orderDate
             binding.orderShopName.text = item.shopName
             binding.orderTotalItemsConunt.text = item.totalItemsCount.toString()
 
+            binding.orderReorder.setOnClickListener {
+                it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToNavigationCart())
+            }
 
 
             binding.executePendingBindings()

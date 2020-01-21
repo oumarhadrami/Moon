@@ -3,11 +3,13 @@ package com.moondevs.moon.home_screens.account.orders_list
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.moondevs.moon.databinding.CurrentOrderItemBinding
+import com.moondevs.moon.home_screens.account.AccountFragmentDirections
 import com.moondevs.moon.home_screens.cart.order_database.CurrentOrder
 
 class CurrentOrdersAdapter(val viewModel: ShoppingCartViewModel, val activity: FragmentActivity?) : ListAdapter<CurrentOrder, CurrentOrdersAdapter.ViewHolder>(CartDiffCallback()) {
@@ -32,7 +34,9 @@ class CurrentOrdersAdapter(val viewModel: ShoppingCartViewModel, val activity: F
 
             //binding the name of the item to view
             binding.currentOrder = item
-
+            binding.trackCurrentOrder.setOnClickListener {
+                it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToLiveTrackingFragment(item.orderDoc))
+            }
             binding.executePendingBindings()
         }
 
