@@ -18,8 +18,8 @@ class CurrentOrderRepository (private val currentOrderDao: CurrentOrdersDao){
     }
 
     @WorkerThread
-    suspend fun deleteCurrentOrder(currentOrder : CurrentOrder){
-        currentOrderDao.deleteCurrentOrder(currentOrder)
+    suspend fun deleteCurrentOrder(currentOrderId : String){
+        currentOrderDao.deleteCurrentOrder(currentOrderId)
     }
 
     @WorkerThread

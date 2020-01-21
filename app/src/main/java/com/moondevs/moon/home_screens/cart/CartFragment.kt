@@ -107,28 +107,33 @@ class CartFragment : Fragment() {
         }
 
         /**set the visibility of addressContainer, placeOrder, setDeliveryLocation Views based on number of addresses*/
-        addressViewModel.allAddressesCount.observe(viewLifecycleOwner, Observer {
-            if (it == 0) {
-                binding.addressContainer.visibility = View.GONE
-                binding.placeOrder.visibility = View.GONE
-                binding.setDeliveryLocation.visibility = View.VISIBLE
-            }
+                addressViewModel.allAddressesCount.observe(viewLifecycleOwner, Observer {
 
-            else{
-                binding.addressContainer.visibility = View.VISIBLE
-                binding.placeOrder.visibility = View.VISIBLE
-                binding.setDeliveryLocation.visibility = View.GONE
+                    addressViewModel.viewModelScope.launch {
 
-                //put last added address in address container
-                addressViewModel.viewModelScope.launch {
-                    val currentAddress: Address = addressViewModel.getLastAddedAddress()
-                    binding.addressContainer.current_address.text = currentAddress.Name + "\n" +
-                            currentAddress.PhoneNumber + "\n" +
-                            currentAddress.Latitude + " , " +
-                            currentAddress.Longitude
-                }
-            }
-        })
+                        if (it > 0) {
+
+                            binding.addressContainer.visibility = View.VISIBLE
+                            binding.placeOrder.visibility = View.VISIBLE
+                            binding.setDeliveryLocation.visibility = View.GONE
+
+                            //put last added address in address container
+                            val currentAddress: Address =
+                                addressViewModel.getLastAddedAddress()
+                            binding.addressContainer.current_address.text =
+                                currentAddress.Name + "\n" +
+                                        currentAddress.PhoneNumber + "\n" +
+                                        currentAddress.Latitude + " , " +
+                                        currentAddress.Longitude
+
+
+                        }else {
+                            binding.addressContainer.visibility = View.GONE
+                            binding.placeOrder.visibility = View.GONE
+                            binding.setDeliveryLocation.visibility = View.VISIBLE
+                        }
+                    }
+                })
 
         /**edit address button click*/
         binding.addressContainer.add_address.setOnClickListener {

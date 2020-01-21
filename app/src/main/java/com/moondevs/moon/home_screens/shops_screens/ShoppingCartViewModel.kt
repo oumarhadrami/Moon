@@ -143,8 +143,8 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         currentOrdersRepo.update(currentOrder)
     }
 
-    suspend fun deleteCurrentOrder(currentOrder: CurrentOrder) = viewModelScope.launch {
-        currentOrdersRepo.deleteCurrentOrder(currentOrder)
+    suspend fun deleteCurrentOrder(currentOrderId: String) = viewModelScope.launch {
+        currentOrdersRepo.deleteCurrentOrder(currentOrderId)
     }
 
     suspend fun getLastAddedOrder() : CurrentOrder{

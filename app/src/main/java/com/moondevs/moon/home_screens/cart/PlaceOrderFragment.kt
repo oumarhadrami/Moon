@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.HashMap
 
 
 class PlaceOrderFragment : Fragment() {
@@ -38,9 +39,6 @@ class PlaceOrderFragment : Fragment() {
     private lateinit var viewModel: ShoppingCartViewModel
     private lateinit var addressViewModel: AddressViewModel
     private lateinit var orderDoc : DocumentReference
-    @Volatile private var itemsStoredSize : Int = 0
-    @Volatile private var isAddressStored : Boolean = false
-    @Volatile private var areItemsStored : Boolean = false
     @Volatile private var areFieldsStored : Boolean = false
     @Volatile private var isOrderPlaced : Boolean = false
     private lateinit var appBar : AppBarLayout
@@ -52,7 +50,11 @@ class PlaceOrderFragment : Fragment() {
     private lateinit var shopName : String
     @Volatile private var totalAmountInt : Int = 0
     @Volatile private var totalItemsCount : Int = 0
+    @Volatile private lateinit var currentAddress : Address
+    @Volatile private var itemsHashMap : HashMap<String,HashMap<String, Any>> = hashMapOf()
+    @Volatile private var currentAddressHashMap : HashMap<String, Any> = hashMapOf()
     private lateinit var currentDateandTime : String
+
 
 
     private lateinit var binding : FragmentPlaceOrderBinding
@@ -78,13 +80,56 @@ class PlaceOrderFragment : Fragment() {
         instructions = args.instructions
         deliveryFee = args.deliveryFee
         shopName = args.shopName
-        placeOrder()
+
+
+        /**Add the total amount, delivery fee, totalItemsCount, overall total amount, address, Items, date to the order document reference*/
+        deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim())
+
+        viewModel.totalAmount.observe(viewLifecycleOwner, Observer { totalAmount ->
+            totalAmountInt = totalAmount
+        })
+        viewModel.allItemsCount.observe(viewLifecycleOwner, Observer { totalItemsCountInt ->
+            totalItemsCount = totalItemsCountInt
+        })
+
+
+        viewModel.allCartItems.observe(viewLifecycleOwner, Observer {cartItems->
+            for ((index, item) in cartItems.withIndex()) {
+                itemsHashMap[index.toString()] = hashMapOf(
+                    "shopItemId" to item.shopItemId,
+                    "shopItemName" to item.shopItemName,
+                    "shopItemPrice" to item.shopItemPrice,
+                    "shopItemQuantity" to item.shopItemQuantity,
+                    "shopName" to item.shopName,
+                    "shopImage" to item.shopImage,
+                    "shopItemPriceByQuantity" to item.shopItemPriceByQuantity
+                )
+            }
+            storeAddress()
+        })
+        Timber.i("\n\n\nLATER  :: $itemsHashMap")
+
+        /**Get time from device*/
+        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+        currentDateandTime = formatter.format(Date())
+
 
 
         return binding.root
     }
 
-
+    private fun storeAddress() {
+        addressViewModel.viewModelScope.launch {
+            currentAddress = addressViewModel.getLastAddedAddress()
+            currentAddressHashMap = hashMapOf(
+                "Name" to currentAddress.Name,
+                "PhoneNumber" to currentAddress.PhoneNumber,
+                "Latitude" to currentAddress.Latitude,
+                "Longitude" to currentAddress.Longitude
+            )
+        placeOrder()
+        }
+    }
 
 
     /**Method handling the placing of the order
@@ -93,9 +138,7 @@ class PlaceOrderFragment : Fragment() {
         appBar.visibility = View.GONE
         bottomNav.visibility = View.GONE
         binding.orderPlacingScreen.visibility = View.VISIBLE
-        /**Get time from device*/
-        val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-        currentDateandTime = formatter.format(Date())
+
         //Document Reference in the firestore database to the order being placed
         orderDoc = FirestoreUtil.firestoreInstance
             .collection("Orders")
@@ -104,128 +147,57 @@ class PlaceOrderFragment : Fragment() {
             .document()
 
 
-
-
-
-        /**Add the total amount, delivery fee, and overall total amount of the items ordered to the order document reference*/
-
-        deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim())
-        viewModel.totalAmount.observe(viewLifecycleOwner, Observer { totalAmount ->
-            viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
-                totalItemsCount = it
-                totalAmountInt = totalAmount
-
-                orderDoc.set(hashMapOf(
-                    "totalAmount" to totalAmount,
-                    "deliveryFee" to deliveryFeeInt,
-                    "amountToPay" to  totalAmountInt + deliveryFeeInt,
-                    "totalItemsCount" to totalItemsCount,
-                    "Instructions" to instructions,
-                    "shopName" to shopName,
-                    "orderDate" to currentDateandTime,
-                    "isOrderAccepted" to false,
-                    "isOrderAssigned" to false,
-                    "isOrderCollected" to false,
-                    "isOrderDelivered" to false
-                )).addOnSuccessListener {
-                    areFieldsStored = true
-                    this.storeAddress(areFieldsStored)
-                }
-                    .addOnFailureListener { areFieldsStored = false }
-            })
-        })
-
-
-
-
-
-
-
-
-    }
-
-    /**Add the address of this order to the order document reference*/
-    private fun storeAddress(areFieldsStored: Boolean) {
-        if (areFieldsStored) {
-            Timber.i("Fields Stored")
-            addressViewModel.viewModelScope.launch {
-                val addressDoc = orderDoc.collection("Address").document()
-                val currentAddress: Address = addressViewModel.getLastAddedAddress()
-                val addressHashMap = hashMapOf(
-                    "Name" to currentAddress.Name,
-                    "PhoneNumber" to currentAddress.PhoneNumber,
-                    "Latitude" to currentAddress.Latitude,
-                    "Longitude" to currentAddress.Longitude
+        //store in firestore database
+        orderDoc.set(hashMapOf(
+            "totalAmount" to totalAmountInt,
+            "deliveryFee" to deliveryFeeInt,
+            "amountToPay" to  totalAmountInt + deliveryFeeInt,
+            "totalItemsCount" to totalItemsCount,
+            "Instructions" to instructions,
+            "shopName" to shopName,
+            "orderDate" to currentDateandTime,
+            "isOrderAccepted" to false,
+            "isOrderAssigned" to false,
+            "isOrderCollected" to false,
+            "isOrderDelivered" to false,
+            "Items" to itemsHashMap,
+            "address" to currentAddressHashMap
+        )).addOnSuccessListener {
+            isOrderPlaced = true
+            viewModel.viewModelScope.launch {
+                viewModel.insertCurrentOrder(
+                    CurrentOrder(
+                        Id = orderDoc.id,
+                        orderDoc = orderDoc.path,
+                        shopName = shopName,
+                        amountToPay = totalAmountInt + deliveryFeeInt,
+                        totalItemsCount = totalItemsCount,
+                        orderDate = currentDateandTime)
                 )
-                addressDoc.set(addressHashMap).addOnSuccessListener {
-
-                    isAddressStored = true
-                    storeItems(isAddressStored)
-                }
-                    .addOnFailureListener { isAddressStored = false }
             }
-        }
-    }
+            confirmPlacingOrder()
 
-    /**Add All Items from the cart to the items-collection in the order */
-    private fun storeItems(isAddressStored: Boolean) {
-        if (isAddressStored) {
-            Timber.i("Address Stored")
-            viewModel.allCartItems.observe(viewLifecycleOwner, Observer { cartItems ->
-                for (item in cartItems) {
-                    val cartItem = hashMapOf(
-                        "shopItemId" to item.shopItemId,
-                        "shopItemName" to item.shopItemName,
-                        "shopItemPrice" to item.shopItemPrice,
-                        "shopItemQuantity" to item.shopItemQuantity,
-                        "shopName" to item.shopName,
-                        "shopImage" to item.shopImage,
-                        "shopItemPriceByQuantity" to item.shopItemPriceByQuantity
-                    )
-                    val orderItemDoc = orderDoc.collection("Items").document()
-                    orderItemDoc.set(cartItem).addOnSuccessListener {
-                        itemsStoredSize += 1
-                        confirmPlacingOrder(itemsStoredSize)
-                    }
-                        .addOnFailureListener { }
-                }
-
-            })
         }
-    }
+            .addOnFailureListener { areFieldsStored = false }
+
+        }
+
 
     /**Checking if the number of items stores matches the size of the cart rows
      * Saving the reference to the document of this order in the location database
      * Navigate to Live-Tracking once the order has been placed successfuly*/
-    private fun confirmPlacingOrder(itemsStoredSize: Int) {
-        viewModel.numberOfUniqueItems.observe(viewLifecycleOwner, Observer { numberOfUniqueItems ->
-            areItemsStored = itemsStoredSize == numberOfUniqueItems
-            if (areItemsStored){
-                isOrderPlaced = true
+    private fun confirmPlacingOrder() {
+
+        if (isOrderPlaced){
+            binding.orderPlacingScreen.visibility = View.GONE
+            binding.orderPlacedScreen.visibility = View.VISIBLE
+            Handler().postDelayed({
                 viewModel.viewModelScope.launch {
-                    viewModel.insertCurrentOrder(
-                        CurrentOrder(orderDoc = orderDoc.path,
-                            shopName = shopName,
-                            amountToPay = totalAmountInt + deliveryFeeInt,
-                            totalItemsCount = totalItemsCount,
-                            orderDate = currentDateandTime)
-                    )
-                }}
-
-            if (isOrderPlaced){
-                binding.orderPlacingScreen.visibility = View.GONE
-                binding.orderPlacedScreen.visibility = View.VISIBLE
-                Timber.i("Items Stored")
-                Timber.i("Order Placed")
-                Handler().postDelayed({
-                    viewModel.viewModelScope.launch {
-                        viewModel.emptyCart()
-                    }
-                    findNavController().navigate(PlaceOrderFragmentDirections.actionPlaceOrderFragmentToLiveTrackingFragment())
-                }, 2000)
-            }
-        })
-
+                    viewModel.emptyCart()
+                }
+                findNavController().navigate(PlaceOrderFragmentDirections.actionPlaceOrderFragmentToLiveTrackingFragment())
+            }, 2000)
+        }
     }
 
 

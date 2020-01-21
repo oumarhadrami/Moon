@@ -11,8 +11,10 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.viewModelScope
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.Query
 import com.moondevs.moon.introduction_screen.MainActivity
 import com.moondevs.moon.R
@@ -21,6 +23,7 @@ import com.moondevs.moon.home_screens.account.orders_list.*
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
 import com.moondevs.moon.util.FirestoreUtil
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class AccountFragment : Fragment() {
@@ -69,7 +72,7 @@ class AccountFragment : Fragment() {
         })
 
 
-        /*FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
+        FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
             .collection("CurrentOrders").addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Timber.i("listen:error $e")
@@ -78,17 +81,40 @@ class AccountFragment : Fragment() {
 
                 for (dc in snapshots!!.documents) {
                     if (dc.getBoolean("isOrderDelivered")!!) {
-                        FirestoreUtil.firestoreInstance.collection("Orders")
-                            .document(auth.currentUser!!.uid)
-                            .collection("CurrentOrders").document(dc.id).delete()
-                        Timber.i(dc.toString())
+                        Timber.i(dc.id)
+                        val oldDoc = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
+                            .collection("CurrentOrders").document(dc.id)
+                        val newDocumentInPastOrdersCollection = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
+                            .collection("PastOrders").document()
+                        moveDocumentToPastOrdersCollection(oldDoc ,newDocumentInPastOrdersCollection )
                     }
                 }
-            }*/
+            }
 
 
 
         return binding.root
+    }
+
+    private fun moveDocumentToPastOrdersCollection(
+        oldDoc: DocumentReference,
+        newDoc: DocumentReference
+    ) {
+        oldDoc.get().addOnCompleteListener {task->
+            if (task.isSuccessful){
+                val document = task.result
+                if (document != null){
+                    newDoc.set(document.data!!).addOnSuccessListener {
+                        oldDoc.delete()
+                        shoppingCartViewModel.viewModelScope.launch {
+                            shoppingCartViewModel.deleteCurrentOrder(oldDoc.id)
+                        }
+                    }
+                }
+
+            }
+
+        }
     }
 
     override fun onStart() {

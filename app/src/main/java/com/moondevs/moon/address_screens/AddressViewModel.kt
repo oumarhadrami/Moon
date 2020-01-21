@@ -49,4 +49,11 @@ class AddressViewModel (application: Application): ViewModel(){
         return rowId.await()
     }
 
+    suspend fun getAddressesSizeNonLiveData() : Int{
+        val totalSize = viewModelScope.async {
+            repo.getAddressesSizeNonLiveData()
+        }
+        return totalSize.await()
+    }
+
 }

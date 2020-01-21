@@ -7,9 +7,9 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "CurrentOrders")
 data class CurrentOrder(
 
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     @ColumnInfo
-    var Id : Long = 0L,
+    var Id : String,
 
     @ColumnInfo(name = "orderReference")
     var orderDoc : String,

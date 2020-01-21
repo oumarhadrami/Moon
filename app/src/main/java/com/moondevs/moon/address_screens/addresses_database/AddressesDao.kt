@@ -20,11 +20,14 @@ interface AddressesDao {
     @Query("select * from Addresses")
     fun getAll(): LiveData<List<Address>>
 
-    @Query("select IFNULL(SUM(addressId),0) from Addresses")
+    @Query("select COUNT(*) from Addresses")
     fun getCount(): LiveData<Int>
 
     @Query("select * from addresses order by addressId desc limit 1 ")
     suspend fun getLastAddedAddress() : Address
+
+    @Query("select COUNT(*) from addresses")
+    fun getAddressesSizeNonLiveData(): Int
 
 
 }
