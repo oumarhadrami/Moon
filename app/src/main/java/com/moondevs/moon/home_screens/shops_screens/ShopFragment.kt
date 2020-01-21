@@ -15,13 +15,14 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.Query
 import com.moondevs.moon.util.FirestoreUtil
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentShopBinding
 
 class ShopFragment : Fragment() {
     private lateinit var binding : FragmentShopBinding
-    private lateinit var shopItemsRef : CollectionReference
+    private lateinit var shopItemsRef : Query
     private lateinit var adapter : ShopItemsFirestoreRecyclerAdapter
     private lateinit var args: ShopFragmentArgs
     private lateinit var viewModel: ShoppingCartViewModel

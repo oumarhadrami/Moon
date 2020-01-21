@@ -28,7 +28,11 @@
         android:id="@+id/navigation_search"
         android:name="com.moondevs.moon.home_screens.search.SearchFragment"
         android:label="@string/search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_cart"
