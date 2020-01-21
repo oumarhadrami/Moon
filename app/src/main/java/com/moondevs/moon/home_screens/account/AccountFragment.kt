@@ -58,7 +58,7 @@ class AccountFragment : Fragment() {
         /**Initializing the collection for all orders delivered according the user and adapter to the recyclerview*/
         pastOrdersRef = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid).collection("PastOrders").orderBy("orderDate",Query.Direction.DESCENDING)
         val options = FirestoreRecyclerOptions.Builder<Order>().setQuery(pastOrdersRef, Order::class.java).build()
-        adapter = OrdersFirestoreRecyclerAdapter(options)
+        adapter = OrdersFirestoreRecyclerAdapter(options, shoppingCartViewModel)
         binding.ordersList.adapter = adapter
 
         /**linking current orders adapter to the recyclerview*/

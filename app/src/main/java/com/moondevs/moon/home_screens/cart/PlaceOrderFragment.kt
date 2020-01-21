@@ -102,7 +102,8 @@ class PlaceOrderFragment : Fragment() {
                     "shopItemQuantity" to item.shopItemQuantity,
                     "shopName" to item.shopName,
                     "shopImage" to item.shopImage,
-                    "shopItemPriceByQuantity" to item.shopItemPriceByQuantity
+                    "shopItemPriceByQuantity" to item.shopItemPriceByQuantity,
+                    "shopRef" to item.shopRef
                 )
             }
             storeAddress()
