@@ -4,6 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="currentOrder"
+            type="com.moondevs.moon.home_screens.cart.order_database.CurrentOrder" />
 
     </data>
 
@@ -31,6 +34,7 @@
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="12dp"
                 tools:text="Mauricentre"
+                app:shopName="@{currentOrder}"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +56,7 @@
                     android:id="@+id/current_order_amount_to_pay"
                     android:fontFamily="@font/asap"
                     android:textSize="14sp"
+                    app:amountToPay="@{currentOrder}"
                     android:gravity="start|center"
                     tools:text="60"
                     android:layout_height="match_parent"/>
@@ -85,6 +90,7 @@
                     android:id="@+id/current_order_total_items_conunt"
                     android:fontFamily="@font/asap"
                     android:textSize="14sp"
+                    app:totalItemsCount="@{currentOrder}"
                     android:gravity="start|center"
                     tools:text="6"
                     android:layout_height="match_parent"/>
@@ -106,6 +112,7 @@
                 tools:text="20/01/2020 16:11"
                 android:fontFamily="@font/asap"
                 android:textSize="14sp"
+                app:orderDate="@{currentOrder}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/container_current_order_total_items_count"

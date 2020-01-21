@@ -16,7 +16,7 @@ interface CurrentOrdersDao {
     @Delete
     suspend fun deleteCurrentOrder(currentOrder: CurrentOrder)
 
-    @Query("select * from CurrentOrders")
+    @Query("select * from CurrentOrders order by orderDate desc")
     fun getCurrentOrders(): LiveData<List<CurrentOrder>>
 
     @Query("select * from CurrentOrders order by id desc limit 1 ")

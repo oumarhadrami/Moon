@@ -11,6 +11,22 @@ data class CurrentOrder(
     @ColumnInfo
     var Id : Long = 0L,
 
-    @ColumnInfo(name = "OrderReference")
-    var orderDoc : String
+    @ColumnInfo(name = "orderReference")
+    var orderDoc : String,
+
+    @ColumnInfo(name = "shopName")
+    var shopName : String,
+
+    @ColumnInfo(name = "amountToPay")
+    var amountToPay : Int,
+
+    @ColumnInfo(name = "totalItemsCount")
+    var totalItemsCount : Int,
+
+    @ColumnInfo(name = "orderDate")
+    var orderDate : String
+
+
+
+
 )

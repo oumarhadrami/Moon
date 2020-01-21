@@ -52,10 +52,6 @@ class LiveTrackingFragment : Fragment() {
         )
         binding.statusbarTextview.layoutParams = params
 
-        /**Get current order once it's placed from cart fragment*/
-        shoppingCartViewModel.viewModelScope.launch {
-            Timber.i("${shoppingCartViewModel.getLastAddedOrder()}")
-        }
 
 
 

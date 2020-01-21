@@ -48,7 +48,11 @@ class PlaceOrderFragment : Fragment() {
     private lateinit var args : PlaceOrderFragmentArgs
     private lateinit var instructions : String
     private lateinit var deliveryFee : String
+    private var deliveryFeeInt = 0
     private lateinit var shopName : String
+    @Volatile private var totalAmountInt : Int = 0
+    @Volatile private var totalItemsCount : Int = 0
+    private lateinit var currentDateandTime : String
 
 
     private lateinit var binding : FragmentPlaceOrderBinding
@@ -91,7 +95,7 @@ class PlaceOrderFragment : Fragment() {
         binding.orderPlacingScreen.visibility = View.VISIBLE
         /**Get time from device*/
         val formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
-        val currentDateandTime = formatter.format(Date())
+        currentDateandTime = formatter.format(Date())
         //Document Reference in the firestore database to the order being placed
         orderDoc = FirestoreUtil.firestoreInstance
             .collection("Orders")
@@ -105,15 +109,16 @@ class PlaceOrderFragment : Fragment() {
 
         /**Add the total amount, delivery fee, and overall total amount of the items ordered to the order document reference*/
 
-        val deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim())
+        deliveryFeeInt = Integer.parseInt(deliveryFee.dropLastWhile { it.isLetter() }.trim())
         viewModel.totalAmount.observe(viewLifecycleOwner, Observer { totalAmount ->
             viewModel.allItemsCount.observe(viewLifecycleOwner, Observer {
-                var totalItemsCount = it
+                totalItemsCount = it
+                totalAmountInt = totalAmount
 
                 orderDoc.set(hashMapOf(
                     "totalAmount" to totalAmount,
                     "deliveryFee" to deliveryFeeInt,
-                    "amountToPay" to  totalAmount + deliveryFeeInt,
+                    "amountToPay" to  totalAmountInt + deliveryFeeInt,
                     "totalItemsCount" to totalItemsCount,
                     "Instructions" to instructions,
                     "shopName" to shopName,
@@ -198,7 +203,13 @@ class PlaceOrderFragment : Fragment() {
             if (areItemsStored){
                 isOrderPlaced = true
                 viewModel.viewModelScope.launch {
-                    viewModel.insertCurrentOrder(getCurrentOrder())
+                    viewModel.insertCurrentOrder(
+                        CurrentOrder(orderDoc = orderDoc.path,
+                            shopName = shopName,
+                            amountToPay = totalAmountInt + deliveryFeeInt,
+                            totalItemsCount = totalItemsCount,
+                            orderDate = currentDateandTime)
+                    )
                 }}
 
             if (isOrderPlaced){
@@ -209,19 +220,12 @@ class PlaceOrderFragment : Fragment() {
                 Handler().postDelayed({
                     viewModel.viewModelScope.launch {
                         viewModel.emptyCart()
-                        Timber.i("${viewModel.getLastAddedOrder()}")
                     }
                     findNavController().navigate(PlaceOrderFragmentDirections.actionPlaceOrderFragmentToLiveTrackingFragment())
                 }, 2000)
             }
         })
 
-    }
-
-    /**Store the orderDoc and Navigate to Live-Tracking*/
-
-    private fun getCurrentOrder() : CurrentOrder {
-        return CurrentOrder(orderDoc = orderDoc.path)
     }
 
 
