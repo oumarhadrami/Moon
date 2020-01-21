@@ -23,7 +23,7 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
-                android:id="@+id/order_not_shop_name"
+                android:id="@+id/current_order_shop_name"
                 android:fontFamily="@font/asap"
                 android:textSize="18sp"
                 android:textColor="@android:color/black"
@@ -40,16 +40,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:id="@+id/container_order_not_amount_to_pay"
+                android:id="@+id/container_current_order_amount_to_pay"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_not_shop_name"
+                app:layout_constraintTop_toBottomOf="@+id/current_order_shop_name"
                 android:layout_marginTop="6dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
-                    android:id="@+id/order_not_amount_to_pay"
+                    android:id="@+id/current_order_amount_to_pay"
                     android:fontFamily="@font/asap"
                     android:textSize="14sp"
                     android:gravity="start|center"
@@ -73,16 +73,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
-                android:id="@+id/container_order_not_total_items_count"
+                android:id="@+id/container_current_order_total_items_count"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/container_order_not_amount_to_pay"
+                app:layout_constraintTop_toBottomOf="@+id/container_current_order_amount_to_pay"
                 android:layout_marginTop="6dp"
                 android:orientation="horizontal">
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
-                    android:id="@+id/order_not_total_items_conunt"
+                    android:id="@+id/current_order_total_items_conunt"
                     android:fontFamily="@font/asap"
                     android:textSize="14sp"
                     android:gravity="start|center"
@@ -102,13 +102,13 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="match_parent"
-                android:id="@+id/order_not_date"
+                android:id="@+id/current_order_date"
                 tools:text="20/01/2020 16:11"
                 android:fontFamily="@font/asap"
                 android:textSize="14sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/container_order_not_total_items_count"
+                app:layout_constraintTop_toBottomOf="@+id/container_current_order_total_items_count"
                 android:gravity="start|center"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="6dp"
@@ -122,7 +122,7 @@
                 android:id="@+id/buttons_container"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/order_not_date">
+                app:layout_constraintTop_toBottomOf="@+id/current_order_date">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -135,7 +135,7 @@
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:text="@string/track_order"
-                        android:id="@+id/track_order_not"
+                        android:id="@+id/track_current_order"
                         android:layout_marginStart="12dp"
                         android:layout_marginEnd="6dp"
                         android:layout_height="match_parent"/>
@@ -143,7 +143,7 @@
                     <com.google.android.material.button.MaterialButton
                         android:layout_width="0dp"
                         android:text="@string/help"
-                        android:id="@+id/order_not_help"
+                        android:id="@+id/current_order_help"
                         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                         android:layout_weight="1"
                         android:layout_marginStart="6dp"

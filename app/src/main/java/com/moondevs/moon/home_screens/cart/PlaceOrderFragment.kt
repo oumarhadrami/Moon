@@ -96,7 +96,7 @@ class PlaceOrderFragment : Fragment() {
         orderDoc = FirestoreUtil.firestoreInstance
             .collection("Orders")
             .document(FirebaseAuth.getInstance().currentUser?.uid!!)
-            .collection("Orders")
+            .collection("CurrentOrders")
             .document()
 
 
