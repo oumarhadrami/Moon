@@ -52,13 +52,14 @@ class OrdersFirestoreRecyclerAdapter(
                             shoppingCartViewModel.insert(
                                 CartItem(shopItemId = shopItem["shopItemId"].toString(),
                                         shopName = shopItem["shopName"].toString(),
-                                        shopImage = shopItem["shopImage"].toString(),
+                                        shopItemImage = shopItem["shopItemImage"].toString(),
                                         shopItemName = shopItem["shopItemName"].toString(),
                                         shopItemPrice = shopItem["shopItemPrice"].toString(),
                                         shopItemQuantity = Integer.parseInt(shopItem["shopItemQuantity"].toString()),
                                         shopItemPriceByQuantity = Integer.parseInt(shopItem["shopItemPriceByQuantity"].toString()),
                                         shopRef = shopItem["shopRef"].toString(),
-                                        shopId = shopItem["shopId"].toString()
+                                        shopId = shopItem["shopId"].toString(),
+                                        shopImage = shopItem["shopImage"].toString()
                                     )
                             )
                             Timber.i("Well: $value")

@@ -93,9 +93,10 @@ class ShopItemsFirestoreRecyclerAdapter(
                                         shopItemQuantity = cartItem.shopItemQuantity.plus(1),
                                         shopName = shopName,
                                         shopItemPriceByQuantity = cartItem.shopItemPriceByQuantity,
-                                        shopImage = shopImage,
+                                        shopItemImage = cartItem.shopItemImage,
                                         shopRef = shopRef,
-                                        shopId = shopId
+                                        shopId = shopId,
+                                        shopImage = cartItem.shopImage
                                     )
                                 )
                                 item.shopItemCount = item.shopItemCount.plus(1)
@@ -176,9 +177,10 @@ class ShopItemsFirestoreRecyclerAdapter(
                 shopItemQuantity = item.shopItemCount,
                 shopName = shopName,
                 shopItemPriceByQuantity = item.shopItemPrice.dropLastWhile { it.isLetter() }.trim().toInt(),
-                shopImage = shopImage,
+                shopItemImage = item.shopItemImage,
                 shopRef = shopRef,
-                shopId = shopId)
+                shopId = shopId,
+                shopImage = shopImage)
         }
 
 

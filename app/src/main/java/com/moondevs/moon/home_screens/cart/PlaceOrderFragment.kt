@@ -101,6 +101,7 @@ class PlaceOrderFragment : Fragment() {
                     "shopItemPrice" to item.shopItemPrice,
                     "shopItemQuantity" to item.shopItemQuantity,
                     "shopName" to item.shopName,
+                    "shopItemImage" to item.shopItemImage,
                     "shopImage" to item.shopImage,
                     "shopItemPriceByQuantity" to item.shopItemPriceByQuantity,
                     "shopRef" to item.shopRef
