@@ -48,7 +48,7 @@ class SearchFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val shopsRef = FirestoreUtil.firestoreInstance.collection("Shops").whereEqualTo("shopName",s.toString().toLowerCase().capitalize())
+                val shopsRef = FirestoreUtil.firestoreInstance.collection("Shops").whereGreaterThanOrEqualTo("shopName",s.toString().toLowerCase().capitalize())
                 val options = FirestoreRecyclerOptions.Builder<Shop>().setQuery(shopsRef, Shop::class.java).build()
                 adapter = SearchShopsFirestoreRecyclerAdapter(options)
                 binding.searchShopsList.adapter = adapter

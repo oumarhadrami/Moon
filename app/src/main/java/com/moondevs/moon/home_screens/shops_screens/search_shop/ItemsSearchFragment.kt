@@ -85,7 +85,7 @@ class ItemsSearchFragment : Fragment() {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Timber.i(s.toString())
-                shopItemsRef = FirestoreUtil.firestoreInstance.collectionGroup("Items").whereEqualTo("shopItemName", s.toString().toLowerCase().capitalize())
+                shopItemsRef = FirestoreUtil.firestoreInstance.collectionGroup("Items").whereGreaterThanOrEqualTo("shopItemName", s.toString().toLowerCase().capitalize())
                 val options = FirestoreRecyclerOptions.Builder<ShopItem>().setQuery(shopItemsRef, ShopItem::class.java).build()
                 val manager = GridLayoutManager(activity, 2)
                 adapter = SearchShopsItemsFirestoreRecyclerAdapter(options , binding, args.shopName,context, args.shopImage, viewModel,args.shopRef, args.shopId)
