@@ -92,4 +92,5 @@
     <string name="items">Items</string>
     <string name="search_shops">Search Shops</string>
     <string name="search_shops_of_any_category">Search shops of any category…</string>
+    <string name="search_items_of_this_shop">Search items of this shop…</string>
 </resources>

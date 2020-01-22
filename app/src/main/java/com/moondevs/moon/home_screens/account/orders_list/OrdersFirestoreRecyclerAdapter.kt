@@ -57,7 +57,8 @@ class OrdersFirestoreRecyclerAdapter(
                                         shopItemPrice = shopItem["shopItemPrice"].toString(),
                                         shopItemQuantity = Integer.parseInt(shopItem["shopItemQuantity"].toString()),
                                         shopItemPriceByQuantity = Integer.parseInt(shopItem["shopItemPriceByQuantity"].toString()),
-                                        shopRef = shopItem["shopRef"].toString()
+                                        shopRef = shopItem["shopRef"].toString(),
+                                        shopId = shopItem["shopId"].toString()
                                     )
                             )
                             Timber.i("Well: $value")

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -15,7 +16,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
 import com.moondevs.moon.util.FirestoreUtil
 import com.moondevs.moon.R
@@ -29,6 +29,7 @@ class ShopFragment : Fragment() {
     private lateinit var viewModel: ShoppingCartViewModel
     private lateinit var frameLayout : FrameLayout
     private lateinit var shopDetailsInPageLayout : View
+    private lateinit var searchButton : ImageButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,
@@ -50,7 +51,7 @@ class ShopFragment : Fragment() {
         shopItemsRef = FirestoreUtil.firestoreInstance.collection(collectionPath)
         val options = FirestoreRecyclerOptions.Builder<ShopItem>().setQuery(shopItemsRef, ShopItem::class.java).build()
         val manager = GridLayoutManager(activity, 2)
-        adapter = ShopItemsFirestoreRecyclerAdapter(options , binding, args.shopName!!,context, args.shopImage!!, viewModel,args.ref)
+        adapter = ShopItemsFirestoreRecyclerAdapter(options , binding, args.shopName!!,context, args.shopImage!!, viewModel,args.ref, args.shopId)
         binding.itemsList.layoutManager = manager
         binding.itemsList.adapter = adapter
 
@@ -70,6 +71,14 @@ class ShopFragment : Fragment() {
         })
 
 
+        /**Navigate to search fragment*/
+        //add content for toolbar
+        frameLayout = activity!!.findViewById(R.id.toolbar_framelayout)
+        shopDetailsInPageLayout = activity!!.findViewById(R.id.shop_page_layout)
+        searchButton = shopDetailsInPageLayout.findViewById(R.id.search_items)
+        searchButton.setOnClickListener {
+            findNavController().navigate(ShopFragmentDirections.actionShopFragmentToItemsSearchFragment(collectionPath,  args.shopImage!!, args.shopName!!, args.ref, args.shopId!!))
+        }
 
         return binding.root
     }
@@ -79,9 +88,7 @@ class ShopFragment : Fragment() {
         super.onStart()
         adapter.startListening()
 
-        //add content for toolbar
-        frameLayout = activity!!.findViewById(R.id.toolbar_framelayout)
-        shopDetailsInPageLayout = activity!!.findViewById(R.id.shop_page_layout)
+
         frameLayout.visibility = View.VISIBLE
         shopDetailsInPageLayout.visibility = View.VISIBLE
 

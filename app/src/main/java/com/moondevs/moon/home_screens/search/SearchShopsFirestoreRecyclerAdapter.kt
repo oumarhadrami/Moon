@@ -42,7 +42,7 @@ class SearchShopsFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop
 
             /**handling the click of the shop event*/
             binding.shopContainer.setOnClickListener {
-                it.findNavController().navigate(SearchFragmentDirections.actionNavigationSearchToShopFragment(""+snapshots.getSnapshot(adapterPosition).reference.path, item.shopName, item.shopImage))
+                it.findNavController().navigate(SearchFragmentDirections.actionNavigationSearchToShopFragment(""+snapshots.getSnapshot(adapterPosition).reference.path, item.shopName, item.shopImage, snapshots.getSnapshot(adapterPosition).reference.id))
             }
 
 

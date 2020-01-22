@@ -37,6 +37,9 @@ interface ShoppingCartDao {
     suspend fun getShopImageFromDB(): CartItem
 
     @Query("select * from ShoppingCart limit 1")
+    suspend fun getShopIdFromDB(): CartItem
+
+    @Query("select * from ShoppingCart limit 1")
     suspend fun getShopRefFromDB(): CartItem
 
     @Query("select * from shoppingcart where shopName = :shopName")

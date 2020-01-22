@@ -307,12 +307,15 @@ class CartFragment : Fragment() {
                         shopName = viewModel.getShopNameFromDB()
                         val shopImageInCartString = viewModel.getShopImageFromDB()
                         val shopRefInCart = viewModel.getShopRefFromDB()
+                        val shopIdInCart = viewModel.getShopIdFromDB()
                         shopDetailsInCartLayout.setOnClickListener {
                             findNavController().navigate(
                                 CartFragmentDirections.actionNavigationCartToShopFragment(
                                     shopRefInCart,
                                     shopName,
-                                    shopImageInCartString
+                                    shopImageInCartString,
+                                    shopIdInCart
+
                                 )
                             )
                         }

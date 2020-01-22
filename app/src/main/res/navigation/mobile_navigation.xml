@@ -92,6 +92,12 @@
             android:name="shopImage"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_shopFragment_to_itemsSearchFragment"
+            app:destination="@id/itemsSearchFragment" />
+        <argument
+            android:name="shopId"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/addressListFragment"
@@ -140,6 +146,30 @@
             app:popUpTo="@+id/navigation_cart" />
         <argument
             android:name="shopName"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/itemsSearchFragment"
+        android:name="com.moondevs.moon.home_screens.shops_screens.search_shop.ItemsSearchFragment"
+        android:label="ItemsSearchFragment"
+        tools:layout="@layout/fragment_items_search">
+        <argument
+            android:name="shopName"
+            app:argType="string" />
+        <argument
+            android:name="shopImage"
+            app:argType="string" />
+        <argument
+            android:name="shopRef"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_itemsSearchFragment_to_navigation_cart"
+            app:destination="@id/navigation_cart" />
+        <argument
+            android:name="collectionPath"
+            app:argType="string" />
+        <argument
+            android:name="shopId"
             app:argType="string" />
     </fragment>
 </navigation>

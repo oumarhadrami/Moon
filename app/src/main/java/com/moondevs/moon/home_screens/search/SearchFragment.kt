@@ -58,9 +58,6 @@ class SearchFragment : Fragment() {
         })
 
 
-        /**list of shoptypes*/
-
-
         return binding.root
     }
 

@@ -119,6 +119,13 @@ class ShoppingCartViewModel(application: Application): ViewModel()  {
         return shopImage.await()
     }
 
+    suspend fun getShopIdFromDB() : String {
+        val shopName =viewModelScope.async {
+            repo.getShopIdFromDB()
+        }
+        return shopName.await()
+    }
+
     suspend fun getShopRefFromDB() : String {
         val shopRef =viewModelScope.async {
             repo.getShopRefFromDB()
