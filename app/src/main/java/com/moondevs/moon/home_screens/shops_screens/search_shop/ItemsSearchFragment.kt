@@ -84,14 +84,16 @@ class ItemsSearchFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
-            override fun afterTextChanged(s: Editable?) {
-                shopItemsRef = FirestoreUtil.firestoreInstance.collectionGroup("Items").whereEqualTo("shopItemName", "Jam")
+                Timber.i(s.toString())
+                shopItemsRef = FirestoreUtil.firestoreInstance.collectionGroup("Items").whereEqualTo("shopItemName", s.toString().toLowerCase().capitalize())
                 val options = FirestoreRecyclerOptions.Builder<ShopItem>().setQuery(shopItemsRef, ShopItem::class.java).build()
                 val manager = GridLayoutManager(activity, 2)
                 adapter = SearchShopsItemsFirestoreRecyclerAdapter(options , binding, args.shopName,context, args.shopImage, viewModel,args.shopRef, args.shopId)
                 binding.searchItemsList.layoutManager = manager
                 binding.searchItemsList.adapter = adapter
+                adapter.startListening()
+            }
+            override fun afterTextChanged(s: Editable?) {
             }
         })
         /**Handling view cart click event*/
