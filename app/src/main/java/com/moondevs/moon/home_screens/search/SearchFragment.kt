@@ -37,6 +37,7 @@ class SearchFragment : Fragment() {
         searchEditText = searchLayout.findViewById(R.id.search_shops_textfield)
         frameLayout.visibility = View.VISIBLE
         searchLayout.visibility = View.VISIBLE
+        searchEditText.hint = getString(R.string.search_shops_of_any_category)
 
         /**make keyboard appear*/
         searchEditText.requestFocus()

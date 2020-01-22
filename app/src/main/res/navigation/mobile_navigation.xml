@@ -122,7 +122,6 @@
         <action
             android:id="@+id/action_liveTrackingFragment_to_navigation_account"
             app:destination="@id/navigation_account"
-            app:launchSingleTop="true"
             app:popUpTo="@+id/navigation_cart" />
         <argument
             android:name="order_doc"
@@ -131,7 +130,6 @@
     <fragment
         android:id="@+id/placeOrderFragment"
         tools:layout="@layout/fragment_place_order"
-        app:launchSingleTop="true"
         android:name="com.moondevs.moon.home_screens.cart.PlaceOrderFragment"
         android:label="PlaceOrderFragment" >
         <argument
