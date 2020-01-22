@@ -95,7 +95,7 @@
     </fragment>
     <fragment
         android:id="@+id/addressListFragment"
-        android:name="com.moondevs.moon.home_screens.account.AddressListFragment"
+        android:name="com.moondevs.moon.home_screens.account.adresses.AddressListFragment"
         android:label="fragment_address_list"
         tools:layout="@layout/fragment_address_list" />
     <fragment

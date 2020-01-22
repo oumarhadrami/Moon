@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".home_screens.account.AddressListFragment">
+    tools:context=".home_screens.account.adresses.AddressListFragment">
 
     <TextView
         android:layout_width="match_parent"

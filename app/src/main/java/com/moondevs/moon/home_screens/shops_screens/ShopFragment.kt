@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
@@ -26,6 +27,8 @@ class ShopFragment : Fragment() {
     private lateinit var adapter : ShopItemsFirestoreRecyclerAdapter
     private lateinit var args: ShopFragmentArgs
     private lateinit var viewModel: ShoppingCartViewModel
+    private lateinit var frameLayout : FrameLayout
+    private lateinit var shopDetailsInPageLayout : View
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,
@@ -77,14 +80,13 @@ class ShopFragment : Fragment() {
         adapter.startListening()
 
         //add content for toolbar
-        val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
+        frameLayout = activity!!.findViewById(R.id.toolbar_framelayout)
+        shopDetailsInPageLayout = activity!!.findViewById(R.id.shop_page_layout)
         frameLayout.visibility = View.VISIBLE
-        val shopDetailsInPageLayout = activity!!.findViewById<View>(R.id.shop_page_layout)
+        shopDetailsInPageLayout.visibility = View.VISIBLE
+
         val shopsNameText = shopDetailsInPageLayout.findViewById<TextView>(R.id.shop_name_toolbar)
         shopsNameText.text = args.shopName
-
-
-        shopDetailsInPageLayout.visibility = View.VISIBLE
     }
 
 
@@ -92,8 +94,8 @@ class ShopFragment : Fragment() {
     override fun onStop() {
         super.onStop()
         adapter.stopListening()
-        val shopDetailLayout = activity!!.findViewById<View>(R.id.shop_page_layout)
-        shopDetailLayout.visibility = View.GONE
+
+        shopDetailsInPageLayout.visibility = View.GONE
     }
 
 }

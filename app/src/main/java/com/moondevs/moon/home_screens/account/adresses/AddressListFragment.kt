@@ -1,4 +1,4 @@
-package com.moondevs.moon.home_screens.account
+package com.moondevs.moon.home_screens.account.adresses
 
 
 import android.os.Bundle

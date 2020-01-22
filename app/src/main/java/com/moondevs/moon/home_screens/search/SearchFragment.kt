@@ -79,7 +79,6 @@ class SearchFragment : Fragment() {
         val frameLayout = activity!!.findViewById<View>(R.id.toolbar_framelayout)
         val searchLayout = frameLayout.findViewById<View>(R.id.search_page_layout)
         val searchEditText = searchLayout.findViewById<TextInputEditText>(R.id.search_shops_textfield)
-        frameLayout.visibility = View.GONE
         searchLayout.visibility = View.GONE
 
         /**make keyboard disappear */
