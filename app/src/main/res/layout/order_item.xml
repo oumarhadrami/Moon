@@ -139,11 +139,14 @@
                 android:text="@string/reorder"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_height="wrap_content"/>
-            <com.google.android.material.textview.MaterialTextView
+            <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
+                android:id="@+id/rate_order"
+                android:text="@string/rate_order"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_marginStart="6dp"
                 android:layout_marginEnd="12dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"/>
         </LinearLayout>
 
