@@ -87,7 +87,6 @@ class SearchFragment : Fragment() {
         searchLayout.visibility = View.GONE
 
         /**make keyboard disappear */
-        searchEditText.requestFocus()
         val imm = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager?
         imm!!.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0)
         adapter.stopListening()
