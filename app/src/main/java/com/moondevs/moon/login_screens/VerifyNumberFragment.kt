@@ -59,6 +59,7 @@ class VerifyNumberFragment : Fragment() {
         /**start the phone verification process*/
         verifyPhoneNumber(phoneNumber)
 
+        binding.enterOtpButton.isEnabled = false
         /**validate otp Manually*/
         binding.enterOtpButton.setOnClickListener {
             authenticateManually()
@@ -141,6 +142,7 @@ class VerifyNumberFragment : Fragment() {
 
                 Toast.makeText(activity, "success", Toast.LENGTH_LONG).show()
                 binding.otpView.setText(p0.smsCode)
+
                 binding.resend.isEnabled = false
                 signIn(p0)
             }
@@ -154,6 +156,7 @@ class VerifyNumberFragment : Fragment() {
                 //binding.otpView.setText(p0)
                 verificationId = p0
                 resendToken = p1
+                binding.enterOtpButton.isEnabled = true
                 binding.resend.isEnabled = true
 
                 binding.progressBar.visibility = View.GONE
