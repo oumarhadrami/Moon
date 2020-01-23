@@ -37,6 +37,7 @@ class ShopFragment : Fragment() {
 
         //binding shop details to the views
         args = ShopFragmentArgs.fromBundle(arguments!!)
+        val collectionPath = args.ref + "/Items"
 
         //Initializing viewModel
         val application : Application = requireNotNull(this).activity!!.application
@@ -46,8 +47,16 @@ class ShopFragment : Fragment() {
         binding.lifecycleOwner = this
 
 
+        /**Make recyclerview invisible and progressbar visible until data has been retrieved*/
+        FirestoreUtil.firestoreInstance.collection(collectionPath).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            if (querySnapshot != null ) {
+                binding.shopItemsContainter.visibility = View.VISIBLE
+                binding.progressBarShop.visibility = View.GONE
+            }
+        }
+
         /** shop items reference and recyclerview adapter init*/
-        val collectionPath = args.ref + "/Items"
+
         shopItemsRef = FirestoreUtil.firestoreInstance.collection(collectionPath)
         val options = FirestoreRecyclerOptions.Builder<ShopItem>().setQuery(shopItemsRef, ShopItem::class.java).build()
         val manager = GridLayoutManager(activity, 2)

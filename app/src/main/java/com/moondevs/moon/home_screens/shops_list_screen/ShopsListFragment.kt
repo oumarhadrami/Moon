@@ -35,6 +35,14 @@ class ShopsListFragment : Fragment() {
         //get shopType from home fragment
         args = ShopsListFragmentArgs.fromBundle(arguments!!)
 
+        /**Make recyclerview invisible and progressbar visible until data has been retrieved*/
+        FirestoreUtil.firestoreInstance.collection("Shops/").whereEqualTo("shopType",args.shopType).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            if (querySnapshot != null ) {
+                binding.shopsList.visibility = View.VISIBLE
+                binding.progressBarShops.visibility = View.GONE
+            }
+        }
+
         /**Initializing the collection for all shops according the shop type and adapter to the recyclerview*/
         shopsRef = FirestoreUtil.firestoreInstance.collection("Shops/").whereEqualTo("shopType",args.shopType)
         val options = FirestoreRecyclerOptions.Builder<Shop>().setQuery(shopsRef, Shop::class.java).build()

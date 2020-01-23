@@ -65,6 +65,13 @@ class SearchFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
+        /**Make recyclerview invisible and progressbar visible until data has been retrieved*/
+        FirestoreUtil.firestoreInstance.collection("Shops").addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            if (querySnapshot != null ) {
+                binding.searchShopsList.visibility = View.VISIBLE
+                binding.progressBarSearch.visibility = View.GONE
+            }
+        }
         val shopsRef = FirestoreUtil.firestoreInstance.collection("Shops").limit(4)
         val options = FirestoreRecyclerOptions.Builder<Shop>().setQuery(shopsRef, Shop::class.java).build()
         adapter = SearchShopsFirestoreRecyclerAdapter(options)

@@ -7,6 +7,10 @@
 
     </data>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -51,4 +55,12 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+        <ProgressBar
+            android:id="@+id/progressBarOrders"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+    </FrameLayout>
 </layout>

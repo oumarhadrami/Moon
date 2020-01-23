@@ -54,6 +54,14 @@ class AccountFragment : Fragment() {
         }
 
 
+        /**Make recyclerview invisible and progressbar visible until data has been retrieved*/
+        FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid).collection("PastOrders").orderBy("orderDate",Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
+            if (querySnapshot != null ) {
+                binding.ordersList.visibility = View.VISIBLE
+                binding.progressBarOrders.visibility = View.GONE
+            }
+        }
+
 
         /**Initializing the collection for all orders delivered according the user and adapter to the recyclerview*/
         pastOrdersRef = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid).collection("PastOrders").orderBy("orderDate",Query.Direction.DESCENDING)
