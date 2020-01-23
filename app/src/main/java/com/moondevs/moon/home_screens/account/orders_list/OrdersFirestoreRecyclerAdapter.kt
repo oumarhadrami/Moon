@@ -1,6 +1,7 @@
 package com.moondevs.moon.home_screens.account.orders_list
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.findNavController
@@ -39,6 +40,15 @@ class OrdersFirestoreRecyclerAdapter(
             binding.orderShopName.text = item.shopName
             binding.orderTotalItemsConunt.text = item.totalItemsCount.toString()
 
+            FirestoreUtil.firestoreInstance.document(snapshots.getSnapshot(adapterPosition).reference.path)
+                .get()
+                .addOnSuccessListener {document->
+                    val isOrderRated = document.getBoolean("isOrderRated")
+                    val isOrderCancelled = document.getBoolean("isOrderCancelled")
+                    if (isOrderRated!! || isOrderCancelled!!)
+                        binding.rateOrder.visibility = View.GONE
+                }
+
             binding.orderReorder.setOnClickListener {
 
                 FirestoreUtil.firestoreInstance.document(snapshots.getSnapshot(adapterPosition).reference.path)
@@ -67,6 +77,10 @@ class OrdersFirestoreRecyclerAdapter(
                     }
                 }
                 it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToNavigationCart())
+            }
+
+            binding.rateOrder.setOnClickListener {
+                it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToFeedbackFragment(snapshots.getSnapshot(adapterPosition).reference.path))
             }
 
 

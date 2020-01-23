@@ -275,7 +275,7 @@
             android:textColor="#8a8a8a"
             android:gravity="center"
             android:textSize="16sp"
-            android:text="Place an order, Your cart looks empty."
+            android:text="@string/place_an_order_your_cart_looks_empty"
             android:layout_height="wrap_content"/>
         </LinearLayout>
 

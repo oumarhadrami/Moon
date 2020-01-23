@@ -94,4 +94,11 @@
     <string name="search_shops_of_any_category">Search shops of any category…</string>
     <string name="search_items_of_this_shop">Search items of this shop…</string>
     <string name="rate_order">Rate Order</string>
+    <string name="place_an_order_your_cart_looks_empty">Place an order, Your cart looks empty.</string>
+    <string name="your_order_is_delivered">Your order is delivered.</string>
+    <string name="rate_delivery_experience">Rate delivery experience</string>
+    <string name="rate_shop_experience">Rate shop experience</string>
+    <string name="please_rate_both_delivery_and_shop">Please rate both the delivery and shop experiences</string>
+    <string name="submitting_your_feedback">Submitting your feedback…</string>
+
 </resources>

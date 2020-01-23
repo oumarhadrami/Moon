@@ -1,5 +1,6 @@
 package com.moondevs.moon.home_screens.shops_list_screen
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -10,6 +11,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.ShopItemBinding
+import kotlin.math.ceil
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class ShopFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop>) : FirestoreRecyclerAdapter<Shop, ShopFirestoreRecyclerAdapter.ViewHolder>(options) {
 
@@ -28,7 +32,7 @@ class ShopFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop>) : Fi
         fun bind(item: Shop) {
             /**Binding name, rating, distance, and image of the shop to the view*/
             binding.shopName.text = item.shopName
-            binding.rating.text = item.shopRating
+            binding.rating.text = BigDecimal(item.shopRating!!).setScale(1, RoundingMode.HALF_EVEN).toString()
             binding.distance.text = item.shopDistance
             Glide.with(binding.shopImage.context)
                 .load(item.shopImage)

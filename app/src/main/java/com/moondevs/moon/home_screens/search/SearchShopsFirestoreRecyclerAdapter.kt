@@ -11,6 +11,8 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.ShopItemBinding
 import com.moondevs.moon.home_screens.shops_list_screen.Shop
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class SearchShopsFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop>) : FirestoreRecyclerAdapter<Shop, SearchShopsFirestoreRecyclerAdapter.ViewHolder>(options) {
 
@@ -29,7 +31,7 @@ class SearchShopsFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop
         fun bind(item: Shop) {
             /**Binding name, rating, distance, and image of the shop to the view*/
             binding.shopName.text = item.shopName
-            binding.rating.text = item.shopRating
+            binding.rating.text = BigDecimal(item.shopRating!!).setScale(1, RoundingMode.HALF_EVEN).toString()
             binding.distance.text = item.shopDistance
             Glide.with(binding.shopImage.context)
                 .load(item.shopImage)

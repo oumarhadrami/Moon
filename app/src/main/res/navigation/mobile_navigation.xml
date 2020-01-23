@@ -60,6 +60,10 @@
         <action
             android:id="@+id/action_navigation_account_to_navigation_cart"
             app:destination="@id/navigation_cart" />
+        <action
+            android:id="@+id/action_navigation_account_to_feedbackFragment"
+            app:destination="@id/feedbackFragment"
+            app:popUpTo="@+id/navigation_home" />
     </fragment>
     <fragment
         android:id="@+id/shopsListFragment"
@@ -168,6 +172,15 @@
             app:argType="string" />
         <argument
             android:name="shopId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/feedbackFragment"
+        android:name="com.moondevs.moon.home_screens.account.rating.FeedbackFragment"
+        android:label="Feedback"
+        tools:layout="@layout/fragment_feedback">
+        <argument
+            android:name="orderPath"
             app:argType="string" />
     </fragment>
 </navigation>

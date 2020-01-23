@@ -104,7 +104,8 @@ class PlaceOrderFragment : Fragment() {
                     "shopItemImage" to item.shopItemImage,
                     "shopImage" to item.shopImage,
                     "shopItemPriceByQuantity" to item.shopItemPriceByQuantity,
-                    "shopRef" to item.shopRef
+                    "shopRef" to item.shopRef,
+                    "shopId" to item.shopId
                 )
             }
             storeAddress()
@@ -157,11 +158,16 @@ class PlaceOrderFragment : Fragment() {
             "totalItemsCount" to totalItemsCount,
             "Instructions" to instructions,
             "shopName" to shopName,
+
             "orderDate" to currentDateandTime,
+            "shopRating" to 0,
+            "deliveryExperienceRating" to 0,
+            "isOrderRated" to false,
             "isOrderAccepted" to false,
             "isOrderAssigned" to false,
             "isOrderCollected" to false,
             "isOrderDelivered" to false,
+            "isOrderCancelled" to false,
             "Items" to itemsHashMap,
             "address" to currentAddressHashMap
         )).addOnSuccessListener {

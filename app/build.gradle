@@ -98,6 +98,9 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
+    //RatingBar MaterialDesign
+    implementation 'me.zhanghai.android.materialratingbar:library:1.4.0'
+
 
 }
 
