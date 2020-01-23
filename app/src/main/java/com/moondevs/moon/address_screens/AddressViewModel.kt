@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.moondevs.moon.address_screens.addresses_database.Address
-import com.moondevs.moon.address_screens.addresses_database.AddressesDatabase
+import com.moondevs.moon.home_screens.account.AccountDatabase
 import com.moondevs.moon.address_screens.addresses_database.AddressesRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
@@ -17,7 +17,7 @@ class AddressViewModel (application: Application): ViewModel(){
 
 
     init {
-        val dao = AddressesDatabase.getDatabase(application).addressesDao
+        val dao = AccountDatabase.getDatabase(application).addressesDao
         repo = AddressesRepository(dao)
         allAddresses = repo.allAddresses
         allAddressesCount = repo.allAddressesCount

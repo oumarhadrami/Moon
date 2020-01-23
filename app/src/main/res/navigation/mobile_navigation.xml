@@ -64,6 +64,9 @@
             android:id="@+id/action_navigation_account_to_feedbackFragment"
             app:destination="@id/feedbackFragment"
             app:popUpTo="@+id/navigation_home" />
+        <action
+            android:id="@+id/action_navigation_account_to_favoritesFragment"
+            app:destination="@id/favoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopsListFragment"
@@ -183,4 +186,9 @@
             android:name="orderPath"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/favoritesFragment"
+        tools:layout="@layout/fragment_favorites"
+        android:name="com.moondevs.moon.home_screens.account.favorites.FavoritesFragment"
+        android:label="FavoritesFragment" />
 </navigation>

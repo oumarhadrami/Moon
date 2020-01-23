@@ -12,6 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.findNavController
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.Query
@@ -29,7 +30,6 @@ class AccountFragment : Fragment() {
 
     private lateinit var auth : FirebaseAuth
     private lateinit var adapter : OrdersFirestoreRecyclerAdapter
-    private lateinit var viewModel: AccountViewModel
     private lateinit var binding : FragmentAccountBinding
     private lateinit var pastOrdersRef : Query
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
@@ -38,7 +38,6 @@ class AccountFragment : Fragment() {
 
         /**Initialize binding, viewmodel, and firebase auth*/
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_account,container,false)
-        viewModel = ViewModelProviders.of(this).get(AccountViewModel::class.java)
         auth = FirebaseAuth.getInstance()
 
         /**Initializing shoppingCartViewModel*/
@@ -51,6 +50,10 @@ class AccountFragment : Fragment() {
         binding.logout.setOnClickListener {
             auth.signOut()
             startActivity(Intent(activity, MainActivity::class.java))
+        }
+
+        binding.favoritesButtonAccount.setOnClickListener {
+            it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToFavoritesFragment())
         }
 
 

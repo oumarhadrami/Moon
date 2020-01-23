@@ -13,6 +13,7 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
@@ -20,6 +21,10 @@ import com.google.firebase.firestore.Query
 import com.moondevs.moon.util.FirestoreUtil
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentShopBinding
+import com.moondevs.moon.home_screens.account.favorites.FavoritesViewModel
+import com.moondevs.moon.home_screens.account.favorites.FavoritesViewModelFactory
+import com.moondevs.moon.home_screens.account.favorites.database.FavoriteShop
+import kotlinx.coroutines.launch
 
 class ShopFragment : Fragment() {
     private lateinit var binding : FragmentShopBinding
@@ -27,9 +32,11 @@ class ShopFragment : Fragment() {
     private lateinit var adapter : ShopItemsFirestoreRecyclerAdapter
     private lateinit var args: ShopFragmentArgs
     private lateinit var viewModel: ShoppingCartViewModel
+    private lateinit var favoritesViewModel: FavoritesViewModel
     private lateinit var frameLayout : FrameLayout
     private lateinit var shopDetailsInPageLayout : View
     private lateinit var searchButton : ImageButton
+    private lateinit var favoriteButton : ImageButton
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,
@@ -39,12 +46,16 @@ class ShopFragment : Fragment() {
         args = ShopFragmentArgs.fromBundle(arguments!!)
         val collectionPath = args.ref + "/Items"
 
-        //Initializing viewModel
+        /**Initializing viewModel*/
         val application : Application = requireNotNull(this).activity!!.application
         val viewModelFactory = ShoppingCartViewModelFactory(application)
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+        /**initialize FavoriteShopsViewModel*/
+        val favoritesViewModelFactory = FavoritesViewModelFactory(application)
+        favoritesViewModel = ViewModelProviders.of(activity!!, favoritesViewModelFactory).get(FavoritesViewModel::class.java)
 
 
         /**Make recyclerview invisible and progressbar visible until data has been retrieved*/
@@ -89,6 +100,21 @@ class ShopFragment : Fragment() {
             findNavController().navigate(ShopFragmentDirections.actionShopFragmentToItemsSearchFragment(collectionPath,  args.shopImage!!, args.shopName!!, args.ref, args.shopId!!))
         }
 
+
+        /**To favorite or unfovorite something*/
+        favoriteButton = shopDetailsInPageLayout.findViewById(R.id.set_favorite)
+        favoriteButton.setOnClickListener {
+            favoritesViewModel.viewModelScope.launch {
+                favoritesViewModel.insert(
+                    FavoriteShop(
+                        shopId = args.shopId,
+                        shopRef = collectionPath,
+                        shopName = args.shopName!!,
+                        shopImage = args.shopImage!!
+                    )
+                )
+            }
+        }
         return binding.root
     }
 

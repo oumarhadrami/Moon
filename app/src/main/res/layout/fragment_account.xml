@@ -10,7 +10,11 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:text="Go to favorites"
+        android:id="@+id/favorites_button_account"
+        android:layout_height="wrap_content"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"

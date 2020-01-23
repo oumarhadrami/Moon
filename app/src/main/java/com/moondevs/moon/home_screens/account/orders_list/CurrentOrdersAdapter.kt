@@ -12,7 +12,7 @@ import com.moondevs.moon.databinding.CurrentOrderItemBinding
 import com.moondevs.moon.home_screens.account.AccountFragmentDirections
 import com.moondevs.moon.home_screens.cart.order_database.CurrentOrder
 
-class CurrentOrdersAdapter(val viewModel: ShoppingCartViewModel, val activity: FragmentActivity?) : ListAdapter<CurrentOrder, CurrentOrdersAdapter.ViewHolder>(CartDiffCallback()) {
+class CurrentOrdersAdapter(val viewModel: ShoppingCartViewModel, val activity: FragmentActivity?) : ListAdapter<CurrentOrder, CurrentOrdersAdapter.ViewHolder>(CurrentOrderDiffCallback()) {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -52,7 +52,7 @@ class CurrentOrdersAdapter(val viewModel: ShoppingCartViewModel, val activity: F
 
 
 
-class CartDiffCallback : DiffUtil.ItemCallback<CurrentOrder>(){
+class CurrentOrderDiffCallback : DiffUtil.ItemCallback<CurrentOrder>(){
     override fun areItemsTheSame(oldItem: CurrentOrder, newItem: CurrentOrder): Boolean {
         return oldItem.Id == newItem.Id
     }
