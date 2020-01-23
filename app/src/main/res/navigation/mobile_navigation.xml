@@ -190,5 +190,9 @@
         android:id="@+id/favoritesFragment"
         tools:layout="@layout/fragment_favorites"
         android:name="com.moondevs.moon.home_screens.account.favorites.FavoritesFragment"
-        android:label="FavoritesFragment" />
+        android:label="Favorites" >
+        <action
+            android:id="@+id/action_favoritesFragment_to_shopFragment"
+            app:destination="@id/shopFragment" />
+    </fragment>
 </navigation>

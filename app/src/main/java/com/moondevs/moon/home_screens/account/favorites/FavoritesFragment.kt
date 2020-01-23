@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.GridLayoutManager
 
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentFavoritesBinding
@@ -32,6 +33,8 @@ class FavoritesFragment : Fragment() {
         /**linking adapter to the recyclerview*/
         val adapter = FavoriteShopAdapter()
         binding.favoriteShopsList.adapter = adapter
+        val manager = GridLayoutManager(activity, 2)
+        binding.favoriteShopsList.layoutManager = manager
         viewModel.allfavoriteShops.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)

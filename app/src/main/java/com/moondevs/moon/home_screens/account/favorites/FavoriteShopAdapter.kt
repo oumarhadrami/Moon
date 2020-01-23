@@ -3,6 +3,7 @@ package com.moondevs.moon.home_screens.account.favorites
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,10 @@ class FavoriteShopAdapter : ListAdapter<FavoriteShop, FavoriteShopAdapter.ViewHo
                         .error(R.drawable.ic_broken_image)
                 )
                 .into(binding.favoriteShopImage)
+
+            binding.favoriteShopContainer.setOnClickListener {
+                it.findNavController().navigate(FavoritesFragmentDirections.actionFavoritesFragmentToShopFragment(item.shopRef,item.shopName,item.shopImage,item.shopId))
+            }
 
 
             binding.executePendingBindings()

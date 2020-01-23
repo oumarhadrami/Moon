@@ -31,6 +31,7 @@ class ShopFragment : Fragment() {
     private lateinit var shopItemsRef : Query
     private lateinit var adapter : ShopItemsFirestoreRecyclerAdapter
     private lateinit var args: ShopFragmentArgs
+    private lateinit var collectionPath : String
     private lateinit var viewModel: ShoppingCartViewModel
     private lateinit var favoritesViewModel: FavoritesViewModel
     private lateinit var frameLayout : FrameLayout
@@ -44,7 +45,7 @@ class ShopFragment : Fragment() {
 
         //binding shop details to the views
         args = ShopFragmentArgs.fromBundle(arguments!!)
-        val collectionPath = args.ref + "/Items"
+        collectionPath = args.ref + "/Items"
 
         /**Initializing viewModel*/
         val application : Application = requireNotNull(this).activity!!.application
@@ -101,21 +102,43 @@ class ShopFragment : Fragment() {
         }
 
 
+        /**set heart from/to favorite or unfavorite from the start*/
+        changeHeart()
         /**To favorite or unfovorite something*/
         favoriteButton = shopDetailsInPageLayout.findViewById(R.id.set_favorite)
         favoriteButton.setOnClickListener {
-            favoritesViewModel.viewModelScope.launch {
+           favoriteOrUnfavorite()
+        }
+        return binding.root
+    }
+
+    private fun changeHeart() {
+        favoritesViewModel.viewModelScope.launch {
+            if (!favoritesViewModel.recordExists(args.shopId))
+                favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+            else
+                favoriteButton.setImageResource(R.drawable.ic_favorite_black_24dp)
+        }
+    }
+
+    private fun favoriteOrUnfavorite() {
+        favoritesViewModel.viewModelScope.launch {
+            if (!favoritesViewModel.recordExists(args.shopId)) {
+                favoriteButton.setImageResource(R.drawable.ic_favorite_black_24dp)
                 favoritesViewModel.insert(
                     FavoriteShop(
                         shopId = args.shopId,
-                        shopRef = collectionPath,
+                        shopRef = args.ref,
                         shopName = args.shopName!!,
                         shopImage = args.shopImage!!
                     )
                 )
             }
+            else{
+                favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24dp)
+                favoritesViewModel.deleteFavoriteShop(args.shopId)
+            }
         }
-        return binding.root
     }
 
     /**Displaying the shop name in the toolbar*/
