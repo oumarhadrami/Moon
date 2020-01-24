@@ -45,8 +45,8 @@ class OrdersFirestoreRecyclerAdapter(
                 .addOnSuccessListener {document->
                     val isOrderRated = document.getBoolean("isOrderRated")
                     val isOrderCancelled = document.getBoolean("isOrderCancelled")
-                    if (isOrderRated!! || isOrderCancelled!!)
-                        binding.rateOrder.visibility = View.GONE
+                    if (!isOrderRated!! && !isOrderCancelled!!)
+                        binding.rateOrder.visibility = View.VISIBLE
                 }
 
             binding.orderReorder.setOnClickListener {

@@ -41,6 +41,16 @@ class FavoritesFragment : Fragment() {
             }
         })
 
+        /**setting the visibility of the layout depending on count of favorite shops*/
+        viewModel.allfavoriteShopsCount.observe(viewLifecycleOwner, Observer {
+            if (it == 0) {
+                binding.noFavoritesContainer.visibility = View.VISIBLE
+            }
+            else{
+                binding.noFavoritesContainer.visibility = View.GONE
+            }
+        })
+
 
         return binding.root
     }

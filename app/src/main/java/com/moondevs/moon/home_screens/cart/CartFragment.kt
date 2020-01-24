@@ -135,9 +135,9 @@ class CartFragment : Fragment() {
                     }
                 })
 
-        /**edit address button click*/
+        /**add address button click*/
         binding.addressContainer.add_address.setOnClickListener {
-            findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment())
+            findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment(0, "","",0L))
         }
 
 
@@ -274,7 +274,7 @@ class CartFragment : Fragment() {
 
         locationSettingsResponseTask.addOnCompleteListener {
             if ( it.isSuccessful ) {
-                findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment())
+                findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment(0, "","",0L))
             }
         }
     }

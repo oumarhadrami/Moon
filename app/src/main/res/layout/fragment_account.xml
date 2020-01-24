@@ -16,6 +16,13 @@
         android:id="@+id/favorites_button_account"
         android:layout_height="wrap_content"/>
 
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_marginTop="60dp"
+            android:text="Go to addresses"
+            android:id="@+id/addresses_button_account"
+            android:layout_height="wrap_content"/>
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">

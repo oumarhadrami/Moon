@@ -14,11 +14,12 @@ import timber.log.Timber
 class FavoritesViewModel (application: Application): ViewModel(){
     private val repo : FavoriteShopRepository
     val allfavoriteShops : LiveData<List<FavoriteShop>>
-    
+    val allfavoriteShopsCount : LiveData<Int>
     init {
         val dao = AccountDatabase.getDatabase(application).favoriteShopDao
         repo = FavoriteShopRepository(dao)
         allfavoriteShops = repo.allfavoriteShops
+        allfavoriteShopsCount = repo.allfavoriteShopsCount
     }
 
     suspend fun insert(favoriteShop : FavoriteShop) = viewModelScope.launch {

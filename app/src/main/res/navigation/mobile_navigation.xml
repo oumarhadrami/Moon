@@ -67,11 +67,14 @@
         <action
             android:id="@+id/action_navigation_account_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_navigation_account_to_addressListFragment"
+            app:destination="@id/addressListFragment" />
     </fragment>
     <fragment
         android:id="@+id/shopsListFragment"
         android:name="com.moondevs.moon.home_screens.shops_list_screen.ShopsListFragment"
-        android:label="fragment_shops_list"
+        android:label="Shops"
         tools:layout="@layout/fragment_shops_list" >
         <argument
             android:name="shop_type"
@@ -84,7 +87,7 @@
         android:id="@+id/shopFragment"
         tools:layout="@layout/fragment_shop"
         android:name="com.moondevs.moon.home_screens.shops_screens.ShopFragment"
-        android:label="ShopFragment" >
+        android:label="Shop" >
         <argument
             android:name="ref"
             app:argType="string" />
@@ -109,23 +112,42 @@
     <fragment
         android:id="@+id/addressListFragment"
         android:name="com.moondevs.moon.home_screens.account.adresses.AddressListFragment"
-        android:label="fragment_address_list"
-        tools:layout="@layout/fragment_address_list" />
+        android:label="Addresses"
+        tools:layout="@layout/fragment_address_list" >
+        <action
+            android:id="@+id/action_addressListFragment_to_deliverLocationFragment"
+            app:destination="@id/deliverLocationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/deliverLocationFragment"
         android:name="com.moondevs.moon.address_screens.DeliverLocationFragment"
         tools:layout="@layout/fragment_deliver_location"
-        android:label="DeliverLocationFragment" >
+        android:label="Delivery Location" >
         <action
             android:id="@+id/action_deliverLocationFragment_to_navigation_cart"
             app:destination="@id/navigation_cart"
             app:popUpTo="@+id/navigation_cart" />
+        <argument
+            android:name="flag"
+            app:argType="integer" />
+        <argument
+            android:name="name"
+            app:argType="string" />
+        <argument
+            android:name="phoneNumber"
+            app:argType="string" />
+        <argument
+            android:name="addressId"
+            app:argType="long" />
+        <action
+            android:id="@+id/action_deliverLocationFragment_to_addressListFragment"
+            app:destination="@id/addressListFragment" />
     </fragment>
     <fragment
         android:id="@+id/liveTrackingFragment"
         android:name="com.moondevs.moon.live_tracking_screens.LiveTrackingFragment"
         tools:layout="@layout/fragment_live_tracking"
-        android:label="LiveTrackingFragment" >
+        android:label="Live Tracking" >
         <action
             android:id="@+id/action_liveTrackingFragment_to_navigation_account"
             app:destination="@id/navigation_account"
@@ -138,7 +160,7 @@
         android:id="@+id/placeOrderFragment"
         tools:layout="@layout/fragment_place_order"
         android:name="com.moondevs.moon.home_screens.cart.PlaceOrderFragment"
-        android:label="PlaceOrderFragment" >
+        android:label="Place Order" >
         <argument
             android:name="instructions"
             app:argType="string" />
@@ -156,7 +178,7 @@
     <fragment
         android:id="@+id/itemsSearchFragment"
         android:name="com.moondevs.moon.home_screens.shops_screens.search_shop.ItemsSearchFragment"
-        android:label="ItemsSearchFragment"
+        android:label="Items Search"
         tools:layout="@layout/fragment_items_search">
         <argument
             android:name="shopName"

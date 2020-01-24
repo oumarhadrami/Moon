@@ -31,8 +31,8 @@ class AddressViewModel (application: Application): ViewModel(){
         repo.update(address)
     }
 
-    suspend fun deleteAddress(address: Address) = viewModelScope.launch {
-        repo.deleteAddress(address)
+    suspend fun deleteAddress(addressId : Long) = viewModelScope.launch {
+        repo.deleteAddress(addressId)
     }
 
     suspend fun getLastAddedAddress() : Address{

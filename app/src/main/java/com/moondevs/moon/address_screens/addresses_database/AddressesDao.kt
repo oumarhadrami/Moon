@@ -14,8 +14,8 @@ interface AddressesDao {
     @Update
     suspend fun update(address: Address)
 
-    @Delete
-    suspend fun deleteAddress(address: Address)
+    @Query("delete from Addresses where addressId = :addressId")
+    suspend fun deleteAddress(addressId: Long)
 
     @Query("select * from Addresses")
     fun getAll(): LiveData<List<Address>>

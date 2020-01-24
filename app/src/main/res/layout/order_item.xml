@@ -152,6 +152,7 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_width="match_parent"
                 android:id="@+id/rate_order"
+                android:visibility="gone"
                 android:text="@string/rate_order"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
 

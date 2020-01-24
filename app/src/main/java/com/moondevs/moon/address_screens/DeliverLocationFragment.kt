@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
@@ -42,6 +43,7 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
     private lateinit var appBar : AppBarLayout
     private lateinit var bottomNav : BottomNavigationView
     private lateinit var viewModel: AddressViewModel
+    private lateinit var args : DeliverLocationFragmentArgs
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,6 +64,22 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
         appBar.visibility = View.GONE
         bottomNav.visibility = View.GONE
 
+        //visibility of confirm location and update address buttons
+        args = DeliverLocationFragmentArgs.fromBundle(arguments!!)
+        if (args.flag == 0)
+            binding.updateAddress.visibility = View.GONE
+        else {
+            binding.confirmLocationButton.visibility = View.GONE
+            binding.phoneNumberAddressTextfield.setText(args.phoneNumber.substring(4))
+            binding.nameAddressTextfield.setText(args.name)
+            binding.updateAddress.setOnClickListener {
+                viewModel.viewModelScope.launch {
+                    viewModel.update(getUpdatedAddress())
+                }
+                it.findNavController().navigate(DeliverLocationFragmentDirections.actionDeliverLocationFragmentToAddressListFragment())
+            }
+        }
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -70,6 +88,16 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
         //initializing fusedLocationClient
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         return binding.root
+    }
+
+    private fun getUpdatedAddress(): Address {
+        return Address(
+            addressId = args.addressId,
+            Name = args.name,
+            PhoneNumber = args.phoneNumber,
+            Latitude = binding.latLngTextview.text.toString().substringBeforeLast(","),
+            Longitude = binding.latLngTextview.text.toString().substringAfterLast(", ")
+        )
     }
 
     /**

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_marginBottom="2dp"
+        android:layout_height="200dp">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_marginTop="30dp"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_small_home_grey_24dp"
+            android:layout_height="wrap_content"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent">
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="John"
+                android:textSize="16sp"
+                android:id="@+id/address_list_name"
+                android:layout_marginTop="5dp"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/asap"
+                android:layout_marginStart="5dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/address_list_name"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="+22222222"
+                android:textSize="14sp"
+                android:id="@+id/address_list_number"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/asap"
+                android:layout_marginStart="5dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/address_list_number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="18.49131484149"
+                android:textSize="14sp"
+                android:id="@+id/address_list_latitude"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/asap"
+                android:layout_marginStart="5dp"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toBottomOf="@id/address_list_latitude"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="9.649464846445"
+                android:textSize="14sp"
+                android:id="@+id/address_list_longitude"
+                android:layout_marginTop="5dp"
+                android:fontFamily="@font/asap"
+                android:layout_marginStart="5dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:text="@string/edit"
+                app:layout_constraintTop_toBottomOf="@id/address_list_longitude"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/edit_address_in_list"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:text="@string/delete"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/edit_address_in_list"
+                app:layout_constraintTop_toBottomOf="@id/address_list_longitude"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:id="@+id/delete_address_in_list"
+                android:layout_height="wrap_content"/>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+    </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

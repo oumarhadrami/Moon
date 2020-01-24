@@ -19,8 +19,8 @@ class AddressesRepository (private val addressesDao: AddressesDao){
     }
 
     @WorkerThread
-    suspend fun deleteAddress(address: Address){
-        addressesDao.deleteAddress(address)
+    suspend fun deleteAddress(addressId : Long){
+        addressesDao.deleteAddress(addressId)
     }
 
     @WorkerThread

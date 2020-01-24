@@ -13,6 +13,9 @@ interface FavoriteShopDao {
     @Query("select * from favoriteshops")
     fun getAll(): LiveData<List<FavoriteShop>>
 
+    @Query("select COUNT(*) from favoriteshops")
+    fun getCount(): LiveData<Int>
+
 
     @Query("select * from favoriteshops where shopId = :shopId")
     suspend fun recordExists(shopId: String): List<FavoriteShop>

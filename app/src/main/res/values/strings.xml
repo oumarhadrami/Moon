@@ -100,5 +100,13 @@
     <string name="rate_shop_experience">Rate shop experience</string>
     <string name="please_rate_both_delivery_and_shop">Please rate both the delivery and shop experiences</string>
     <string name="submitting_your_feedback">Submitting your feedback…</string>
+    <string name="your_stored_addresses_will_appear_here">Your stored addresses will appear here</string>
+    <string name="your_favorite_shops_will_appear_here">Your favorite shops will appear here</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="update_address">Update address</string>
+    <string name="delete_Address">Delete Address</string>
+    <string name="yes">yes</string>
+    <string name="are_you_sure_you_want_to_delete_this_address">Are you want to delete this address?</string>
 
 </resources>

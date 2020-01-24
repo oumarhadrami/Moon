@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 class FavoriteShopRepository (private val favoriteShopDao: FavoriteShopDao) {
 
     val allfavoriteShops : LiveData<List<FavoriteShop>> = favoriteShopDao.getAll()
-
+    val allfavoriteShopsCount : LiveData<Int> = favoriteShopDao.getCount()
     @WorkerThread
     suspend fun insert(favoriteShop : FavoriteShop){
         favoriteShopDao.insert(favoriteShop)

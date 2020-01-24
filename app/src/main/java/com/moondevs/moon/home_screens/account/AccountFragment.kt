@@ -56,6 +56,10 @@ class AccountFragment : Fragment() {
             it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToFavoritesFragment())
         }
 
+        binding.addressesButtonAccount.setOnClickListener {
+            it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToAddressListFragment())
+        }
+
 
         /**Make recyclerview invisible and progressbar visible until data has been retrieved*/
         FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid).collection("PastOrders").orderBy("orderDate",Query.Direction.DESCENDING).addSnapshotListener { querySnapshot, firebaseFirestoreException ->
