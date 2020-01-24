@@ -103,4 +103,11 @@ class AddressViewModel (application: Application): ViewModel(){
         return addressWithThisId.await()
     }
 
+    suspend fun getSelectedAddress() : Address{
+        val selectedAddress = viewModelScope.async {
+            repo.getSelectedAddres()
+        }
+        return selectedAddress.await()
+    }
+
 }

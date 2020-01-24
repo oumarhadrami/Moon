@@ -117,7 +117,7 @@ class CartFragment : Fragment() {
 
                             //put last added address in address container
                             val currentAddress: Address =
-                                addressViewModel.getLastAddedAddress()
+                                addressViewModel.getSelectedAddress()
                             binding.addressContainer.current_address.text =
                                 currentAddress.Name + "\n" +
                                         currentAddress.PhoneNumber + "\n" +

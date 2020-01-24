@@ -51,5 +51,10 @@ class AddressesRepository (private val addressesDao: AddressesDao){
         return addressesDao.getAddressWithThisId(rowId)
     }
 
+    @WorkerThread
+    suspend fun getSelectedAddres(): Address {
+        return addressesDao.getSelectedAddress()
+    }
+
 
 }

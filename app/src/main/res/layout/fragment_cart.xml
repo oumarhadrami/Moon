@@ -282,6 +282,7 @@
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            app:cardCornerRadius="10dp"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             android:id="@+id/bottom_sheet">
 

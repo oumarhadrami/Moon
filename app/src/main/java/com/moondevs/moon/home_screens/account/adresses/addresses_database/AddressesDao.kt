@@ -36,5 +36,8 @@ interface AddressesDao {
     @Query("select * from addresses where addressId = :rowId")
     suspend fun getAddressWithThisId(rowId: Long): Address
 
+    @Query("select * from addresses where isThisTheSelectedAddress = 1")
+    suspend fun getSelectedAddress(): Address
+
 
 }
