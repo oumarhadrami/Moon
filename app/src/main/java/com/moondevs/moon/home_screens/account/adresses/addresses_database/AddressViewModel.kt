@@ -1,12 +1,12 @@
-package com.moondevs.moon.address_screens
+package com.moondevs.moon.home_screens.account.adresses.addresses_database
 
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moondevs.moon.address_screens.addresses_database.Address
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
 import com.moondevs.moon.home_screens.account.AccountDatabase
-import com.moondevs.moon.address_screens.addresses_database.AddressesRepository
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressesRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -18,7 +18,10 @@ class AddressViewModel (application: Application): ViewModel(){
 
     init {
         val dao = AccountDatabase.getDatabase(application).addressesDao
-        repo = AddressesRepository(dao)
+        repo =
+            AddressesRepository(
+                dao
+            )
         allAddresses = repo.allAddresses
         allAddressesCount = repo.allAddressesCount
     }
@@ -35,7 +38,7 @@ class AddressViewModel (application: Application): ViewModel(){
         repo.deleteAddress(addressId)
     }
 
-    suspend fun getLastAddedAddress() : Address{
+    suspend fun getLastAddedAddress() : Address {
         val currentAddress = viewModelScope.async {
             repo.getLastAddedAddress()
         }

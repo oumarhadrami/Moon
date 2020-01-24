@@ -9,7 +9,6 @@ import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.provider.Settings
 import android.view.View
@@ -29,26 +28,19 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
-import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.DocumentReference
 import com.moondevs.moon.BuildConfig
 import com.moondevs.moon.R
-import com.moondevs.moon.address_screens.AddressViewModel
-import com.moondevs.moon.address_screens.addresses_database.Address
-import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModel
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentCartBinding
-import com.moondevs.moon.home_screens.cart.order_database.CurrentOrder
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
-import com.moondevs.moon.util.FirestoreUtil
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.address_layout.view.*
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.concurrent.thread
 
 class CartFragment : Fragment() {
 
@@ -71,8 +63,12 @@ class CartFragment : Fragment() {
         binding.lifecycleOwner = activity
 
         /**Initialize AddressViewModel*/
-        val addressViewModelFactory = AddressViewModelFactory(application)
-        addressViewModel = ViewModelProviders.of(activity!!, addressViewModelFactory).get(AddressViewModel::class.java)
+        val addressViewModelFactory =
+            AddressViewModelFactory(
+                application
+            )
+        addressViewModel = ViewModelProviders.of(activity!!, addressViewModelFactory).get(
+            AddressViewModel::class.java)
 
 
         /**linking adapter to the recyclerview*/
@@ -139,6 +135,12 @@ class CartFragment : Fragment() {
         binding.addressContainer.add_address.setOnClickListener {
             findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment(0, "","",0L))
         }
+
+        /**address container button click*/
+        binding.addressContainer.setOnClickListener {
+
+        }
+
 
 
         /**Handling the place order button behavior

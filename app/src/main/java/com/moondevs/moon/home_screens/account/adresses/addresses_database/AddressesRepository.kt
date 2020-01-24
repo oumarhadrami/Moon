@@ -1,7 +1,9 @@
-package com.moondevs.moon.address_screens.addresses_database
+package com.moondevs.moon.home_screens.account.adresses.addresses_database
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressesDao
 
 class AddressesRepository (private val addressesDao: AddressesDao){
 
@@ -24,7 +26,7 @@ class AddressesRepository (private val addressesDao: AddressesDao){
     }
 
     @WorkerThread
-    suspend fun getLastAddedAddress() : Address{
+    suspend fun getLastAddedAddress() : Address {
         return addressesDao.getLastAddedAddress()
     }
 

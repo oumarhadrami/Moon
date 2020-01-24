@@ -110,7 +110,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-
+        <com.google.android.material.radiobutton.MaterialRadioButton
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+            android:id="@+id/address_selected"
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

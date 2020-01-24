@@ -1,4 +1,4 @@
-package com.moondevs.moon.address_screens.addresses_database
+package com.moondevs.moon.home_screens.account.adresses.addresses_database
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

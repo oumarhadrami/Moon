@@ -120,7 +120,7 @@
     </fragment>
     <fragment
         android:id="@+id/deliverLocationFragment"
-        android:name="com.moondevs.moon.address_screens.DeliverLocationFragment"
+        android:name="com.moondevs.moon.home_screens.cart.DeliverLocationFragment"
         tools:layout="@layout/fragment_deliver_location"
         android:label="Delivery Location" >
         <action

@@ -1,7 +1,7 @@
 package com.moondevs.moon.home_screens.account.adresses
 
 import android.content.Context
-import com.moondevs.moon.address_screens.addresses_database.Address
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.moondevs.moon.R
-import com.moondevs.moon.address_screens.AddressViewModel
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModel
 import com.moondevs.moon.databinding.AddressItemBinding
 import kotlinx.coroutines.launch
 

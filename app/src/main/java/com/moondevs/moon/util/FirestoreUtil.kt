@@ -1,13 +1,11 @@
 package com.moondevs.moon.util
 
-import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
-import com.moondevs.moon.address_screens.addresses_database.Address
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
 import com.moondevs.moon.login_screens.User
 import timber.log.Timber
-import java.sql.RowId
 
 object FirestoreUtil {
     val firestoreInstance: FirebaseFirestore by lazy { FirebaseFirestore.getInstance() }

@@ -11,8 +11,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.moondevs.moon.R
-import com.moondevs.moon.address_screens.AddressViewModel
-import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModel
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentAddressListBinding
 
 
@@ -25,7 +25,10 @@ class AddressListFragment : Fragment() {
 
         /**initialize FavoriteShopsViewModel*/
         val application : Application = requireNotNull(this).activity!!.application
-        val viewModelFactory = AddressViewModelFactory(application)
+        val viewModelFactory =
+            AddressViewModelFactory(
+                application
+            )
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(AddressViewModel::class.java)
 
         /**linking adapter to the recyclerview*/

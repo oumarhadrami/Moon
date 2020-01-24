@@ -1,4 +1,4 @@
-package com.moondevs.moon.address_screens
+package com.moondevs.moon.home_screens.cart
 
 
 import android.app.Application
@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
@@ -27,12 +26,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.moondevs.moon.R
-import com.moondevs.moon.address_screens.addresses_database.Address
-import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentDeliverLocationBinding
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModel
 import com.moondevs.moon.util.FirestoreUtil
 import kotlinx.coroutines.launch
-import kotlin.concurrent.thread
 import kotlin.math.roundToInt
 
 class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
@@ -52,7 +51,10 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
 
         // initialize viewModel
         val application : Application = requireNotNull(this).activity!!.application
-        val viewModelFactory = AddressViewModelFactory(application)
+        val viewModelFactory =
+            AddressViewModelFactory(
+                application
+            )
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(AddressViewModel::class.java)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
@@ -65,7 +67,10 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
         bottomNav.visibility = View.GONE
 
         //visibility of confirm location and update address buttons
-        args = DeliverLocationFragmentArgs.fromBundle(arguments!!)
+        args =
+            DeliverLocationFragmentArgs.fromBundle(
+                arguments!!
+            )
         if (args.flag == 0)
             binding.updateAddress.visibility = View.GONE
         else {
@@ -149,12 +154,13 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
 
 
                 /** Get Address entered from UI*/
-                val address = Address(
-                    Name = nameString,
-                    PhoneNumber = "+222$phoneNumberString",
-                    Latitude = latitude.toString(),
-                    Longitude = longitude.toString()
-                )
+                val address =
+                    Address(
+                        Name = nameString,
+                        PhoneNumber = "+222$phoneNumberString",
+                        Latitude = latitude.toString(),
+                        Longitude = longitude.toString()
+                    )
 
                 /** Insert the address in database and firestore*/
                 viewModel.viewModelScope.launch {

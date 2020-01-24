@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.moondevs.moon.address_screens.addresses_database.Address
-import com.moondevs.moon.address_screens.addresses_database.AddressesDao
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressesDao
 import com.moondevs.moon.home_screens.account.favorites.database.FavoriteShop
 import com.moondevs.moon.home_screens.account.favorites.database.FavoriteShopDao
 

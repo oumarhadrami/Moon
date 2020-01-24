@@ -19,9 +19,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 
 import com.moondevs.moon.R
-import com.moondevs.moon.address_screens.AddressViewModel
-import com.moondevs.moon.address_screens.addresses_database.Address
-import com.moondevs.moon.address_screens.addresses_database.AddressViewModelFactory
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModel
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentPlaceOrderBinding
 import com.moondevs.moon.home_screens.cart.order_database.CurrentOrder
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
@@ -67,8 +67,12 @@ class PlaceOrderFragment : Fragment() {
         viewModel = ViewModelProviders.of(activity!!, viewModelFactory).get(ShoppingCartViewModel::class.java)
 
         /**Initialize AddressViewModel*/
-        val addressViewModelFactory = AddressViewModelFactory(application)
-        addressViewModel = ViewModelProviders.of(activity!!, addressViewModelFactory).get(AddressViewModel::class.java)
+        val addressViewModelFactory =
+            AddressViewModelFactory(
+                application
+            )
+        addressViewModel = ViewModelProviders.of(activity!!, addressViewModelFactory).get(
+            AddressViewModel::class.java)
 
 
         /**Initialize the AppBar and BottomNavView*/

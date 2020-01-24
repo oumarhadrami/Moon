@@ -1,7 +1,8 @@
-package com.moondevs.moon.address_screens.addresses_database
+package com.moondevs.moon.home_screens.account.adresses.addresses_database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
 
 
 @Dao

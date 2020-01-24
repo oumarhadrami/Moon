@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.moondevs.moon.address_screens.AddressViewModel" />
+            type="com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModel" />
 
     </data>
 
@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".address_screens.DeliverLocationFragment">
+        tools:context=".home_screens.cart.DeliverLocationFragment">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:layout_width="match_parent"
