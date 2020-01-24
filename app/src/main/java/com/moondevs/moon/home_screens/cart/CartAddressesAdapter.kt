@@ -1,21 +1,21 @@
-package com.moondevs.moon.home_screens.account.adresses
+package com.moondevs.moon.home_screens.cart
+
 
 import android.content.Context
 import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.moondevs.moon.R
 import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModel
-import com.moondevs.moon.databinding.AddressItemBinding
+import com.moondevs.moon.databinding.AddressItemInCartBinding
 import kotlinx.coroutines.launch
 
-class AddressesAdapter(val context: Context, val viewModel: AddressViewModel) : ListAdapter<Address, AddressesAdapter.ViewHolder>(AddressDiffCallback()) {
+class CartAddressesAdapter(val context: Context, val viewModel: AddressViewModel) : ListAdapter<Address, CartAddressesAdapter.ViewHolder>(AddressDiffCallback()) {
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -28,33 +28,26 @@ class AddressesAdapter(val context: Context, val viewModel: AddressViewModel) : 
 
     }
 
-    inner class ViewHolder constructor(val binding: AddressItemBinding) : RecyclerView.ViewHolder(binding.root){
+    inner class ViewHolder constructor(val binding: AddressItemInCartBinding) : RecyclerView.ViewHolder(binding.root){
 
         fun bind(item: Address) {
-            binding.addressListName.text = item.Name
-            binding.addressListNumber.text = item.PhoneNumber
-            binding.addressListLatitude.text = item.Latitude
-            binding.addressListLongitude.text = item.Longitude
-            binding.addressSelected.isChecked = item.isThisTheSelectedAddress
+            binding.addressListNameInCart.text = item.Name
+            binding.addressListNumberInCart.text = item.PhoneNumber
+            binding.addressListLatitudeInCart.text = item.Latitude
+            binding.addressListLongitudeInCart.text = item.Longitude
+            binding.addressSelectedInCart.isChecked = item.isThisTheSelectedAddress
 
-                    binding.editAddressInList.setOnClickListener {
-                it.findNavController().navigate(AddressListFragmentDirections.actionAddressListFragmentToDeliverLocationFragment(1, item.Name, item.PhoneNumber,item.addressId))
-            }
-
-            binding.deleteAddressInList.setOnClickListener {
-                showDialog(item.addressId)
-            }
-            binding.addressContainerCard.setOnClickListener {
-                viewModel.viewModelScope.launch {
-                    viewModel.updateSelectedAddress(item)
-                }
-            }
-            binding.addressSelected.setOnClickListener {
-                viewModel.viewModelScope.launch {
-                    viewModel.updateSelectedAddress(item)
-                }
-            }
             
+            binding.addressContainerCardInCart.setOnClickListener {
+                viewModel.viewModelScope.launch {
+                    viewModel.updateSelectedAddress(item)
+                }
+            }
+            binding.addressSelectedInCart.setOnClickListener {
+                viewModel.viewModelScope.launch {
+                    viewModel.updateSelectedAddress(item)
+                }
+            }
 
 
             binding.executePendingBindings()
@@ -84,7 +77,7 @@ class AddressesAdapter(val context: Context, val viewModel: AddressViewModel) : 
 
     fun from(parent: ViewGroup): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = AddressItemBinding.inflate(layoutInflater, parent, false)
+        val binding = AddressItemInCartBinding.inflate(layoutInflater, parent, false)
         return ViewHolder(binding)
     }
 

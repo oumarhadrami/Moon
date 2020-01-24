@@ -4,11 +4,10 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
 import com.moondevs.moon.home_screens.account.AccountDatabase
-import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressesRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class AddressViewModel (application: Application): ViewModel(){
     private val repo : AddressesRepository
@@ -57,6 +56,51 @@ class AddressViewModel (application: Application): ViewModel(){
             repo.getAddressesSizeNonLiveData()
         }
         return totalSize.await()
+    }
+
+    suspend fun getAllAddressesNonLiveData() : List<Address>{
+        val allAddresses = viewModelScope.async {
+            repo.getAllAddressesNonLiveData()
+        }
+        return allAddresses.await()
+    }
+    
+    suspend fun updateSelectedAddress(item : Address){
+        viewModelScope.launch {
+            update(
+                Address(
+                    addressId = item.addressId,
+                    Name = item.Name,
+                    PhoneNumber = item.PhoneNumber,
+                    Latitude = item.Latitude,
+                    Longitude = item.Longitude,
+                    isThisTheSelectedAddress = true
+                )
+            )
+            Timber.i("Well ${getAllAddressesNonLiveData()}")
+            for (addressItem in getAllAddressesNonLiveData()) {
+                if (addressItem.addressId != item.addressId) {
+                    update(
+                        Address(
+                            addressId = addressItem.addressId,
+                            Name = addressItem.Name,
+                            PhoneNumber = addressItem.PhoneNumber,
+                            Latitude = addressItem.Latitude,
+                            Longitude = addressItem.Longitude,
+                            isThisTheSelectedAddress = false
+                        )
+                    )
+                    Timber.i("Not Equal")
+                }
+            }
+        }
+    }
+
+    private suspend fun getAddedAddressWithId(rowId: Long): Address {
+        val addressWithThisId = viewModelScope.async { 
+            repo.getAddresWithThisId(rowId)
+        }
+        return addressWithThisId.await()
     }
 
 }

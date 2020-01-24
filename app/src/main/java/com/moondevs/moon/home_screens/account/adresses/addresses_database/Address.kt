@@ -20,7 +20,14 @@ data class Address(
     var Latitude : String,
 
     @ColumnInfo(name = "Longitude")
-    var Longitude : String
+    var Longitude : String,
+
+    @ColumnInfo(name = "isThisTheSelectedAddress")
+    var isThisTheSelectedAddress : Boolean
+
+
+
+
 
 
 )

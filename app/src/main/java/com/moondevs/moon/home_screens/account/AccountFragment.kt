@@ -47,7 +47,11 @@ class AccountFragment : Fragment() {
 
 
         /**Log out with firebase*/
-        binding.logout.setOnClickListener {
+        binding.logoutContainer.setOnClickListener {
+            auth.signOut()
+            startActivity(Intent(activity, MainActivity::class.java))
+        }
+        binding.logoutIcon.setOnClickListener {
             auth.signOut()
             startActivity(Intent(activity, MainActivity::class.java))
         }

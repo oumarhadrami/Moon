@@ -10,7 +10,7 @@ interface AddressesDao {
 
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(address: Address)
+    suspend fun insert(address: Address) : Long
 
     @Update
     suspend fun update(address: Address)
@@ -28,7 +28,13 @@ interface AddressesDao {
     suspend fun getLastAddedAddress() : Address
 
     @Query("select COUNT(*) from addresses")
-    fun getAddressesSizeNonLiveData(): Int
+    suspend fun getAddressesSizeNonLiveData(): Int
+
+    @Query("select * from addresses")
+    suspend fun getAllAddressesNonLiveData(): List<Address>
+
+    @Query("select * from addresses where addressId = :rowId")
+    suspend fun getAddressWithThisId(rowId: Long): Address
 
 
 }

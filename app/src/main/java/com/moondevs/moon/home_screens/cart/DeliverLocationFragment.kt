@@ -5,6 +5,7 @@ import android.app.Application
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
+import android.os.Handler
 import android.util.DisplayMetrics
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -49,7 +50,7 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
         binding = DataBindingUtil.inflate(inflater,
             R.layout.fragment_deliver_location,container,false)
 
-        // initialize viewModel
+        /** initialize viewModel*/
         val application : Application = requireNotNull(this).activity!!.application
         val viewModelFactory =
             AddressViewModelFactory(
@@ -60,13 +61,13 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
         binding.lifecycleOwner = this
 
 
-        //visibility of the AppBar and BottomNavView
+        /**visibility of the AppBar and BottomNavView*/
         appBar = activity!!.findViewById(R.id.appbar)
         bottomNav = activity!!.findViewById(R.id.nav_view)
         appBar.visibility = View.GONE
         bottomNav.visibility = View.GONE
 
-        //visibility of confirm location and update address buttons
+        /**visibility of confirm location and update address buttons*/
         args =
             DeliverLocationFragmentArgs.fromBundle(
                 arguments!!
@@ -77,6 +78,8 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
             binding.confirmLocationButton.visibility = View.GONE
             binding.phoneNumberAddressTextfield.setText(args.phoneNumber.substring(4))
             binding.nameAddressTextfield.setText(args.name)
+
+            /**Update address*/
             binding.updateAddress.setOnClickListener {
                 viewModel.viewModelScope.launch {
                     viewModel.update(getUpdatedAddress())
@@ -85,12 +88,12 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
             }
         }
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        /** Obtain the SupportMapFragment and get notified when the map is ready to be used.*/
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
 
-        //initializing fusedLocationClient
+        /**initializing fusedLocationClient*/
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
         return binding.root
     }
@@ -101,7 +104,8 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
             Name = args.name,
             PhoneNumber = args.phoneNumber,
             Latitude = binding.latLngTextview.text.toString().substringBeforeLast(","),
-            Longitude = binding.latLngTextview.text.toString().substringAfterLast(", ")
+            Longitude = binding.latLngTextview.text.toString().substringAfterLast(", "),
+            isThisTheSelectedAddress = false
         )
     }
 
@@ -159,18 +163,28 @@ class DeliverLocationFragment : Fragment() , OnMapReadyCallback {
                         Name = nameString,
                         PhoneNumber = "+222$phoneNumberString",
                         Latitude = latitude.toString(),
-                        Longitude = longitude.toString()
+                        Longitude = longitude.toString(),
+                        isThisTheSelectedAddress = false
                     )
 
                 /** Insert the address in database and firestore*/
                 viewModel.viewModelScope.launch {
                     viewModel.insert(address)
                     binding.progressBarAddress.visibility = View.VISIBLE
-                    val rowId = viewModel.getLastAddedAddressId()
-                    FirestoreUtil.insertAddress(address, rowId)
+                    /** Let UI thread sleep for 2 seconds while showing
+                     * progressBar
+                     * Updating isThisTheSelectedAddress Attribute
+                     * Store the newly added address in firestore database*/
+                    Handler().postDelayed({
+                        viewModel.viewModelScope.launch {
+                        val rowId = viewModel.getLastAddedAddressId()
+                        viewModel.updateSelectedAddress(viewModel.getLastAddedAddress())
+                        FirestoreUtil.insertAddress(address, rowId)
+                        findNavController().navigate(DeliverLocationFragmentDirections.actionDeliverLocationFragmentToNavigationCart())
+                        }
+                    }, 2000)
                 }
-                /** Let UI thread sleep for 3 seconds while showing progressBar */
-                findNavController().navigate(DeliverLocationFragmentDirections.actionDeliverLocationFragmentToNavigationCart())
+
 
 
             }

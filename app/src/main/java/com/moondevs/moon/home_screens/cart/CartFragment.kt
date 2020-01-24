@@ -28,6 +28,7 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.moondevs.moon.BuildConfig
 import com.moondevs.moon.R
@@ -35,6 +36,7 @@ import com.moondevs.moon.home_screens.account.adresses.addresses_database.Addres
 import com.moondevs.moon.home_screens.account.adresses.addresses_database.Address
 import com.moondevs.moon.home_screens.account.adresses.addresses_database.AddressViewModelFactory
 import com.moondevs.moon.databinding.FragmentCartBinding
+import com.moondevs.moon.home_screens.account.adresses.AddressesAdapter
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
 import kotlinx.android.synthetic.main.activity_home.*
@@ -136,9 +138,24 @@ class CartFragment : Fragment() {
             findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliverLocationFragment(0, "","",0L))
         }
 
+
+        /**linking address adapter to the recyclerview*/
+
+        val cartAddressAdapter = CartAddressesAdapter(context!!, addressViewModel)
+        binding.addressesListInBottomSheet.adapter = cartAddressAdapter
+        addressViewModel.allAddresses.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                cartAddressAdapter.submitList(it)
+            }
+        })
+        val sheetBehavior = BottomSheetBehavior.from(binding.bottomSheet)
+        sheetBehavior.isHideable = true
+        sheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
+        sheetBehavior.peekHeight = 300
+
         /**address container button click*/
         binding.addressContainer.setOnClickListener {
-
+            sheetBehavior.state = BottomSheetBehavior.STATE_HALF_EXPANDED
         }
 
 

@@ -41,5 +41,15 @@ class AddressesRepository (private val addressesDao: AddressesDao){
         return addressesDao.getAddressesSizeNonLiveData()
     }
 
+    @WorkerThread
+    suspend fun getAllAddressesNonLiveData(): List<Address> {
+        return addressesDao.getAllAddressesNonLiveData()
+    }
+
+    @WorkerThread
+    suspend fun getAddresWithThisId(rowId: Long): Address {
+        return addressesDao.getAddressWithThisId(rowId)
+    }
+
 
 }

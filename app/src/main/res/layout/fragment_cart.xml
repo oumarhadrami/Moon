@@ -279,6 +279,23 @@
             android:layout_height="wrap_content"/>
         </LinearLayout>
 
+        <com.google.android.material.card.MaterialCardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
+            android:id="@+id/bottom_sheet">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/addresses_list_in_bottom_sheet"
+                app:behavior_hideable="true"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+
+        </com.google.android.material.card.MaterialCardView>
+
+
    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </layout>

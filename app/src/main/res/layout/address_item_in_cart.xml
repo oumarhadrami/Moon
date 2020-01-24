@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:id="@+id/address_container_card_in_cart"
+        android:layout_marginBottom="2dp"
+        android:layout_height="200dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_marginTop="30dp"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_home_grey_border"
+                android:layout_height="wrap_content"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_weight="4"
+                android:layout_height="match_parent">
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="John"
+                    android:textSize="16sp"
+                    android:id="@+id/address_list_name_in_Cart"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/asap"
+                    android:layout_marginStart="5dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/address_list_name_in_Cart"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="+22222222"
+                    android:textSize="14sp"
+                    android:id="@+id/address_list_number_in_cart"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/asap"
+                    android:layout_marginStart="5dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/address_list_number_in_cart"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="18.49131484149"
+                    android:textSize="14sp"
+                    android:id="@+id/address_list_latitude_in_cart"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/asap"
+                    android:layout_marginStart="5dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/address_list_latitude_in_cart"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    tools:text="9.649464846445"
+                    android:textSize="14sp"
+                    android:id="@+id/address_list_longitude_in_cart"
+                    android:layout_marginTop="5dp"
+                    android:fontFamily="@font/asap"
+                    android:layout_marginStart="5dp"/>
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.radiobutton.MaterialRadioButton
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                style="@style/Widget.AppCompat.CompoundButton.RadioButton"
+                android:id="@+id/address_selected_in_cart"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
