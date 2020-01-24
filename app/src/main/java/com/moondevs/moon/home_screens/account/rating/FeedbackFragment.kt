@@ -138,6 +138,7 @@ class FeedbackFragment : Fragment() {
         FirestoreUtil.firestoreInstance.document(args.orderPath).update(
             "isOrderRated", true
         ).addOnSuccessListener {
+            Snackbar.make(binding.root, getString(R.string.thank_you), Snackbar.LENGTH_SHORT).show()
             findNavController().navigateUp()
         }
     }
