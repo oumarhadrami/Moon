@@ -1,6 +1,6 @@
 package com.moondevs.moon.home_screens.shops_list_screen
 
-import android.annotation.SuppressLint
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.navigation.findNavController
@@ -11,11 +11,13 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.ShopItemBinding
-import kotlin.math.ceil
 import java.math.BigDecimal
 import java.math.RoundingMode
 
-class ShopFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop>) : FirestoreRecyclerAdapter<Shop, ShopFirestoreRecyclerAdapter.ViewHolder>(options) {
+class ShopFirestoreRecyclerAdapter(
+    options: FirestoreRecyclerOptions<Shop>,
+    val context: Context?
+) : FirestoreRecyclerAdapter<Shop, ShopFirestoreRecyclerAdapter.ViewHolder>(options) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return from(parent)
@@ -42,6 +44,14 @@ class ShopFirestoreRecyclerAdapter(options: FirestoreRecyclerOptions<Shop>) : Fi
                         .error(R.drawable.ic_broken_image)
                 )
                 .into(binding.shopImage)
+
+            if (item.numberOfRatings!! == 1.0)
+                binding.numOfRating.text = item.numberOfRatings!!.toInt().toString() + " " + context!!.resources.getString(R.string.rating)
+            else
+                binding.numOfRating.text = item.numberOfRatings!!.toInt().toString() + " " + context!!.resources.getString(R.string.ratings)
+
+
+
 
             /**handling the click of the shop event*/
             binding.shopContainer.setOnClickListener {

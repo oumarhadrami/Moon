@@ -148,10 +148,6 @@
         android:name="com.moondevs.moon.live_tracking_screens.LiveTrackingFragment"
         tools:layout="@layout/fragment_live_tracking"
         android:label="Live Tracking" >
-        <action
-            android:id="@+id/action_liveTrackingFragment_to_navigation_account"
-            app:destination="@id/navigation_account"
-            app:popUpTo="@+id/navigation_cart" />
         <argument
             android:name="order_doc"
             app:argType="string" />

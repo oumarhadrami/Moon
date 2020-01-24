@@ -10,18 +10,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="match_parent"
-        android:text="Go to favorites"
-        android:id="@+id/favorites_button_account"
-        android:layout_height="wrap_content"/>
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="match_parent"
-            android:layout_marginTop="60dp"
-            android:text="Go to addresses"
-            android:id="@+id/addresses_button_account"
-            android:layout_height="wrap_content"/>
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -31,13 +20,176 @@
         android:layout_height="match_parent"
         tools:context=".home_screens.account.AccountFragment">
 
-
-        <androidx.recyclerview.widget.RecyclerView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:id="@+id/my_account_container"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:layout_height="70dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:text="@string/my_account"
+                android:fontFamily="@font/asap"
+                android:layout_marginTop="8dp"
+                android:textSize="16sp"
+                android:textColor="@android:color/black"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:text="@string/address_favorites_referrals_and_offers_faqs"
+                android:fontFamily="@font/asap"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+
+        <TableRow
+            android:id="@+id/hr_in_account"
+            app:layout_constraintTop_toBottomOf="@id/my_account_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#E2E1E1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/manage_addresses_container"
+            app:layout_constraintTop_toBottomOf="@id/hr_in_account"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:layout_gravity="start"
+                app:srcCompat="@drawable/ic_home_grey_border"
+                android:background="@android:color/transparent"/>
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_weight="11"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/asap"
+                android:text="@string/manage_addresses"/>
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/favorites_container"
+            app:layout_constraintTop_toBottomOf="@id/manage_addresses_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:layout_gravity="start"
+                app:srcCompat="@drawable/ic_favorite_border_grey_24dp"
+                android:background="@android:color/transparent"/>
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="0dp"
+                android:layout_weight="11"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:fontFamily="@font/asap"
+                android:text="@string/favorites"/>
+            <ImageButton
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                app:srcCompat="@drawable/ic_keyboard_arrow_right_black_24dp"
+                android:background="@android:color/transparent"/>
+        </LinearLayout>
+
+        <TableRow
+            android:id="@+id/hr2_in_account"
+            app:layout_constraintTop_toBottomOf="@id/favorites_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:background="#E2E1E1"/>
+
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/hr_container"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hr2_in_account">
+
+
+
+            <com.google.android.material.textview.MaterialTextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fontFamily="@font/asap"
+                android:text="@string/orders"
+                android:textSize="14sp"
+                android:gravity="start|center"
+                android:layout_marginTop="5dp"
+                android:elevation="3dp"
+                android:layout_marginStart="10dp"/>
+
+
+            <TableRow
+                android:id="@+id/hr3_in_account"
+                app:layout_constraintTop_toBottomOf="@id/favorites_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="#E2E1E1"/>
+
+        </FrameLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/hr_container"
             android:id="@+id/current_orders_list"
             android:nestedScrollingEnabled="true"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
@@ -45,6 +197,8 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/current_orders_list"
@@ -73,5 +227,6 @@
             android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"/>
+
     </FrameLayout>
 </layout>

@@ -52,11 +52,11 @@ class AccountFragment : Fragment() {
             startActivity(Intent(activity, MainActivity::class.java))
         }
 
-        binding.favoritesButtonAccount.setOnClickListener {
+        binding.favoritesContainer.setOnClickListener {
             it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToFavoritesFragment())
         }
 
-        binding.addressesButtonAccount.setOnClickListener {
+        binding.manageAddressesContainer.setOnClickListener {
             it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToAddressListFragment())
         }
 

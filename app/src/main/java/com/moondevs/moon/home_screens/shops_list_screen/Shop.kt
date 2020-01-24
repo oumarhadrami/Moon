@@ -5,16 +5,18 @@ class Shop{
     var shopImage : String? = null
     var shopName: String? = null
     var shopRating: Double? = null
+    var numberOfRatings : Double? = null
     var shopDistance : String? = null
 
     constructor() {}
 
     constructor(shopId: String, shopImage: String, shopName: String,
-                shopRating: Double, shopDistance: String) : this() {
+                shopRating: Double, numberOfRatings : Double,shopDistance: String) : this() {
         this.shopId = shopId
         this.shopImage = shopImage
         this.shopName = shopName
         this.shopRating = shopRating
+        this.numberOfRatings = numberOfRatings
         this.shopDistance = shopDistance
     }
 

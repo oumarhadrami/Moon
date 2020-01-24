@@ -80,7 +80,7 @@ class LiveTrackingFragment : Fragment() {
 
         /**Navigating back after click the close button*/
         binding.closeTracking.setOnClickListener {
-            findNavController().navigate(LiveTrackingFragmentDirections.actionLiveTrackingFragmentToNavigationAccount())
+            findNavController().navigateUp()
         }
 
         return binding.root

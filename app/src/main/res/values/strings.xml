@@ -108,5 +108,13 @@
     <string name="delete_Address">Delete Address</string>
     <string name="yes">yes</string>
     <string name="are_you_sure_you_want_to_delete_this_address">Are you want to delete this address?</string>
+    <string name="my_account">My Account</string>
+    <string name="address_favorites_referrals_and_offers_faqs">Address, Favorites, Referrals and Offers, FAQs</string>
+    <string name="manage_addresses">Manage Addresses</string>
+    <string name="favorites">Favorites</string>
+    <string name="orders">ORDERS</string>
+    <string name="rating">rating</string>
+    <string name="ratings">ratings</string>
+    <string name="no_ratings">No ratings</string>
 
 </resources>

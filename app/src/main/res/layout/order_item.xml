@@ -9,10 +9,10 @@
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        app:cardCornerRadius="7dp"
+        app:cardCornerRadius="2dp"
         android:layout_marginBottom="5dp"
         android:id="@+id/order_container"
-        app:cardElevation="5dp"
+        app:cardElevation="1dp"
         android:layout_height="wrap_content">
 
 

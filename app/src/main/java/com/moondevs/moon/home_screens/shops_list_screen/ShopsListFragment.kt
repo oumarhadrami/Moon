@@ -10,7 +10,6 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
-import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.Query
 import com.moondevs.moon.util.FirestoreUtil
 import com.moondevs.moon.R
@@ -46,7 +45,7 @@ class ShopsListFragment : Fragment() {
         /**Initializing the collection for all shops according the shop type and adapter to the recyclerview*/
         shopsRef = FirestoreUtil.firestoreInstance.collection("Shops/").whereEqualTo("shopType",args.shopType)
         val options = FirestoreRecyclerOptions.Builder<Shop>().setQuery(shopsRef, Shop::class.java).build()
-        adapter = ShopFirestoreRecyclerAdapter(options)
+        adapter = ShopFirestoreRecyclerAdapter(options, context)
         binding.shopsList.adapter = adapter
         binding.lifecycleOwner = this
 

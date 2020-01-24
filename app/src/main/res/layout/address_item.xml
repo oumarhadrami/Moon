@@ -21,7 +21,7 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_weight="1"
-            app:srcCompat="@drawable/ic_small_home_grey_24dp"
+            app:srcCompat="@drawable/ic_home_grey_border"
             android:layout_height="wrap_content"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
