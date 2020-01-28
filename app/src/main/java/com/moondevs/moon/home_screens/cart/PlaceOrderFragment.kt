@@ -52,6 +52,7 @@ class PlaceOrderFragment : Fragment() {
     @Volatile private var totalItemsCount : Int = 0
     @Volatile private lateinit var currentAddress : Address
     @Volatile private var itemsHashMap : HashMap<String,HashMap<String, Any>> = hashMapOf()
+    @Volatile private var shopId : String = ""
     @Volatile private var currentAddressHashMap : HashMap<String, Any> = hashMapOf()
     private lateinit var currentDateandTime : String
 
@@ -111,6 +112,7 @@ class PlaceOrderFragment : Fragment() {
                     "shopRef" to item.shopRef,
                     "shopId" to item.shopId
                 )
+                shopId = item.shopId
             }
             storeAddress()
         })
@@ -127,7 +129,7 @@ class PlaceOrderFragment : Fragment() {
 
     private fun storeAddress() {
         addressViewModel.viewModelScope.launch {
-            currentAddress = addressViewModel.getLastAddedAddress()
+            currentAddress = addressViewModel.getSelectedAddress()
             currentAddressHashMap = hashMapOf(
                 "Name" to currentAddress.Name,
                 "PhoneNumber" to currentAddress.PhoneNumber,
@@ -162,7 +164,7 @@ class PlaceOrderFragment : Fragment() {
             "totalItemsCount" to totalItemsCount,
             "Instructions" to instructions,
             "shopName" to shopName,
-
+            "shopId" to shopId,
             "orderDate" to currentDateandTime,
             "shopRating" to 0,
             "deliveryExperienceRating" to 0,

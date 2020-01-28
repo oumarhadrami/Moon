@@ -12,25 +12,19 @@ import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.VectorDrawable
 import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
-import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -41,10 +35,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.gms.maps.model.*
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -53,9 +44,8 @@ import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentLiveTrackingBinding
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
-import kotlinx.coroutines.launch
+import com.moondevs.moon.util.FirestoreUtil
 import timber.log.Timber
-import kotlin.math.roundToInt
 
 
 class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
@@ -169,25 +159,48 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
 
         // Enable maps location and move camera to user location
         map.isMyLocationEnabled = true
-        moveToUserLocation()
+        showLocationsOfUserAndShop()
+
 
 
     }
 
+
+
+
+
     // animate camera to user's location
-    fun moveToUserLocation()  {
+    private fun showLocationsOfUserAndShop()  {
         fusedLocationClient.lastLocation
             .addOnSuccessListener { location : Location? ->
                 //getting latitude and longitude and animating camera to user's location
                 val userLatLng = LatLng(location!!.latitude, location.longitude)
-                val zoomLevel = 14f
-                val userLocation = CameraUpdateFactory.newLatLngZoom(userLatLng,zoomLevel)
-                map.animateCamera(userLocation)
                 map.addMarker(MarkerOptions().position(userLatLng).icon(bitmapDescriptorFromVector(context!!, R.drawable.ic_marker_user)))
+                FirestoreUtil.firestoreInstance.document(args.orderDoc).get().addOnSuccessListener {orderDoc ->
+                    FirestoreUtil.firestoreInstance.document("Shops/${orderDoc.get("shopId")}").get().addOnSuccessListener {shopDoc->
+                        val shopLat = shopDoc.get("shopLatitude")!!.toString().toDouble()
+                        val shopLng = shopDoc.get("shopLongitude")!!.toString().toDouble()
+                        val shopLatLng = LatLng(shopLat, shopLng)
+                        map.addMarker(MarkerOptions().position(shopLatLng).icon(bitmapDescriptorFromVector(context!!, R.drawable.ic_marker_shop)))
+                        zoomtoBothLocations(userLatLng, shopLatLng)
+                    }
+                }
             }
-
-
     }
+
+
+    private fun zoomtoBothLocations(
+        userLatLng: LatLng,
+        shopLatLng: LatLng
+    ) {
+        val builder = LatLngBounds.builder()
+        builder.include(userLatLng)
+        builder.include(shopLatLng)
+        val bounds = builder.build()
+        val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 180)
+        map.animateCamera(cameraUpdate)
+    }
+
 
 
 
