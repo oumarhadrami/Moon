@@ -150,8 +150,6 @@ class PlaceOrderFragment : Fragment() {
 
         //Document Reference in the firestore database to the order being placed
         orderDoc = FirestoreUtil.firestoreInstance
-            .collection("Orders")
-            .document(FirebaseAuth.getInstance().currentUser?.uid!!)
             .collection("CurrentOrders")
             .document()
 
@@ -176,7 +174,10 @@ class PlaceOrderFragment : Fragment() {
             "isOrderCancelled" to false,
             "isOrderRated" to false,
             "Items" to itemsHashMap,
-            "address" to currentAddressHashMap
+            "address" to currentAddressHashMap,
+            "UID" to FirebaseAuth.getInstance().currentUser!!.uid,
+            "orderId" to orderDoc.id,
+            "deliveryAgent" to ""
         )).addOnSuccessListener {
             isOrderPlaced = true
             viewModel.viewModelScope.launch {

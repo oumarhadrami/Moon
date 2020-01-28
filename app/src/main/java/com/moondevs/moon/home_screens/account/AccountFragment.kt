@@ -90,8 +90,7 @@ class AccountFragment : Fragment() {
         })
 
 
-        FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
-            .collection("CurrentOrders").addSnapshotListener { snapshots, e ->
+        FirestoreUtil.firestoreInstance.collection("CurrentOrders").addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Timber.i("listen:error $e")
                     return@addSnapshotListener
@@ -112,8 +111,7 @@ class AccountFragment : Fragment() {
     }
 
     private fun moveDocumentToPastOrdersCollection(id: String) {
-        val oldDoc = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
-            .collection("CurrentOrders").document(id)
+        val oldDoc = FirestoreUtil.firestoreInstance.collection("CurrentOrders").document(id)
         val newDoc = FirestoreUtil.firestoreInstance.collection("Orders").document(auth.currentUser!!.uid)
             .collection("PastOrders").document(id)
         oldDoc.get().addOnCompleteListener {task->
