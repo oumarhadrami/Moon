@@ -17,29 +17,38 @@
             android:layout_width="match_parent"
             android:id="@+id/statusbar_textview"
             android:layout_height="4dp"/>
-        <com.google.android.material.card.MaterialCardView
+
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize">
-            <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_height="match_parent">
+
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:id="@+id/close_live_container"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="?attr/actionBarSize">
+                    <ImageButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/close_tracking"
+                        app:srcCompat="@drawable/ic_close_grey_32dp"
+                        android:layout_margin="8dp"
+                        android:background="?android:attr/selectableItemBackground"
+                        />
+            </com.google.android.material.card.MaterialCardView>
 
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/close_tracking"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:srcCompat="@drawable/ic_close_grey_32dp"
-                    android:layout_margin="8dp"
-                    android:background="?android:attr/selectableItemBackground"
-                    />
+            <fragment
+                android:id="@+id/map_live"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/close_live_container" />
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.card.MaterialCardView>
-
-
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

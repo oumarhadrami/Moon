@@ -4,6 +4,7 @@ package com.moondevs.moon.live_tracking_screens
 import android.Manifest
 import android.annotation.TargetApi
 import android.app.Application
+import android.content.Context
 import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
@@ -11,6 +12,7 @@ import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,6 +29,10 @@ import com.google.android.gms.common.api.ResolvableApiException
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.snackbar.Snackbar
@@ -37,10 +43,12 @@ import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModel
 import com.moondevs.moon.home_screens.shops_screens.ShoppingCartViewModelFactory
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import kotlin.math.roundToInt
 
 
-class LiveTrackingFragment : Fragment() {
+class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
     private lateinit var binding : FragmentLiveTrackingBinding
+    private lateinit var map: GoogleMap
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var appBar : AppBarLayout
     private lateinit var bottomNav : BottomNavigationView
@@ -60,6 +68,11 @@ class LiveTrackingFragment : Fragment() {
         bottomNav = activity!!.findViewById(R.id.nav_view)
         appBar.visibility = View.GONE
         bottomNav.visibility = View.GONE
+
+
+        /** Obtain the SupportMapFragment and get notified when the map is ready to be used.*/
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_live) as SupportMapFragment
+        mapFragment.getMapAsync(this)
 
         /**Making empty textview size of statusBar*/
         val params = LinearLayout.LayoutParams(
@@ -119,6 +132,29 @@ class LiveTrackingFragment : Fragment() {
 
 
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    override fun onMapReady(googleMap: GoogleMap) {
+        map = googleMap
+
+        // Set Padding for the map for myLocation Button and enable maps location and move camera to user location
+        map.setPadding(0, dpToPx(30, activity!!), 0, 0)
+        map.isMyLocationEnabled = true
+
+
+    }
+
+    // convert dp to pixels units
+    fun dpToPx(dp: Int, context: Context): Int {
+        val displayMetrics: DisplayMetrics = context.resources.displayMetrics
+        return (dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+    }
 
 
 
@@ -130,7 +166,20 @@ class LiveTrackingFragment : Fragment() {
 
 
 
-    /**Handling the approval of foreground and background permissions (background in case of using android Q or later)*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+            /**Handling the approval of foreground and background permissions (background in case of using android Q or later)*/
     @TargetApi(29)
     private fun foregroundAndBackgroundLocationPermissionApproved(): Boolean {
         val foregroundLocationApproved = (
