@@ -151,6 +151,18 @@
         <argument
             android:name="order_doc"
             app:argType="string" />
+        <argument
+            android:name="order_id"
+            app:argType="string" />
+        <argument
+            android:name="order_date"
+            app:argType="string" />
+        <argument
+            android:name="order_total_items_count"
+            app:argType="string" />
+        <argument
+            android:name="order_amount_to_pay"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/placeOrderFragment"

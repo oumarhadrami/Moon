@@ -2,6 +2,7 @@ package com.moondevs.moon.live_tracking_screens
 
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.app.Application
 import android.content.Context
@@ -9,6 +10,10 @@ import android.content.Intent
 import android.content.IntentSender
 import android.content.pm.PackageManager
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.VectorDrawable
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -19,19 +24,26 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.annotation.DrawableRes
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ResolvableApiException
+import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -49,12 +61,15 @@ import kotlin.math.roundToInt
 class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
     private lateinit var binding : FragmentLiveTrackingBinding
     private lateinit var map: GoogleMap
+    private lateinit var args: LiveTrackingFragmentArgs
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
     private lateinit var shoppingCartViewModel: ShoppingCartViewModel
     private lateinit var appBar : AppBarLayout
     private lateinit var bottomNav : BottomNavigationView
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
 
 
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_live_tracking,container,false)
 
@@ -70,9 +85,6 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
         bottomNav.visibility = View.GONE
 
 
-        /** Obtain the SupportMapFragment and get notified when the map is ready to be used.*/
-        val mapFragment = childFragmentManager.findFragmentById(R.id.map_live) as SupportMapFragment
-        mapFragment.getMapAsync(this)
 
         /**Making empty textview size of statusBar*/
         val params = LinearLayout.LayoutParams(
@@ -95,6 +107,18 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
         binding.closeTracking.setOnClickListener {
             findNavController().navigateUp()
         }
+
+        /** Obtain the SupportMapFragment and get notified when the map is ready to be used.*/
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map_live) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        /**initializing fusedLocationClient*/
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity!!)
+
+        /**Get the args*/
+        args = LiveTrackingFragmentArgs.fromBundle(arguments!!)
+        binding.orderId.text = "#${args.orderId}"
+        binding.orderDateItemsAmount.text = "${args.orderDate} | ${args.orderTotalItemsCount} ${getString(R.string.items)} | ${args.orderAmountToPay} MRU"
 
         return binding.root
     }
@@ -143,17 +167,37 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
 
-        // Set Padding for the map for myLocation Button and enable maps location and move camera to user location
-        map.setPadding(0, dpToPx(30, activity!!), 0, 0)
+        // Enable maps location and move camera to user location
         map.isMyLocationEnabled = true
+        moveToUserLocation()
 
 
     }
 
-    // convert dp to pixels units
-    fun dpToPx(dp: Int, context: Context): Int {
-        val displayMetrics: DisplayMetrics = context.resources.displayMetrics
-        return (dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT)).roundToInt()
+    // animate camera to user's location
+    fun moveToUserLocation()  {
+        fusedLocationClient.lastLocation
+            .addOnSuccessListener { location : Location? ->
+                //getting latitude and longitude and animating camera to user's location
+                val userLatLng = LatLng(location!!.latitude, location.longitude)
+                val zoomLevel = 14f
+                val userLocation = CameraUpdateFactory.newLatLngZoom(userLatLng,zoomLevel)
+                map.animateCamera(userLocation)
+                map.addMarker(MarkerOptions().position(userLatLng).icon(bitmapDescriptorFromVector(context!!, R.drawable.ic_marker_user)))
+            }
+
+
+    }
+
+
+
+    private fun bitmapDescriptorFromVector(context: Context, vectorDrawable: Int) : BitmapDescriptor {
+        val background = ContextCompat.getDrawable(context, vectorDrawable)
+        background!!.setBounds(0, 0, background.intrinsicWidth, background.intrinsicHeight)
+        val bitmap = Bitmap.createBitmap(background.intrinsicWidth, background.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val canvas = Canvas(bitmap)
+        background.draw(canvas)
+        return BitmapDescriptorFactory.fromBitmap(bitmap)
     }
 
 

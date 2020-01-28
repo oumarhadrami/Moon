@@ -23,20 +23,51 @@
             android:layout_height="match_parent">
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_width="match_parent"
                 android:id="@+id/close_live_container"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_height="?attr/actionBarSize">
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
                     <ImageButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
                         android:id="@+id/close_tracking"
-                        app:srcCompat="@drawable/ic_close_grey_32dp"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
                         android:layout_margin="8dp"
                         android:background="?android:attr/selectableItemBackground"
-                        />
+                        app:srcCompat="@drawable/ic_close_grey_32dp" />
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:orientation="vertical"
+                        android:layout_marginTop="6dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="8">
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:fontFamily="@font/asap"
+                            android:textSize="16sp"
+                            android:id="@+id/order_id"
+                            tools:text="#f4e9fe94f9e4fef4"
+                            android:layout_height="wrap_content"/>
+                        <com.google.android.material.textview.MaterialTextView
+                            android:layout_width="match_parent"
+                            android:fontFamily="@font/asap"
+                            android:id="@+id/order_date_items_amount"
+                            android:textSize="12sp"
+                            tools:text="20/1/2019 | 2 items | 320 MRU"
+                            android:layout_height="wrap_content"/>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
             </com.google.android.material.card.MaterialCardView>
 
             <fragment
@@ -44,11 +75,162 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintVertical_weight="3"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/close_live_container" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+                app:layout_constraintTop_toBottomOf="@+id/close_live_container" />
 
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:id="@+id/linearLayout2"
+                android:layout_height="0dp"
+                app:layout_constraintVertical_weight="2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/map_live">
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical" >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            app:srcCompat="@drawable/ic_order_received"
+                            android:background="@android:color/transparent"
+                            android:layout_margin="12dp"
+                            android:layout_height="wrap_content" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="match_parent"
+                                android:text="@string/order_received"
+                                android:fontFamily="@font/asap"
+                                android:textSize="18sp"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="match_parent"
+                                android:fontFamily="@font/asap"
+                                android:text="@string/waiting_to_confirm_your_order_from_the_shop"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp">
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            app:srcCompat="@drawable/ic_order_accepted"
+                            android:background="@android:color/transparent"
+                            android:layout_margin="12dp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="match_parent"
+                                android:text="@string/order_accepted"
+                                android:fontFamily="@font/asap"
+                                android:textSize="18sp"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="match_parent"
+                                android:fontFamily="@font/asap"
+                                android:text="@string/delivery_agent_will_be_assigned_to_your_order"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:orientation="horizontal">
+
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            app:srcCompat="@drawable/ic_delivery_agent_assigned"
+                            android:background="@android:color/transparent"
+                            android:layout_margin="12dp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="match_parent"
+                                android:text="@string/delivery_agent_assigned"
+                                android:fontFamily="@font/asap"
+                                android:textSize="18sp"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="match_parent"
+                                android:fontFamily="@font/asap"
+                                android:text="@string/delivery_agent_is_on_the_way_to_the_shop"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:orientation="horizontal">
+
+
+                        <ImageButton
+                            android:layout_width="wrap_content"
+                            app:srcCompat="@drawable/ic_order_picked_up"
+                            android:background="@android:color/transparent"
+                            android:layout_margin="12dp"
+                            android:layout_height="match_parent" />
+
+                        <LinearLayout
+
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="match_parent"
+                                android:text="@string/order_picked_up"
+                                android:fontFamily="@font/asap"
+                                android:textSize="18sp"
+                                android:layout_height="wrap_content"/>
+                            <com.google.android.material.textview.MaterialTextView
+                                android:layout_width="match_parent"
+                                android:fontFamily="@font/asap"
+                                android:text="@string/your_order_has_been_picked_up_and_will_be_delivered_to_you_soon"
+                                android:layout_height="wrap_content"/>
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </layout>

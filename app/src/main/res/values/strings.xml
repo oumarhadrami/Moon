@@ -117,5 +117,13 @@
     <string name="rating">rating</string>
     <string name="ratings">ratings</string>
     <string name="no_ratings">No ratings</string>
+    <string name="order_received">Order Received</string>
+    <string name="waiting_to_confirm_your_order_from_the_shop">Waiting to confirm your order from the shop</string>
+    <string name="order_accepted">Order Accepted</string>
+    <string name="delivery_agent_will_be_assigned_to_your_order">Delivery agent will be assigned to your order</string>
+    <string name="delivery_agent_assigned">Delivery agent assigned</string>
+    <string name="delivery_agent_is_on_the_way_to_the_shop">Delivery agent is on the way to the shop</string>
+    <string name="order_picked_up">Order Picked up</string>
+    <string name="your_order_has_been_picked_up_and_will_be_delivered_to_you_soon">Your order has been picked up and will be delivered to you soon</string>
 
 </resources>

@@ -166,12 +166,13 @@ class PlaceOrderFragment : Fragment() {
             "orderDate" to currentDateandTime,
             "shopRating" to 0,
             "deliveryExperienceRating" to 0,
-            "isOrderRated" to false,
+            "isOrderPlaced" to true,
             "isOrderAccepted" to false,
             "isOrderAssigned" to false,
             "isOrderCollected" to false,
             "isOrderDelivered" to false,
             "isOrderCancelled" to false,
+            "isOrderRated" to false,
             "Items" to itemsHashMap,
             "address" to currentAddressHashMap
         )).addOnSuccessListener {
@@ -207,7 +208,7 @@ class PlaceOrderFragment : Fragment() {
                 viewModel.viewModelScope.launch {
                     viewModel.emptyCart()
                 }
-                findNavController().navigate(PlaceOrderFragmentDirections.actionPlaceOrderFragmentToLiveTrackingFragment(orderDoc.path))
+                findNavController().navigate(PlaceOrderFragmentDirections.actionPlaceOrderFragmentToLiveTrackingFragment(orderDoc.path, orderDoc.id, currentDateandTime,totalItemsCount.toString(),(totalAmountInt+deliveryFeeInt).toString()))
             }, 2000)
         }
     }

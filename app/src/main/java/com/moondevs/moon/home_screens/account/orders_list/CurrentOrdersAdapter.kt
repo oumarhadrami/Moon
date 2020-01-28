@@ -35,7 +35,7 @@ class CurrentOrdersAdapter(val viewModel: ShoppingCartViewModel, val activity: F
             //binding the name of the item to view
             binding.currentOrder = item
             binding.trackCurrentOrder.setOnClickListener {
-                it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToLiveTrackingFragment(item.orderDoc))
+                it.findNavController().navigate(AccountFragmentDirections.actionNavigationAccountToLiveTrackingFragment(item.orderDoc, item.Id,item.orderDate, item.totalItemsCount.toString(), item.amountToPay.toString()))
             }
             binding.executePendingBindings()
         }
