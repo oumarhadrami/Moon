@@ -96,6 +96,8 @@ dependencies {
 
     //timber
     implementation 'com.jakewharton.timber:timber:4.7.1'
+
+    //google services location
     implementation 'com.google.android.gms:play-services-location:17.0.0'
 
     //RatingBar MaterialDesign
