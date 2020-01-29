@@ -283,6 +283,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:cardCornerRadius="10dp"
+            app:behavior_hideable="true"
             app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"
             android:id="@+id/bottom_sheet">
 
@@ -290,7 +291,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/addresses_list_in_bottom_sheet"
-                app:behavior_hideable="true"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 

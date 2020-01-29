@@ -169,7 +169,7 @@ class PlaceOrderFragment : Fragment() {
             "isOrderPlaced" to true,
             "isOrderAccepted" to false,
             "isOrderAssigned" to false,
-            "isShopReached" to true,
+            "isShopReached" to false,
             "isOrderCollected" to false,
             "isOrderDelivered" to false,
             "isOrderCancelled" to false,

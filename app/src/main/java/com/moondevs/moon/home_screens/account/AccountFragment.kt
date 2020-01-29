@@ -97,9 +97,11 @@ class AccountFragment : Fragment() {
                 }
 
                 for (document in snapshots!!.documents) {
-                    if (document.getBoolean("isOrderDelivered")!!) {
-                        moveDocumentToPastOrdersCollection(document.id)
-                        break
+                    if (document.get("UID").toString() == auth.currentUser!!.uid) {
+                        if (document.getBoolean("isOrderDelivered")!!) {
+                            moveDocumentToPastOrdersCollection(document.id)
+                            break
+                        }
                     }
                 }
 
