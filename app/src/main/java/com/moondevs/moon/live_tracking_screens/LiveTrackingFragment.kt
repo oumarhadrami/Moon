@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -48,6 +49,7 @@ import com.moondevs.moon.util.FirestoreUtil
 import timber.log.Timber
 
 
+const val MY_PERMISSIONS_REQUEST_CALL_PHONE = 101
 class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
     private lateinit var binding : FragmentLiveTrackingBinding
     private lateinit var map: GoogleMap
@@ -57,6 +59,7 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
     private lateinit var appBar : AppBarLayout
     private lateinit var bottomNav : BottomNavigationView
     private val runningQOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q
+    private val runningMOrLater = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M
 
 
     @SuppressLint("SetTextI18n")
@@ -147,12 +150,48 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
                 //TODO Request Permission for phone call
 
                 binding.callDeliveryAgent.setOnClickListener {
-                    val intent = Intent(Intent.ACTION_CALL)
-                    intent.data = Uri.parse(documentSnapshot["phoneNumber"].toString())
-                    startActivity(intent)
+                   if (phoneCallPermissionGranted()) {
+                       val intent = Intent(Intent.ACTION_CALL)
+                       intent.data = Uri.parse("tel:" + documentSnapshot["phoneNumber"].toString())
+                       startActivity(intent)
+                   }
+                    else {
+                       requestPhoneCallPermission()
+                   }
                 }
             }
     }
+
+    private fun phoneCallPermissionGranted(): Boolean {
+        return (
+                PackageManager.PERMISSION_GRANTED ==
+                        ActivityCompat.checkSelfPermission(
+                            activity!!,
+                            Manifest.permission.CALL_PHONE))
+    }
+
+
+    private fun requestPhoneCallPermission() {
+        // Here, thisActivity is the current activity
+        if (phoneCallPermissionGranted())
+            return
+        var permissionsArray = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        val resultCode = when {
+            runningMOrLater -> {
+                permissionsArray += Manifest.permission.CALL_PHONE
+                CALL_PHONE_PERMISSION_RESULT_CODE
+            }
+            else -> CALL_PHONE_PERMISSIONS_REQUEST_CODE
+        }
+        Timber.d("Request foreground only location permission")
+        ActivityCompat.requestPermissions(
+            activity!!,
+            permissionsArray,
+            resultCode
+        )
+    }
+
+
 
     /**make appBar and BottomNav visible outside this fragment*/
     override fun onDestroyView() {
@@ -349,6 +388,36 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
             // permission granted and user can open the map
             //findNavController().navigate(CartFragmentDirections.actionNavigationCartToDeliveryLocationActivity())
         }
+
+        if (requestCode == MY_PERMISSIONS_REQUEST_CALL_PHONE) {
+            // If request is cancelled, the result arrays are empty.
+            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                // permission was granted, yay! Do the
+                // contacts-related task you need to do.
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    R.string.phone_permission_denied_explanation,
+                    Snackbar.LENGTH_INDEFINITE
+                )
+                    .setAction(R.string.settings) {
+                        startActivity(Intent().apply {
+                            action = Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+                            data = Uri.fromParts("package", BuildConfig.APPLICATION_ID, null)
+                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                        })
+                    }.show()
+                // permission denied, boo! Disable the
+                // functionality that depends on this permission.
+            }
+            return
+        }
+
+        // Add other 'when' lines to check for other
+        // permissions this app might request.
+
+
+
     }
 
 
@@ -409,3 +478,5 @@ private const val REQUEST_FOREGROUND_ONLY_PERMISSIONS_REQUEST_CODE = 34
 private const val LOCATION_PERMISSION_INDEX = 0
 private const val BACKGROUND_LOCATION_PERMISSION_INDEX = 1
 private const val REQUEST_TURN_DEVICE_LOCATION_ON = 29
+private const val CALL_PHONE_PERMISSION_RESULT_CODE = 35
+private const val CALL_PHONE_PERMISSIONS_REQUEST_CODE = 36

@@ -61,6 +61,9 @@
     <string name="permission_denied_explanation">
         You need to grant location permission in order to live-track this order.
     </string>
+    <string name="phone_permission_denied_explanation">
+        You need to grant phone call permission in order to call the delivery agent.
+    </string>
     <string name="location_required_error">Location services must be enabled for this app.</string>
     <string name="settings">Settings</string>
     <string name="title_activity_maps">Map</string>
