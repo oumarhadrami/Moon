@@ -13,8 +13,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.firebase.ui.firestore.FirestoreRecyclerOptions
 import com.google.android.material.textfield.TextInputEditText
-import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.Query
 import com.moondevs.moon.R
 import com.moondevs.moon.databinding.FragmentSearchBinding
 import com.moondevs.moon.home_screens.shops_list_screen.Shop
@@ -50,7 +48,7 @@ class SearchFragment : Fragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 val shopsRef = FirestoreUtil.firestoreInstance.collection("Shops").whereGreaterThanOrEqualTo("shopName",s.toString().toLowerCase().capitalize())
                 val options = FirestoreRecyclerOptions.Builder<Shop>().setQuery(shopsRef, Shop::class.java).build()
-                adapter = SearchShopsFirestoreRecyclerAdapter(options)
+                adapter = SearchShopsFirestoreRecyclerAdapter(options,activity!!)
                 binding.searchShopsList.adapter = adapter
                 adapter.startListening()
             }
@@ -74,7 +72,7 @@ class SearchFragment : Fragment() {
         }
         val shopsRef = FirestoreUtil.firestoreInstance.collection("Shops").limit(4)
         val options = FirestoreRecyclerOptions.Builder<Shop>().setQuery(shopsRef, Shop::class.java).build()
-        adapter = SearchShopsFirestoreRecyclerAdapter(options)
+        adapter = SearchShopsFirestoreRecyclerAdapter(options, activity!!)
         binding.searchShopsList.adapter = adapter
         adapter.startListening()
     }

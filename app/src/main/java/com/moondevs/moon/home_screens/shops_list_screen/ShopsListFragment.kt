@@ -45,7 +45,7 @@ class ShopsListFragment : Fragment() {
         /**Initializing the collection for all shops according the shop type and adapter to the recyclerview*/
         shopsRef = FirestoreUtil.firestoreInstance.collection("Shops/").whereEqualTo("shopType",args.shopType)
         val options = FirestoreRecyclerOptions.Builder<Shop>().setQuery(shopsRef, Shop::class.java).build()
-        adapter = ShopFirestoreRecyclerAdapter(options, context)
+        adapter = ShopFirestoreRecyclerAdapter(options, context,activity!!)
         binding.shopsList.adapter = adapter
         binding.lifecycleOwner = this
 

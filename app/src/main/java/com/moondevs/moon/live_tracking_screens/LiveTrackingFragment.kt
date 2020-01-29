@@ -143,6 +143,9 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
             .addOnSuccessListener {documentSnapshot ->
                 binding.deliveryAgentName.text = documentSnapshot["Name"].toString()
                 binding.deliveryAgentInfoContainer.visibility = View.VISIBLE
+
+                //TODO Request Permission for phone call
+
                 binding.callDeliveryAgent.setOnClickListener {
                     val intent = Intent(Intent.ACTION_CALL)
                     intent.data = Uri.parse(documentSnapshot["phoneNumber"].toString())
