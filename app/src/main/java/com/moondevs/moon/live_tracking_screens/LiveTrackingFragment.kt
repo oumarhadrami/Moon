@@ -110,7 +110,45 @@ class LiveTrackingFragment : Fragment()  , OnMapReadyCallback {
         binding.orderId.text = "#${args.orderId}"
         binding.orderDateItemsAmount.text = "${args.orderDate} | ${args.orderTotalItemsCount} ${getString(R.string.items)} | ${args.orderAmountToPay} MRU"
 
-        return binding.root
+
+        /**if delivery agent is assigned, his info is displayed*/
+        FirestoreUtil.firestoreInstance.collection("CurrentOrders").addSnapshotListener { snapshots, e ->
+            if (e != null) {
+                Timber.i("listen:error $e")
+                return@addSnapshotListener
+            }
+
+            for (document in snapshots!!.documents) {
+                if (document.get("orderId").toString() == args.orderId) {
+                    if (document.getBoolean("isOrderAssigned")!!) {
+                        displayDeliveryAgentInfo(document["deliveryAgent"].toString())
+                        break
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+            return binding.root
+    }
+
+    private fun displayDeliveryAgentInfo(deliveryAgentID: String) {
+        FirestoreUtil.firestoreInstance.collection("Agents").document(deliveryAgentID)
+            .get()
+            .addOnSuccessListener {documentSnapshot ->
+                binding.deliveryAgentName.text = documentSnapshot["Name"].toString()
+                binding.deliveryAgentInfoContainer.visibility = View.VISIBLE
+                binding.callDeliveryAgent.setOnClickListener {
+                    val intent = Intent(Intent.ACTION_CALL)
+                    intent.data = Uri.parse(documentSnapshot["phoneNumber"].toString())
+                    startActivity(intent)
+                }
+            }
     }
 
     /**make appBar and BottomNav visible outside this fragment*/

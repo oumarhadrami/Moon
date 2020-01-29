@@ -125,5 +125,7 @@
     <string name="delivery_agent_is_on_the_way_to_the_shop">Delivery agent is on the way to the shop</string>
     <string name="order_picked_up">Order Picked up</string>
     <string name="your_order_has_been_picked_up_and_will_be_delivered_to_you_soon">Your order has been picked up and will be delivered to you soon</string>
+    <string name="delivery_agent_has_reached_the_shop">Delivery Agent has reached the shop and will collect the order soon</string>
+    <string name="shop_reached">Shop Reached</string>
 
 </resources>
